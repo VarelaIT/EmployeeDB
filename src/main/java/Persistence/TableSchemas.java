@@ -45,7 +45,7 @@ public class TableSchemas {
     }
     public static void dropTestDepartmentTable(Connection conn) {
         String creationQuery =
-            "DROP TABLE test_departments IF EXISTS";
+            "DROP TABLE test_departments";
 
         try {
             Statement st = conn.createStatement();

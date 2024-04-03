@@ -53,7 +53,21 @@ public class TestDepartmentRepository implements ITestDepartmentRepository {
     }
 
     @Override
-    public IDepartment get(Connection conn, int id) {
+    public IPersistedDepartment get(Connection conn, int id) {
+        String query = "SELECT id, name, description FROM test_departments WHERE id = ?";
+        try {
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, id);
+            ResultSet result = stm.executeQuery();
+            result.next();
+            return new PersistedDepartment(
+                    result.getInt("id"),
+                    result.getString("name"),
+                    result.getString("description")
+            );
+        } catch (Exception e) {
+            System.out.println("Error while withdrawing the department:\n\t" + e.getMessage());
+        }
         return null;
     }
 

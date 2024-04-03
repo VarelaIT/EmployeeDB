@@ -39,7 +39,7 @@ public class DepartmentRepository  implements IDepartmentRepository{
         return null;
     }
 
-    public IDepartment get(Connection conn, int id) {
+    public IPersistedDepartment get(Connection conn, int id) {
         System.out.println("Not implemented by the developer.");
         return null;
     }
