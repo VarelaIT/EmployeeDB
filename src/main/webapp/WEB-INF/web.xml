@@ -1,0 +1,27 @@
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                      https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <servlet>
+        <servlet-name>home</servlet-name>
+        <jsp-file>/WEB-INF/comp/home.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>home</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>departments</servlet-name>
+        <jsp-file>/WEB-INF/comp/departments.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>departments</servlet-name>
+        <url-pattern>/departments</url-pattern>
+    </servlet-mapping>
+
+</web-app>
