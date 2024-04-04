@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,34 +10,46 @@
   />
   <link rel='stylesheet' type='text/css' href='/css/global.css'/>
   <script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
-  <script type="module" src="/js/home.js" defer></script>
+  <script type="module" src="./scripts/header.js" defer></script>
   <title>EmployeeDB</title>
 </head>
 <body>
-    <header>
-        <h1>EmployeeDB</h1>
-        <img src="https://frugalentrepreneur.com/wp-content/uploads/2019/10/big-data.jpg" alt="Image not available.">
-    </header>
 
-    <aside>
-        <nav>
-            <a href="/#about">About</a>
-            <a href="/department">Departments</a>
-            <a href="/employees">Employees</a>
-        </nav>
-    </aside>
+    <main class="container">
 
-    <main id="about">
-        <article>
+        <header>
+            <h1>EmployeeDB</h1>
+            <input type="checkbox" role="switch" checked onchange="()=>toggleTheme(!theme)"/>
+            <img src="https://frugalentrepreneur.com/wp-content/uploads/2019/10/big-data.jpg" alt="Image not available.">
+        </header>
+
+        <aside>
+            <nav>
+                <a href="/#about">About</a>
+                <a href="/department">Departments</a>
+                <a href="/employees">Employees</a>
+            </nav>
+        </aside>
+
+        <section  id="about">
+
+            <article>
+                <p>
+                    EmployeeDB is the first web application developed by Ismael Varela in Java,
+                    the stakes are high... Hopping to catch the attention of the employers;
+                    <b>let`s begin!</b>
+                </p>
+            </article>
+
+        </section>
+
+        <footer>
             <p>
-                EmployeeDB is the first web application developed by Ismael Varela,
-                the stakes are high... Hopping to catch the attention of the employers;
-                <b>let`s begin!</b>
+                Develop by <a href="https://varelait.com">VarelaIT</a>
             </p>
-        </article>
+        </footer>
+
     </main>
 
-    <footer>
-    <footer>
 </body>
 </html>
