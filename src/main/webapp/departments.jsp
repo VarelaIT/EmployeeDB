@@ -11,7 +11,7 @@
   <link rel='stylesheet' type='text/css' href='/css/global.css'/>
   <script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
   <script type="module" src="./scripts/header.js" defer></script>
-  <title>EmployeeDB - Departments</title>
+  <title>EmployeeDB</title>
 </head>
 <body>
 
@@ -29,11 +29,12 @@
 
         <section  id="about">
 
-            <header>
-                <h2>Departments</h2>
-            </header>
-
             <article>
+                <p>
+                    EmployeeDB is the first web application developed by Ismael Varela in Java,
+                    the stakes are high... Hopping to catch the attention of the employers;
+                    <b>let`s begin!</b>
+                </p>
             </article>
 
         </section>
