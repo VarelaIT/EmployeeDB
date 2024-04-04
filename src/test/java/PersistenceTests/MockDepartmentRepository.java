@@ -3,16 +3,19 @@ package PersistenceTests;
 import Entities.IDepartment;
 import Entities.IPersistedDepartment;
 import Entities.PersistedDepartment;
-import Persistence.IDepartmentRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TestDepartmentRepository implements ITestDepartmentRepository {
+public class MockDepartmentRepository implements ITestDepartmentRepository {
 
 
+    public String seletAllQuery = "SELECT id, name, description FROM test_departments";
+    public String seletOneQuery = "SELECT id, name, description FROM test_departments WHERE id = ?";
     public String insertionQuery =
             "INSERT INTO test_departments ( name, description) VALUES ( ?, ?) RETURNING id, name, description";
 
@@ -54,9 +57,8 @@ public class TestDepartmentRepository implements ITestDepartmentRepository {
 
     @Override
     public IPersistedDepartment get(Connection conn, int id) {
-        String query = "SELECT id, name, description FROM test_departments WHERE id = ?";
         try {
-            PreparedStatement stm = conn.prepareStatement(query);
+            PreparedStatement stm = conn.prepareStatement(seletOneQuery);
             stm.setInt(1, id);
             ResultSet result = stm.executeQuery();
             result.next();
@@ -67,6 +69,26 @@ public class TestDepartmentRepository implements ITestDepartmentRepository {
             );
         } catch (Exception e) {
             System.out.println("Error while withdrawing the department:\n\t" + e.getMessage());
+        }
+        return null;
+    }
+    @Override
+    public List<IPersistedDepartment> getAll(Connection conn) {
+        List<IPersistedDepartment> response = new ArrayList<IPersistedDepartment>();
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet result = stm.executeQuery(seletAllQuery);
+            while(result.next()) {
+                response.add(new PersistedDepartment(
+                        result.getInt("id"),
+                        result.getString("name"),
+                        result.getString("description")
+                ));
+            }
+
+            return response;
+        } catch (Exception e) {
+            System.out.println("Error while withdrawing list of departments:\n\t" + e.getMessage());
         }
         return null;
     }

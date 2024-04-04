@@ -8,6 +8,7 @@ import Persistence.TableSchemas;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -20,7 +21,7 @@ public class DepartmentPersistenceTest {
     DepartmentPersistenceTest(){
         TableSchemas.dropTestDepartmentTable(conn);
         TableSchemas.createTestDepartmentTable(conn);
-        departmentRepository = new TestDepartmentRepository();
+        departmentRepository = new MockDepartmentRepository();
     }
 
     @Test
@@ -33,7 +34,7 @@ public class DepartmentPersistenceTest {
     }
 
     @Test
-    public void getPersistedDepartment(){
+    public void getPersistedDepartment() {
         IDepartment department = new Department("R&D", "Research and Development.");
         IPersistedDepartment persisted = departmentRepository.save(conn, department);
         int id = persisted.getId();
@@ -43,5 +44,17 @@ public class DepartmentPersistenceTest {
         assertEquals(persisted.getId(), inStorageDepartment.getId());
         assertEquals(persisted.getName(), inStorageDepartment.getName());
         assertEquals(persisted.getDescription(), inStorageDepartment.getDescription());
+    }
+
+    @Test
+    public void getAllPersistedDepartments(){
+        IDepartment departmentA = new Department("Data Analysis", "");
+        IDepartment departmentB = new Department("Design", "Graphical & visual design");
+        IPersistedDepartment persistedA = departmentRepository.save(conn, departmentA);
+        IPersistedDepartment persistedB = departmentRepository.save(conn, departmentB);
+
+        List<IPersistedDepartment> inStorageDepartments = departmentRepository.getAll(conn);
+
+        assertTrue(inStorageDepartments.size() > 1);
     }
 }

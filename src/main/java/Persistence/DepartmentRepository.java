@@ -7,8 +7,13 @@ import Entities.PersistedDepartment;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DepartmentRepository  implements IDepartmentRepository{
+    public String seletAllQuery = "SELECT id, name, description FROM departments";
+    public String seletOneQuery = "SELECT id, name, description FROM departments WHERE id = ?";
     public String insertionQuery =
             "INSERT INTO departments ( name, description)"
                     + " VALUES"
@@ -40,7 +45,40 @@ public class DepartmentRepository  implements IDepartmentRepository{
     }
 
     public IPersistedDepartment get(Connection conn, int id) {
-        System.out.println("Not implemented by the developer.");
+        try {
+            PreparedStatement stm = conn.prepareStatement(seletOneQuery);
+            stm.setInt(1, id);
+            ResultSet result = stm.executeQuery();
+            result.next();
+            return new PersistedDepartment(
+                    result.getInt("id"),
+                    result.getString("name"),
+                    result.getString("description")
+            );
+        } catch (Exception e) {
+            System.out.println("Error while withdrawing the department:\n\t" + e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public List<IPersistedDepartment> getAll(Connection conn) {
+        List<IPersistedDepartment> response = new ArrayList<IPersistedDepartment>();
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet result = stm.executeQuery(seletAllQuery);
+            while(result.next()) {
+                response.add(new PersistedDepartment(
+                        result.getInt("id"),
+                        result.getString("name"),
+                        result.getString("description")
+                ));
+            }
+
+            return response;
+        } catch (Exception e) {
+            System.out.println("Error while withdrawing list of departments:\n\t" + e.getMessage());
+        }
         return null;
     }
 }
