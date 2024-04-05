@@ -21,7 +21,7 @@ public class MockDepartmentRepository implements ITestDepartmentRepository {
 
     @Override
     public void dropTable(Connection conn) {
-        String statement = "DELETE FROM test_departments";
+        String statement = "DROP TABLE test_departments";
         try{
             Statement query = conn.createStatement();
             query.executeQuery(statement);
