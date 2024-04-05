@@ -19,14 +19,6 @@
 
         <jsp:include page="./WEB-INF/comp/header.jsp" />
 
-        <aside>
-            <nav>
-                <a href="/#about">About</a>
-                <a href="/department">Departments</a>
-                <a href="/employees">Employees</a>
-            </nav>
-        </aside>
-
         <section>
             <header>
                 <h2>Departments</h2>
