@@ -3,6 +3,7 @@ package Persistence;
 import Entities.IDepartment;
 import Entities.IPersistedDepartment;
 import Entities.PersistedDepartment;
+import Persistence.JDBC.DBConn;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DepartmentRepository  implements IDepartmentRepository{
+    public Connection conn = new DBConn().getConn();
     public String seletAllQuery = "SELECT id, name, description FROM departments";
     public String seletOneQuery = "SELECT id, name, description FROM departments WHERE id = ?";
     public String insertionQuery =
@@ -20,7 +22,7 @@ public class DepartmentRepository  implements IDepartmentRepository{
                     + " ( ?, ?)"
                     + " RETURNING id, name, description";
 
-    public  IPersistedDepartment save(Connection conn, IDepartment newDepartment) {
+    public  IPersistedDepartment save(IDepartment newDepartment) {
         try {
             PreparedStatement st = conn.prepareStatement(insertionQuery);
             st.setString(1, newDepartment.getName());
@@ -44,7 +46,7 @@ public class DepartmentRepository  implements IDepartmentRepository{
         return null;
     }
 
-    public IPersistedDepartment get(Connection conn, int id) {
+    public IPersistedDepartment get(int id) {
         try {
             PreparedStatement stm = conn.prepareStatement(seletOneQuery);
             stm.setInt(1, id);
@@ -62,7 +64,7 @@ public class DepartmentRepository  implements IDepartmentRepository{
     }
 
     @Override
-    public List<IPersistedDepartment> getAll(Connection conn) {
+    public List<IPersistedDepartment> getAll() {
         List<IPersistedDepartment> response = new ArrayList<IPersistedDepartment>();
         try {
             Statement stm = conn.createStatement();

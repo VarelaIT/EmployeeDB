@@ -3,6 +3,7 @@ package PersistenceTests;
 import Entities.IDepartment;
 import Entities.IPersistedDepartment;
 import Entities.PersistedDepartment;
+import Persistence.JDBC.DBConn;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,13 +15,14 @@ import java.util.List;
 public class MockDepartmentRepository implements ITestDepartmentRepository {
 
 
+    public Connection conn = new DBConn().getConn();
     public String seletAllQuery = "SELECT id, name, description FROM test_departments";
     public String seletOneQuery = "SELECT id, name, description FROM test_departments WHERE id = ?";
     public String insertionQuery =
             "INSERT INTO test_departments ( name, description) VALUES ( ?, ?) RETURNING id, name, description";
 
     @Override
-    public void dropTable(Connection conn) {
+    public void dropTable() {
         String statement = "DROP TABLE test_departments";
         try{
             Statement query = conn.createStatement();
@@ -32,7 +34,7 @@ public class MockDepartmentRepository implements ITestDepartmentRepository {
     }
 
     @Override
-    public IPersistedDepartment save(Connection conn, IDepartment newDepartment) {
+    public IPersistedDepartment save(IDepartment newDepartment) {
         try {
             PreparedStatement st = conn.prepareStatement(insertionQuery);
             st.setString(1, newDepartment.getName());
@@ -56,7 +58,7 @@ public class MockDepartmentRepository implements ITestDepartmentRepository {
     }
 
     @Override
-    public IPersistedDepartment get(Connection conn, int id) {
+    public IPersistedDepartment get(int id) {
         try {
             PreparedStatement stm = conn.prepareStatement(seletOneQuery);
             stm.setInt(1, id);
@@ -73,7 +75,7 @@ public class MockDepartmentRepository implements ITestDepartmentRepository {
         return null;
     }
     @Override
-    public List<IPersistedDepartment> getAll(Connection conn) {
+    public List<IPersistedDepartment> getAll() {
         List<IPersistedDepartment> response = new ArrayList<IPersistedDepartment>();
         try {
             Statement stm = conn.createStatement();

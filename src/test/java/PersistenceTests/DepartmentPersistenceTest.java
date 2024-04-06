@@ -15,12 +15,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DepartmentPersistenceTest {
 
-    public Connection conn = new DBConn().getConn();
     public ITestDepartmentRepository departmentRepository;
 
     DepartmentPersistenceTest(){
+        Connection conn = new DBConn().getConn();
         TableSchemas.dropTestDepartmentTable(conn);
         TableSchemas.createTestDepartmentTable(conn);
+        conn= null;
         departmentRepository = new MockDepartmentRepository();
     }
 
@@ -28,7 +29,7 @@ public class DepartmentPersistenceTest {
     public void persistingNewDepartment(){
         IDepartment department = new Department("HHRR", "Human Resources.");
 
-        IPersistedDepartment result = departmentRepository.save(conn, department);
+        IPersistedDepartment result = departmentRepository.save(department);
 
         assertTrue(result.getId() > 0);
     }
@@ -36,10 +37,10 @@ public class DepartmentPersistenceTest {
     @Test
     public void getPersistedDepartment() {
         IDepartment department = new Department("R&D", "Research and Development.");
-        IPersistedDepartment persisted = departmentRepository.save(conn, department);
+        IPersistedDepartment persisted = departmentRepository.save(department);
         int id = persisted.getId();
 
-        IPersistedDepartment inStorageDepartment = departmentRepository.get(conn, id);
+        IPersistedDepartment inStorageDepartment = departmentRepository.get(id);
 
         assertEquals(persisted.getId(), inStorageDepartment.getId());
         assertEquals(persisted.getName(), inStorageDepartment.getName());
@@ -50,10 +51,10 @@ public class DepartmentPersistenceTest {
     public void getAllPersistedDepartments(){
         IDepartment departmentA = new Department("Data Analysis", "");
         IDepartment departmentB = new Department("Design", "Graphical & visual design");
-        IPersistedDepartment persistedA = departmentRepository.save(conn, departmentA);
-        IPersistedDepartment persistedB = departmentRepository.save(conn, departmentB);
+        IPersistedDepartment persistedA = departmentRepository.save(departmentA);
+        IPersistedDepartment persistedB = departmentRepository.save(departmentB);
 
-        List<IPersistedDepartment> inStorageDepartments = departmentRepository.getAll(conn);
+        List<IPersistedDepartment> inStorageDepartments = departmentRepository.getAll();
 
         assertTrue(inStorageDepartments.size() > 1);
     }
