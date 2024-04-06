@@ -1,11 +1,13 @@
 <header>
-    <h1>EmployeeDB</h1>
-    <p><input id="themeSwitch" type="checkbox" role="switch"/></p>
-    <img src="https://freepngimg.com/thumb/technology/63583-visualization-data-illustration-png-image-high-quality.png" alt="Image not available.">
-
     <nav>
-        <a href="/EmployeeDB/#about">About</a>
-        <a href="/EmployeeDB/department">Departments</a>
-        <a href="/EmployeeDB/employees">Employees</a>
+        <ul>
+            <li><strong>EmployeeDB</strong></li>
+        </ul>
+        <ul>
+            <li><input id="themeSwitch" type="checkbox" role="switch"/></li>
+            <li><a href="/EmployeeDB/#about">About</a></li>
+            <li><a href="/EmployeeDB/departments">Departments</a></li>
+            <li><a href="/EmployeeDB/employees">Employees</a></li>
+        </ul>
     </nav>
 </header>

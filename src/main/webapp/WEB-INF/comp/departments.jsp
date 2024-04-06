@@ -8,7 +8,7 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
   />
-  <link rel='stylesheet' type='text/css' href='/css/global.css'/>
+  <link rel='stylesheet' type='text/css' href='./styles/global.css'/>
   <script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
   <script type="module" src="./scripts/header.js" defer></script>
   <title>EmployeeDB</title>
@@ -21,10 +21,49 @@
 
         <section>
             <header>
-                <h2>Departments</h2>
+                <h1>Departments</h1>
             </header>
 
-            <article>
+            <article id="deparments-table">
+
+                <div class="overflow-auto">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Department</th>
+                                <th>Description</th>
+                                <th>Id</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>HHRR</td>
+                                <td>Human Resources</td>
+                                <td>1</td>
+                            </tr>
+                        </tbody>
+
+                        <tr>
+                            <form
+                                hx-post="/department"
+                                hx-trigger="submit"
+                                hx-swap="innerHTML"
+                            >
+                            <td>
+                                <input name="department" placeholder="Department name" required/>
+                            </td>
+                            <td>
+                                <input name="description" placeholder="Brief department description" required/>
+                            </td>
+                            <td>
+                                <input type="submit" value="Add"/>
+                            </td>
+                            <form>
+                        </tr>
+                    </table>
+                </div>
+
             </article>
         </section>
 
