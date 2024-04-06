@@ -5,10 +5,7 @@ import Entities.IPersistedDepartment;
 import Entities.PersistedDepartment;
 import Persistence.JDBC.DBConn;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +38,7 @@ public class DepartmentRepository  implements IDepartmentRepository{
             return new PersistedDepartment(id, name, description);
         } catch (Exception e){
             System.out.println("The Department Persistence log.\n\t" + e.getMessage());
+            closeConn();
         }
 
         return null;
@@ -51,14 +49,20 @@ public class DepartmentRepository  implements IDepartmentRepository{
             PreparedStatement stm = conn.prepareStatement(seletOneQuery);
             stm.setInt(1, id);
             ResultSet result = stm.executeQuery();
+
             result.next();
-            return new PersistedDepartment(
+            IPersistedDepartment persistedDepartment = new PersistedDepartment(
                     result.getInt("id"),
                     result.getString("name"),
                     result.getString("description")
             );
+
+            result.close();
+            stm.close();
+            return persistedDepartment;
         } catch (Exception e) {
             System.out.println("Error while withdrawing the department:\n\t" + e.getMessage());
+            closeConn();
         }
         return null;
     }
@@ -77,10 +81,22 @@ public class DepartmentRepository  implements IDepartmentRepository{
                 ));
             }
 
+            result.close();
+            stm.close();
             return response;
         } catch (Exception e) {
             System.out.println("Error while withdrawing list of departments:\n\t" + e.getMessage());
+            closeConn();
         }
         return null;
+    }
+
+    @Override
+    public void closeConn() {
+        try {
+            conn.close();
+        } catch (Exception e){
+            System.out.println("Error while closing the persistence:\n\t" + e.getMessage());
+        }
     }
 }

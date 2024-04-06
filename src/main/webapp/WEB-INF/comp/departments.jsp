@@ -36,10 +36,14 @@
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody
+                            hx-get="./api/department"
+                            hx-trigger="load"
+                            hx-swap="innerHTML"
+                        >
                             <tr>
                                 <td>HHRR</td>
-                                <td>Human Resources</td>
+                                <td>Human Resources, department example.</td>
                                 <td>1</td>
                             </tr>
                         </tbody>

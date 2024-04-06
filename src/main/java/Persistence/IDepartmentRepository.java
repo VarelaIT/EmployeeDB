@@ -9,5 +9,6 @@ public interface IDepartmentRepository {
     IPersistedDepartment save(IDepartment newDepartment);
     IPersistedDepartment get(int id);
     List<IPersistedDepartment> getAll();
+    void closeConn();
 
 }

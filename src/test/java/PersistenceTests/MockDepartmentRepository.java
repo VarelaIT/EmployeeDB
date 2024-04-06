@@ -30,6 +30,7 @@ public class MockDepartmentRepository implements ITestDepartmentRepository {
             query.close();
         }catch (Exception e){
             System.out.println("Storage Error:\n\t" + e.getMessage());
+            closeConn();
         }
     }
 
@@ -53,6 +54,7 @@ public class MockDepartmentRepository implements ITestDepartmentRepository {
             return new PersistedDepartment(id, name, description);
         } catch (Exception e){
             System.out.println("The Department Persistence log.\n\t" + e.getMessage());
+            closeConn();
         }
         return null;
     }
@@ -71,6 +73,7 @@ public class MockDepartmentRepository implements ITestDepartmentRepository {
             );
         } catch (Exception e) {
             System.out.println("Error while withdrawing the department:\n\t" + e.getMessage());
+            closeConn();
         }
         return null;
     }
@@ -91,8 +94,18 @@ public class MockDepartmentRepository implements ITestDepartmentRepository {
             return response;
         } catch (Exception e) {
             System.out.println("Error while withdrawing list of departments:\n\t" + e.getMessage());
+            closeConn();
         }
         return null;
+    }
+
+    @Override
+    public void closeConn() {
+        try {
+            conn.close();
+        } catch (Exception e){
+            System.out.println("Error while closing the persistence:\n\t" + e.getMessage());
+        }
     }
 
 }
