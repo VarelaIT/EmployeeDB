@@ -99,7 +99,6 @@ public class MockDepartmentRepository implements ITestDepartmentRepository {
         return null;
     }
 
-    @Override
     public void closeConn() {
         try {
             conn.close();

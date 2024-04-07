@@ -5,13 +5,13 @@ import Entities.IPersistedDepartment;
 import Entities.PersistedDepartment;
 import Persistence.JDBC.DBConn;
 
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DepartmentRepository  implements IDepartmentRepository{
-    //public Connection conn = new DBConn().getConn();
-    public Connection conn;
+public class DepartmentRepository extends PersistenceConnectivity  implements IDepartmentRepository{
     public String seletAllQuery = "SELECT id, name, description FROM departments";
     public String seletOneQuery = "SELECT id, name, description FROM departments WHERE id = ?";
     public String insertionQuery =
@@ -39,7 +39,6 @@ public class DepartmentRepository  implements IDepartmentRepository{
             return new PersistedDepartment(id, name, description);
         } catch (Exception e){
             System.out.println("The Department Persistence log.\n\t" + e.getMessage());
-            closeConn();
         }
 
         return null;
@@ -63,14 +62,15 @@ public class DepartmentRepository  implements IDepartmentRepository{
             return persistedDepartment;
         } catch (Exception e) {
             System.out.println("Error while withdrawing the department:\n\t" + e.getMessage());
-            closeConn();
         }
+
         return null;
     }
 
     @Override
     public List<IPersistedDepartment> getAll() {
         List<IPersistedDepartment> response = new ArrayList<IPersistedDepartment>();
+
         try {
             Statement stm = conn.createStatement();
             ResultSet result = stm.executeQuery(seletAllQuery);
@@ -87,17 +87,9 @@ public class DepartmentRepository  implements IDepartmentRepository{
             return response;
         } catch (Exception e) {
             System.out.println("Error while withdrawing list of departments:\n\t" + e.getMessage());
-            closeConn();
         }
+
         return null;
     }
 
-    @Override
-    public void closeConn() {
-        try {
-            conn.close();
-        } catch (Exception e){
-            System.out.println("Error while closing the persistence:\n\t" + e.getMessage());
-        }
-    }
 }
