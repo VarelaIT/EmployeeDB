@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DepartmentRepository  implements IDepartmentRepository{
-    public Connection conn = new DBConn().getConn();
+    //public Connection conn = new DBConn().getConn();
+    public Connection conn;
     public String seletAllQuery = "SELECT id, name, description FROM departments";
     public String seletOneQuery = "SELECT id, name, description FROM departments WHERE id = ?";
     public String insertionQuery =

@@ -16,6 +16,7 @@ public class DepartmentRoute extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //nove to logic
         IDepartmentRepository departmentRepository = new DepartmentRepository();
 
         List<IPersistedDepartment> inStorageDepartments = departmentRepository.getAll();
@@ -29,6 +30,7 @@ public class DepartmentRoute extends HttpServlet {
 
             rawPayload = rawPayload.concat(tableRow);
         }
+        //nove to logic
 
         response.setContentType("text/html");
         response.getWriter().append(rawPayload);
