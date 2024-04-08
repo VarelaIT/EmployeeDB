@@ -3,6 +3,8 @@ package PersistenceTests;
 import Entities.Department;
 import Entities.IDepartment;
 import Entities.IPersistedDepartment;
+import MockPersistence.MockDepartmentRepository;
+import Persistence.ITestDepartmentRepository;
 import Persistence.JDBC.DBConn;
 import Persistence.TableSchemas;
 import org.junit.jupiter.api.Test;

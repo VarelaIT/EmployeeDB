@@ -37,6 +37,7 @@
                         </thead>
 
                         <tbody
+                            id="departmentTableBody"
                             hx-get="./api/department"
                             hx-trigger="load"
                             hx-swap="innerHTML"
@@ -50,9 +51,10 @@
 
                         <tr>
                             <form
-                                hx-post="/department"
+                                hx-post="./api/department"
                                 hx-trigger="submit"
-                                hx-swap="innerHTML"
+                                hx-swap="afterend"
+                                hx-target="#departmentTableBody"
                             >
                             <td>
                                 <input name="department" placeholder="Department name" required/>

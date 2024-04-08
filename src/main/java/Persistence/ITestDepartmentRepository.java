@@ -1,4 +1,4 @@
-package PersistenceTests;
+package Persistence;
 
 import Entities.IDepartment;
 import Entities.IPersistedDepartment;

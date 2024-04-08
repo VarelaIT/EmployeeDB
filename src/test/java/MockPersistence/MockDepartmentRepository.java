@@ -1,8 +1,9 @@
-package PersistenceTests;
+package MockPersistence;
 
 import Entities.IDepartment;
 import Entities.IPersistedDepartment;
 import Entities.PersistedDepartment;
+import Persistence.ITestDepartmentRepository;
 import Persistence.JDBC.DBConn;
 
 import java.sql.Connection;

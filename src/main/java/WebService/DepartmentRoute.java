@@ -1,8 +1,9 @@
 package WebService;
 
-import Entities.IPersistedDepartment;
-import Persistence.DepartmentRepository;
-import Persistence.IDepartmentRepository;
+import Logic.DepartmentLogic;
+import Logic.DepartmentRequest;
+import Logic.IDepartmentRequest;
+import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,21 +17,21 @@ public class DepartmentRoute extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //nove to logic
-        IDepartmentRepository departmentRepository = new DepartmentRepository();
 
-        List<IPersistedDepartment> inStorageDepartments = departmentRepository.getAll();
+        String rawPayload = new DepartmentLogic().get();
 
-        String rawPayload = "";
+        response.setContentType("text/html");
+        response.getWriter().append(rawPayload);
+    }
 
-        for (IPersistedDepartment department : inStorageDepartments) {
-            String tableRow = "<tr><td>" + department.getName() + "</td><td>"
-                    + department.getDescription() + "</td><td>"
-                    + department.getId() + "</td></tr>";
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        IDepartmentRequest createDepartment = new DepartmentRequest(
+            request.getParameter("department"),
+            request.getParameter("description")
+        );
 
-            rawPayload = rawPayload.concat(tableRow);
-        }
-        //nove to logic
+        String rawPayload = new DepartmentLogic().save(createDepartment);
 
         response.setContentType("text/html");
         response.getWriter().append(rawPayload);
