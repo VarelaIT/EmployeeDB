@@ -1,11 +1,14 @@
 package Entities;
 
-import java.util.Calendar;
+import java.sql.Date;
 
 public class Employee extends HumanResourse implements IEmployee{
     public int departmentId;
-    public Employee(String name, String lastName, Calendar birthDate) {
-        super(name, lastName, birthDate);
+    public Employee(String name, String lastName, java.sql.Date birthDate) {
+        this.name = name;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+
     }
 
     public void setId(int index) {
@@ -32,19 +35,19 @@ public class Employee extends HumanResourse implements IEmployee{
         return lastName;
     }
 
-    public void setBirthDate(Calendar bd) {
+    public void setBirthDate(Date bd) {
         this.birthDate = bd;
     }
 
-    public Calendar getBirthDate() {
-        return birthDate;
+    public java.sql.Date getBirthDate() {
+        return (Date) birthDate;
     }
 
     public void setDepartmentId(int id) {
         departmentId = id;
     }
 
-    public int getDepartmentId() {
+    public Integer getDepartmentId() {
         return departmentId;
     }
 

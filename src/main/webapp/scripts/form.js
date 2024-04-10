@@ -1,3 +1,10 @@
+const forms = document.querySelectorAll("form");
+
+forms.forEach(form => form.addEventListener("htmx:afterRequest", e => {
+    if(e.detail.successful)
+        e.detail.elt.reset();
+}))
+
 function isInvalid(node){
     if(node.validity.valueMissing){
         node.setCustomValidity('This field is required.');
@@ -13,3 +20,4 @@ function isInvalid(node){
         return false;
     }
 }
+

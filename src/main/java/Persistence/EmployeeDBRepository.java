@@ -1,14 +1,23 @@
 package Persistence;
 
 import Entities.IEmployee;
+import Entities.IPersistedEmployee;
+
+import java.util.List;
 
 public class EmployeeDBRepository implements IEmployeeRepository {
 
-    public void save(IEmployee employee) {
+    public IPersistedEmployee save(IEmployee employee) {
 
+        return null;
     }
 
-    public IEmployee get(int id) {
+    public IPersistedEmployee get(int id) {
+        return null;
+    }
+
+    @Override
+    public List<IPersistedEmployee> get() {
         return null;
     }
 }

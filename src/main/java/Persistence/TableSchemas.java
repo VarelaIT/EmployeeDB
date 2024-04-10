@@ -24,6 +24,28 @@ public class TableSchemas {
         }
     }
 
+    public static void createEmployeeTable(Connection conn) {
+        String creationQuery =
+                "CREATE TABLE"
+                        + " IF NOT EXISTS"
+                        + " employees"
+                        + "("
+                        + " id SERIAL PRIMARY KEY,"
+                        + " name VARCHAR(64) NOT NULL,"
+                        + " lastname VARCHAR(64) NOT NULL,"
+                        + " birth_date datetime NOT NULL,"
+                        + " department_id VARCHAR(128)"
+                        + ")";
+
+        try {
+            Statement st = conn.createStatement();
+            st.executeUpdate(creationQuery);
+            st.close();
+        } catch (Exception e){
+            System.out.println("The Department Persistence log.\n\t" + e.getMessage());
+        }
+    }
+
     public static void createTestDepartmentTable(Connection conn) {
         String creationQuery =
                 "CREATE TABLE"
