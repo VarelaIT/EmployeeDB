@@ -21,8 +21,8 @@ public class DepartmentPersistenceTest {
 
     DepartmentPersistenceTest(){
         Connection conn = new DBConn().getConn();
-        TableSchemas.dropTestDepartmentTable(conn);
-        TableSchemas.createTestDepartmentTable(conn);
+        TableSchemas.dropTestDepartmentsTable(conn);
+        TableSchemas.createTestDepartmentsTable(conn);
         conn= null;
         departmentRepository = new MockDepartmentRepository();
     }

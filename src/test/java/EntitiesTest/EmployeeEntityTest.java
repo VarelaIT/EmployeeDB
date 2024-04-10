@@ -16,11 +16,12 @@ public class EmployeeEntityTest {
     public String name = "Ismael";
     public String lastName = "Varela";
     public java.sql.Date birthDate ;
+    public Integer deparmentId = null;
 
     EmployeeEntityTest() throws ParseException {
         DateFormat bdObj= new SimpleDateFormat("dd-MM-yyyy");
         birthDate = new java.sql.Date(bdObj.parse("02-04-2000").getTime());
-        employ = new Employee(name, lastName,  birthDate);
+        employ = new Employee(name, lastName,  birthDate, deparmentId);
     }
 
 

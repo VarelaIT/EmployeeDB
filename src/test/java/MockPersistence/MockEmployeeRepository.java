@@ -1,27 +1,28 @@
-package Persistence;
+package MockPersistence;
 
 import Entities.IEmployee;
 import Entities.IPersistedEmployee;
 import Entities.PersistedEmployee;
+import Persistence.IEmployeeRepository;
+import Persistence.PersistenceConnectivity;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
-public class EmployeeRepository  extends PersistenceConnectivity implements IEmployeeRepository{
+public class MockEmployeeRepository extends PersistenceConnectivity implements IEmployeeRepository{
 
-    private final String insertionQuery = "INSERT INTO employees (name, last.name, birth.date, department.id) VALUES (?, ?, ?, ?)"
+    private final String insertionQuery = "INSERT INTO test_employees (name, last.name, birth.date, department.id) VALUES (?, ?, ?, ?)"
             + " RETURNING id, name, last.name, birth.date, department.id";
-
     @Override
     public IPersistedEmployee save(IEmployee employee) {
         try {
             PreparedStatement st = conn.prepareStatement(insertionQuery);
             st.setString(1, employee.getName());
             st.setString(2, employee.getLastName());
-            st.setDate(2, employee.getBirthDate());
-            st.setInt(2, employee.getDepartmentId());
+            st.setDate(3, employee.getBirthDate());
+            st.setInt(4, employee.getDepartmentId());
 
             ResultSet result = st.executeQuery();
 
@@ -41,7 +42,6 @@ public class EmployeeRepository  extends PersistenceConnectivity implements IEmp
         }
 
         return null;
-
     }
 
     @Override

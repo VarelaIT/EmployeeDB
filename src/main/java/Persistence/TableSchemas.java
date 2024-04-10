@@ -32,9 +32,9 @@ public class TableSchemas {
                         + "("
                         + " id SERIAL PRIMARY KEY,"
                         + " name VARCHAR(64) NOT NULL,"
-                        + " lastname VARCHAR(64) NOT NULL,"
-                        + " birth_date datetime NOT NULL,"
-                        + " department_id VARCHAR(128)"
+                        + " last.name VARCHAR(64) NOT NULL,"
+                        + " birth.date date NOT NULL,"
+                        + " department.id smallint references departments (id)"
                         + ")";
 
         try {
@@ -46,7 +46,42 @@ public class TableSchemas {
         }
     }
 
-    public static void createTestDepartmentTable(Connection conn) {
+    public static void createTestEmployeeTable(Connection conn) {
+        String creationQuery =
+                "CREATE TABLE"
+                        + " IF NOT EXISTS"
+                        + " test_employees"
+                        + "("
+                        + " id SERIAL PRIMARY KEY,"
+                        + " name VARCHAR(64) NOT NULL,"
+                        + " last.name VARCHAR(64) NOT NULL,"
+                        + " birth.date date NOT NULL,"
+                        + " department.id smallint references test_departments (id)"
+                        + ")";
+
+        try {
+            Statement st = conn.createStatement();
+            st.executeUpdate(creationQuery);
+            st.close();
+        } catch (Exception e){
+            System.out.println("The Department Persistence log.\n\t" + e.getMessage());
+        }
+    }
+
+    public static void dropTestEmployeesTable(Connection conn) {
+        String creationQuery =
+                "DROP TABLE test_departments";
+
+        try {
+            Statement st = conn.createStatement();
+            st.executeUpdate(creationQuery);
+            st.close();
+        } catch (Exception e){
+            System.out.println("The Department Persistence log.\n\t" + e.getMessage());
+        }
+    }
+
+    public static void createTestDepartmentsTable(Connection conn) {
         String creationQuery =
                 "CREATE TABLE"
                         + " IF NOT EXISTS"
@@ -65,7 +100,8 @@ public class TableSchemas {
             System.out.println("The Department Persistence log.\n\t" + e.getMessage());
         }
     }
-    public static void dropTestDepartmentTable(Connection conn) {
+
+    public static void dropTestDepartmentsTable(Connection conn) {
         String creationQuery =
             "DROP TABLE test_departments";
 

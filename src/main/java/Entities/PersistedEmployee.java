@@ -37,31 +37,31 @@ public class PersistedEmployee extends HumanResourse implements IPersistedEmploy
 
     @Override
     public int getId() {
-        return 0;
+        return id;
     }
 
     @Override
     public void setId(int id) {
-
+        this.id = id;
     }
 
     @Override
     public void setName(String name) {
-
+        this.name = name;
     }
 
     @Override
     public void setLastName(String lastName) {
-
+        this.lastName = lastName;
     }
 
     @Override
     public void setBirthDate(java.util.Date bd) {
-
+        this.birthDate = bd;
     }
 
     @Override
     public void setDepartmentId(int id) {
-
+        this.departmentId = id;
     }
 }

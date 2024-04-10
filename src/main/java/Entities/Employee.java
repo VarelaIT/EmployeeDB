@@ -3,11 +3,12 @@ package Entities;
 import java.sql.Date;
 
 public class Employee extends HumanResourse implements IEmployee{
-    public int departmentId;
-    public Employee(String name, String lastName, java.sql.Date birthDate) {
+    public Integer departmentId = null;
+    public Employee(String name, String lastName, java.sql.Date birthDate, Integer dpId) {
         this.name = name;
         this.lastName = lastName;
         this.birthDate = birthDate;
+        this.departmentId = dpId;
 
     }
 

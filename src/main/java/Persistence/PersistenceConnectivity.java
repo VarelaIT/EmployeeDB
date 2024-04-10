@@ -8,7 +8,7 @@ import java.sql.Connection;
 
 public abstract class PersistenceConnectivity {
     public Connection conn;
-    PersistenceConnectivity(){
+    protected PersistenceConnectivity(){
         try{
             InitialContext cxt = new InitialContext();
             DataSource ds = (DataSource) cxt.lookup( "java:/comp/env/jdbc/postgres" );
