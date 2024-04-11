@@ -15,12 +15,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class EmployeePersistence {
+public class EmployeePersistenceTest {
 
-    private IEmployeeRepository employeeRepository;
+    private final IEmployeeRepository employeeRepository;
 
-    EmployeePersistence(){
+    EmployeePersistenceTest(){
         Connection conn = new DBConn().getConn();
         TableSchemas.dropTestEmployeesTable(conn);
         TableSchemas.createTestEmployeeTable(conn);
@@ -39,9 +40,10 @@ public class EmployeePersistence {
 
         IPersistedEmployee persistedEmployee = employeeRepository.save(employee);
 
+
         assertEquals(name, persistedEmployee.getName());
         assertEquals(lastName, persistedEmployee.getLastName());
         assertEquals(birthDate.toString(), persistedEmployee.getBirthDate().toString());
-        assertEquals(departmentID, persistedEmployee.getDepartmentId());
+        assertEquals(departmentID, persistedEmployee.getDepartmentId()); // database returns 0 instead of null
     }
 }

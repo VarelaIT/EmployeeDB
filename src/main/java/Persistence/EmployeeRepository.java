@@ -7,12 +7,13 @@ import Entities.PersistedEmployee;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.List;
 
 public class EmployeeRepository  extends PersistenceConnectivity implements IEmployeeRepository{
 
-    private final String insertionQuery = "INSERT INTO employees (name, last.name, birth.date, department.id) VALUES (?, ?, ?, ?)"
-            + " RETURNING id, name, last.name, birth.date, department.id";
+    private final String insertionQuery = "INSERT INTO employees (name, last_name, birth_date, department_id) VALUES (?, ?, ?, ?)"
+            + " RETURNING id, name, last_name, birth_date, department_id";
 
     @Override
     public IPersistedEmployee save(IEmployee employee) {
@@ -20,17 +21,21 @@ public class EmployeeRepository  extends PersistenceConnectivity implements IEmp
             PreparedStatement st = conn.prepareStatement(insertionQuery);
             st.setString(1, employee.getName());
             st.setString(2, employee.getLastName());
-            st.setDate(2, employee.getBirthDate());
-            st.setInt(2, employee.getDepartmentId());
+            st.setDate(3, employee.getBirthDate());
+            if (employee.getDepartmentId() == null)
+                st.setNull(4, Types.INTEGER);
+            else
+                st.setInt(4, employee.getDepartmentId());
 
             ResultSet result = st.executeQuery();
 
             result.next();
             int id = result.getInt("id");
             String name = result.getString("name");
-            String lastName = result.getString("lastname");
+            String lastName = result.getString("last_name");
             Date birthDate = result.getDate("bith_date");
-            Integer departmentId = result.getInt("department_id");
+            int evaluate = result.getInt("department_id");
+            Integer departmentId = evaluate == 0 ? null : evaluate;
 
             result.close();
             st.close();

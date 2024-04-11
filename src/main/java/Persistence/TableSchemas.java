@@ -32,9 +32,9 @@ public class TableSchemas {
                         + "("
                         + " id SERIAL PRIMARY KEY,"
                         + " name VARCHAR(64) NOT NULL,"
-                        + " last.name VARCHAR(64) NOT NULL,"
-                        + " birth.date date NOT NULL,"
-                        + " department.id smallint references departments (id)"
+                        + " last_name VARCHAR(64) NOT NULL,"
+                        + " birth_date date NOT NULL,"
+                        + " department_id smallint references departments (id)"
                         + ")";
 
         try {
@@ -42,7 +42,7 @@ public class TableSchemas {
             st.executeUpdate(creationQuery);
             st.close();
         } catch (Exception e){
-            System.out.println("The Department Persistence log.\n\t" + e.getMessage());
+            System.out.println("The Employee Persistence log.\n\t" + e.getMessage());
         }
     }
 
@@ -54,9 +54,9 @@ public class TableSchemas {
                         + "("
                         + " id SERIAL PRIMARY KEY,"
                         + " name VARCHAR(64) NOT NULL,"
-                        + " last.name VARCHAR(64) NOT NULL,"
-                        + " birth.date date NOT NULL,"
-                        + " department.id smallint references test_departments (id)"
+                        + " last_name VARCHAR(64) NOT NULL,"
+                        + " birth_date date NOT NULL,"
+                        + " department_id smallint references test_departments (id)"
                         + ")";
 
         try {
@@ -64,13 +64,13 @@ public class TableSchemas {
             st.executeUpdate(creationQuery);
             st.close();
         } catch (Exception e){
-            System.out.println("The Department Persistence log.\n\t" + e.getMessage());
+            System.out.println("The Employee Persistence log.\n\t" + e.getMessage());
         }
     }
 
     public static void dropTestEmployeesTable(Connection conn) {
         String creationQuery =
-                "DROP TABLE test_departments";
+                "DROP TABLE test_employees CASCADE";
 
         try {
             Statement st = conn.createStatement();

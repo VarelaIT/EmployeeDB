@@ -61,7 +61,7 @@ public class PersistedEmployee extends HumanResourse implements IPersistedEmploy
     }
 
     @Override
-    public void setDepartmentId(int id) {
+    public void setDepartmentId(Integer id) {
         this.departmentId = id;
     }
 }
