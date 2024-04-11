@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class EmployeePersistenceTest {
 
     private final IEmployeeRepository employeeRepository;
+    private DateFormat bdObj= new SimpleDateFormat("dd-MM-yyyy");
 
     EmployeePersistenceTest(){
         Connection conn = new DBConn().getConn();
@@ -33,17 +34,29 @@ public class EmployeePersistenceTest {
     public void persistEmployee() throws ParseException {
         String name = "Ismael";
         String lastName = "Varela";
-        DateFormat bdObj= new SimpleDateFormat("dd-MM-yyyy");
         java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1987").getTime());
         Integer departmentID = null;
         IEmployee employee = new Employee(name, lastName, birthDate, departmentID);
 
         IPersistedEmployee persistedEmployee = employeeRepository.save(employee);
 
-
         assertEquals(name, persistedEmployee.getName());
         assertEquals(lastName, persistedEmployee.getLastName());
         assertEquals(birthDate.toString(), persistedEmployee.getBirthDate().toString());
         assertEquals(departmentID, persistedEmployee.getDepartmentId()); // database returns 0 instead of null
+    }
+
+    @Test
+    public void getPersistedEmployee() throws ParseException {
+        java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1993").getTime());
+        IEmployee employee = new Employee("Juan Elias", "Rodriguez", birthDate, null);
+        IPersistedEmployee newEmployee = employeeRepository.save(employee);
+
+        IPersistedEmployee sameEmployee = employeeRepository.get(newEmployee.getId());
+
+        System.out.println(sameEmployee.getName());
+        assertEquals(newEmployee.getId(), sameEmployee.getId());
+        assertEquals(newEmployee.getName(), sameEmployee.getName());
+        assertEquals(newEmployee.getBirthDate(), sameEmployee.getBirthDate());
     }
 }
