@@ -5,6 +5,7 @@ import Entities.IPersistedEmployee;
 import Entities.PersistedEmployee;
 import Persistence.IEmployeeRepository;
 import Persistence.PersistenceConnectivity;
+import org.junit.jupiter.api.Test;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class MockEmployeeRepository extends PersistenceConnectivity implements I
 
             return new PersistedEmployee(id, name, lastName, birthDate, departmentId, null);
         } catch (Exception e){
-            System.out.println("The Employee Persistence log.\n\t" + e.getMessage());
+            System.out.println("Create, Employee Persistence log.\n\t" + e.getMessage());
         }
 
         return null;
@@ -111,5 +112,37 @@ public class MockEmployeeRepository extends PersistenceConnectivity implements I
             System.out.println("Error while withdrawing list of employees:\n\t" + e.getMessage());
         }
         return null;
+    }
+
+    private String updateQuery = "UPDATE test_employees"
+        + " SET name = ?,"
+        + " last_name = ?,"
+        + " birth_date = ?,"
+        + " department_id = ?"
+        + " WHERE id = ?";
+
+    public int update(int id, IEmployee employee){
+        int affectedRows = 0;
+
+        try {
+            PreparedStatement st = conn.prepareStatement(updateQuery);
+            st.setString(1, employee.getName());
+            st.setString(2, employee.getLastName());
+            st.setDate(3, employee.getBirthDate());
+            if (employee.getDepartmentId() == null)
+                st.setNull(4, Types.INTEGER);
+            else
+                st.setInt(4, employee.getDepartmentId());
+            st.setInt(5, id);
+
+            affectedRows = st.executeUpdate();
+
+            st.close();
+            return affectedRows;
+        } catch (Exception e){
+            System.out.println("Update, Employee Persistence log.\n\t" + e.getMessage());
+        }
+
+        return affectedRows;
     }
 }

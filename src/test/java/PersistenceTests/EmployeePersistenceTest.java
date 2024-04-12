@@ -33,16 +33,14 @@ public class EmployeePersistenceTest {
 
     @Test
     public void persistEmployee() throws ParseException {
-        String name = "Ismael";
-        String lastName = "Varela";
         java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1987").getTime());
         Integer departmentID = null;
-        IEmployee employee = new Employee(name, lastName, birthDate, departmentID);
+        IEmployee employee = new Employee("Ismael", "Varela", birthDate, departmentID);
 
         IPersistedEmployee persistedEmployee = employeeRepository.save(employee);
 
-        assertEquals(name, persistedEmployee.getName());
-        assertEquals(lastName, persistedEmployee.getLastName());
+        assertEquals(employee.getName(), persistedEmployee.getName());
+        assertEquals(employee.getLastName(), persistedEmployee.getLastName());
         assertEquals(birthDate.toString(), persistedEmployee.getBirthDate().toString());
         assertEquals(departmentID, persistedEmployee.getDepartmentId()); // database returns 0 instead of null
     }
@@ -70,5 +68,19 @@ public class EmployeePersistenceTest {
         List<IPersistedEmployee> listOfEmployees = employeeRepository.get();
 
         assertTrue(listOfEmployees.size()>1);
+    }
+
+    @Test
+    public void  updatePersistedEmployee() throws ParseException {
+        java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1987").getTime());
+        IEmployee employee = new Employee("Lary", "Figurereo", birthDate, null);
+        IPersistedEmployee persistedEmployee = employeeRepository.save(employee);
+        IEmployee updateEmployee = new Employee("Ismael", "Varela", birthDate, 1);
+
+        int affectedRows = employeeRepository.update(persistedEmployee.getId(), updateEmployee);
+
+        IPersistedEmployee upToDateEmployee = employeeRepository.get(persistedEmployee.getId());
+        assertEquals(1, affectedRows);
+        assertEquals(updateEmployee.getName(), upToDateEmployee.getName());
     }
 }

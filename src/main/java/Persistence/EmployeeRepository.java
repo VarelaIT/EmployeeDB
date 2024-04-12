@@ -108,4 +108,9 @@ public class EmployeeRepository  extends PersistenceConnectivity implements IEmp
         }
         return null;
     }
+
+    @Override
+    public int update(int id, IEmployee employee) {
+        return 0;
+    }
 }
