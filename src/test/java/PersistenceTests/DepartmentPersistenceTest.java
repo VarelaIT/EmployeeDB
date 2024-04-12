@@ -3,8 +3,8 @@ package PersistenceTests;
 import Entities.Department;
 import Entities.IDepartment;
 import Entities.IPersistedDepartment;
-import MockPersistence.MockDepartmentRepository;
-import Persistence.ITestDepartmentRepository;
+import Persistence.DepartmentRepository;
+import Persistence.IDepartmentRepository;
 import Persistence.JDBC.DBConn;
 import Persistence.TableSchemas;
 import org.junit.jupiter.api.Test;
@@ -17,14 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DepartmentPersistenceTest {
 
-    public ITestDepartmentRepository departmentRepository;
+    public IDepartmentRepository departmentRepository;
 
     DepartmentPersistenceTest(){
         Connection conn = new DBConn().getConn();
-        TableSchemas.dropTestDepartmentsTable(conn);
-        TableSchemas.createTestDepartmentsTable(conn);
+        TableSchemas.dropDepartmentsTable(conn);
+        TableSchemas.createDepartmentsTable(conn);
         conn= null;
-        departmentRepository = new MockDepartmentRepository();
+        departmentRepository = new DepartmentRepository();
     }
 
     @Test

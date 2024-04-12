@@ -1,24 +1,32 @@
 package Persistence;
 
-import Entities.*;
+import Entities.IEmployee;
+import Entities.IPersistedEmployee;
+import Entities.PersistedEmployee;
+import Persistence.IEmployeeRepository;
+import Persistence.PersistenceConnectivity;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeRepository  extends PersistenceConnectivity implements IEmployeeRepository{
+public class EmployeeRepository extends PersistenceConnectivity implements IEmployeeRepository{
 
-    protected String insertionQuery = "INSERT INTO employees (name, last_name, birth_date, department_id) VALUES (?, ?, ?, ?)"
-            + " RETURNING id, name, last_name, birth_date, department_id";
-    protected String selectAllQuery = "SELECT"
-        + " e.id as id, e.name as name, e.last_name as last_name, e.birth_date as bd, d.id as dep_id, d.name as department"
-        + " FROM employees e"
-        + " LEFT JOIN departments d ON e.department_id = d.id";
-    protected String selectOneQuery = "SELECT"
-        + " e.id as id, e.name as name, e.last_name as last_name, e.birth_date as bd, d.id as dep_id, d.name as department"
-        + " FROM employees e"
-        + " LEFT JOIN departments d ON e.department_id = d.id"
-        + " WHERE e.id = ?";
+    protected String insertionQuery = """
+        INSERT INTO employees (name, last_name, birth_date, department_id) VALUES (?, ?, ?, ?)
+        RETURNING id, name, last_name, birth_date, department_id
+    """;
+    protected String selectAllQuery = """
+        SELECT e.id as id, e.name as name, e.last_name as last_name, e.birth_date as bd, d.id as dep_id, d.name as department
+        FROM employees e
+        LEFT JOIN departments d ON e.department_id = d.id
+    """;
+    protected String selectOneQuery = """
+        SELECT e.id as id, e.name as name, e.last_name as last_name, e.birth_date as bd, d.id as dep_id, d.name as department
+        FROM employees e
+        LEFT JOIN departments d ON e.department_id = d.id
+        WHERE e.id = ?
+    """;
 
     @Override
     public IPersistedEmployee save(IEmployee employee) {
@@ -47,7 +55,7 @@ public class EmployeeRepository  extends PersistenceConnectivity implements IEmp
 
             return new PersistedEmployee(id, name, lastName, birthDate, departmentId, null);
         } catch (Exception e){
-            System.out.println("The Employee Persistence log.\n\t" + e.getMessage());
+            System.out.println("Create, Employee Persistence log.\n\t" + e.getMessage());
         }
 
         return null;
@@ -109,8 +117,39 @@ public class EmployeeRepository  extends PersistenceConnectivity implements IEmp
         return null;
     }
 
+    private String updateQuery = """
+        UPDATE employees
+        SET name = ?, last_name = ?, birth_date = ?, department_id = ?
+        WHERE id = ?
+    """;
+
+    public int update(int id, IEmployee employee){
+        int affectedRows = 0;
+
+        try {
+            PreparedStatement st = conn.prepareStatement(updateQuery);
+            st.setString(1, employee.getName());
+            st.setString(2, employee.getLastName());
+            st.setDate(3, employee.getBirthDate());
+            if (employee.getDepartmentId() == null)
+                st.setNull(4, Types.INTEGER);
+            else
+                st.setInt(4, employee.getDepartmentId());
+            st.setInt(5, id);
+
+            affectedRows = st.executeUpdate();
+
+            st.close();
+            return affectedRows;
+        } catch (Exception e){
+            System.out.println("Update, Employee Persistence log.\n\t" + e.getMessage());
+        }
+
+        return affectedRows;
+    }
+
     @Override
-    public int update(int id, IEmployee employee) {
-        return 0;
+    public void dropTable() {
+
     }
 }

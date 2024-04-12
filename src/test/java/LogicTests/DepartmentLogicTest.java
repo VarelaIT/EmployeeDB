@@ -4,8 +4,8 @@ import Logic.DepartmentLogic;
 import Logic.DepartmentRequest;
 import Logic.IDepartmentLogic;
 import Logic.IDepartmentRequest;
-import MockPersistence.MockDepartmentRepository;
-import Persistence.ITestDepartmentRepository;
+import Persistence.DepartmentRepository;
+import Persistence.IDepartmentRepository;
 import Persistence.JDBC.DBConn;
 import Persistence.TableSchemas;
 import org.junit.jupiter.api.Test;
@@ -17,14 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DepartmentLogicTest {
 
-    public ITestDepartmentRepository departmentRepository;
+    public IDepartmentRepository departmentRepository;
 
     DepartmentLogicTest(){
         Connection conn = new DBConn().getConn();
-        TableSchemas.dropTestDepartmentsTable(conn);
-        TableSchemas.createTestDepartmentsTable(conn);
+        TableSchemas.dropDepartmentsTable(conn);
+        TableSchemas.createDepartmentsTable(conn);
         conn= null;
-        departmentRepository = new MockDepartmentRepository();
+        departmentRepository = new DepartmentRepository();
     }
 
     @Test

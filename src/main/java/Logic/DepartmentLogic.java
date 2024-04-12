@@ -3,7 +3,6 @@ package Logic;
 import Entities.IPersistedDepartment;
 import Persistence.DepartmentRepository;
 import Persistence.IDepartmentRepository;
-import Persistence.ITestDepartmentRepository;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ public class DepartmentLogic implements IDepartmentLogic{
         this.departmentRepository = new DepartmentRepository();
     }
 
-    public DepartmentLogic(ITestDepartmentRepository departmentRepository){
+    public DepartmentLogic(IDepartmentRepository departmentRepository){
         this.departmentRepository = departmentRepository;
     }
 

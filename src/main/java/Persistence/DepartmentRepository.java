@@ -92,4 +92,9 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
         return null;
     }
 
+    @Override
+    public void dropTable() {
+
+    }
+
 }

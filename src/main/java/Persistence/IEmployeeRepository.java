@@ -11,4 +11,5 @@ public interface IEmployeeRepository {
     IPersistedEmployee get (int id);
     List<IPersistedEmployee> get();
     int update(int id, IEmployee employee);
+    void dropTable();
 }

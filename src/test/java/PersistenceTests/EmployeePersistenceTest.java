@@ -3,7 +3,7 @@ package PersistenceTests;
 import Entities.IEmployee;
 import Entities.Employee;
 import Entities.IPersistedEmployee;
-import MockPersistence.MockEmployeeRepository;
+import Persistence.EmployeeRepository;
 import Persistence.IEmployeeRepository;
 import Persistence.JDBC.DBConn;
 import Persistence.TableSchemas;
@@ -25,10 +25,10 @@ public class EmployeePersistenceTest {
 
     EmployeePersistenceTest(){
         Connection conn = new DBConn().getConn();
-        TableSchemas.dropTestEmployeesTable(conn);
-        TableSchemas.createTestEmployeeTable(conn);
+        TableSchemas.dropEmployeesTable(conn);
+        TableSchemas.createEmployeesTable(conn);
         conn= null;
-        employeeRepository = new MockEmployeeRepository();
+        employeeRepository = new EmployeeRepository();
     }
 
     @Test
