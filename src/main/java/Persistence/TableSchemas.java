@@ -62,7 +62,7 @@ public class TableSchemas {
 
     public static void dropDepartmentsTable(Connection conn) {
         String creationQuery =
-            "DROP TABLE departments";
+            "DROP TABLE departments CASCADE";
 
         try {
             Statement st = conn.createStatement();
