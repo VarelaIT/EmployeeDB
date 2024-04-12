@@ -12,7 +12,7 @@
   <script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
   <script type="module" src="./scripts/header.js" defer></script>
   <script type="module" src="./scripts/form.js" defer></script>
-  <title>EmployeeDB - Departments</title>
+  <title>EmployeeDB - Employees</title>
 </head>
 <body>
 
@@ -31,21 +31,25 @@
                     <table>
                         <thead>
                             <tr>
+                                <th>Name</th>
+                                <th>Last Name</th>
+                                <th>Age</th>
                                 <th>Department</th>
-                                <th>Description</th>
                                 <th>Id</th>
                             </tr>
                         </thead>
 
                         <tbody
-                            id="departmentTableBody"
-                            hx-get="./api/department"
+                            id="employeesTableBody"
+                            hx-get="./api/employee"
                             hx-trigger="load"
                             hx-swap="innerHTML"
                         >
                             <tr>
-                                <td>HHRR</td>
-                                <td>Human Resources, department example.</td>
+                                <td>Ismael</td>
+                                <td>Varela</td>
+                                <td>38</td>
+                                <td>R&D, department example.</td>
                                 <td>1</td>
                             </tr>
                         </tbody>

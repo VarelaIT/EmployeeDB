@@ -11,7 +11,7 @@
   <link rel='stylesheet' type='text/css' href='./styles/global.css'/>
   <script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
   <script type="module" src="./scripts/header.js" defer></script>
-  <title>EmployeeDB - Departments</title>
+  <title>EmployeeDB</title>
 </head>
 <body>
 
@@ -38,6 +38,7 @@
                     <ul>
                         <li><a href="/EmployeeDB/departments">Departments</a></li>
                         <li><a href="/EmployeeDB/employees">Employees</a></li>
+                        <li><a href="/EmployeeDB/setup">Set Up</a></li>
                     </ul>
                 </article>
             </div>
