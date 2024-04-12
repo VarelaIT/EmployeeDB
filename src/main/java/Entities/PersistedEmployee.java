@@ -6,13 +6,15 @@ public class PersistedEmployee extends HumanResourse implements IPersistedEmploy
 
     private int id;
     private Integer departmentId = null;
+    public String department = null;
 
-    public PersistedEmployee(int id, String name, String lastName, java.util.Date birthDate, Integer departmentId) {
+    public PersistedEmployee(int id, String name, String lastName, java.util.Date birthDate, Integer departmentId, String department) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.departmentId= departmentId;
+        this.department = department;
     }
 
     @Override
@@ -64,4 +66,13 @@ public class PersistedEmployee extends HumanResourse implements IPersistedEmploy
     public void setDepartmentId(Integer id) {
         this.departmentId = id;
     }
+
+    public void setDepartment(String department) {
+        this.lastName = department;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
 }

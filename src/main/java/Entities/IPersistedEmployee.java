@@ -9,4 +9,6 @@ public interface IPersistedEmployee extends IEmployee {
     void setLastName(String lastName);
     void setBirthDate(Date bd);
     void setDepartmentId(Integer id);
+    String getDepartment();
+    void setDepartment(String department);
 }

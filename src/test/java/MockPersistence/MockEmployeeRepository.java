@@ -15,14 +15,14 @@ public class MockEmployeeRepository extends PersistenceConnectivity implements I
     protected String insertionQuery = "INSERT INTO test_employees (name, last_name, birth_date, department_id) VALUES (?, ?, ?, ?)"
             + " RETURNING id, name, last_name, birth_date, department_id";
     protected String selectAllQuery = "SELECT"
-        + " test_departments.id, test_departments.name, last_name, birth_date, department_id"
-        + " FROM test_employees"
-        + " LEFT JOIN test_departments ON department_id = test_departments.id";
+        + " e.id as id, e.name as name, e.last_name as last_name, e.birth_date as bd, d.id as dep_id, d.name as department"
+        + " FROM test_employees e"
+        + " LEFT JOIN test_departments d ON e.department_id = d.id";
     protected String selectOneQuery = "SELECT"
-        + " test_departments.id, test_departments.name, last_name, birth_date, department_id"
-        + " FROM test_employees"
-        + " LEFT JOIN test_departments ON department_id = test_departments.id"
-        + " WHERE test_employees.id = ?";
+        + " e.id as id, e.name as name, e.last_name as last_name, e.birth_date as bd, d.id as dep_id, d.name as department"
+        + " FROM test_employees e"
+        + " LEFT JOIN test_departments d ON e.department_id = d.id"
+        + " WHERE e.id = ?";
 
     @Override
     public IPersistedEmployee save(IEmployee employee) {
@@ -49,7 +49,7 @@ public class MockEmployeeRepository extends PersistenceConnectivity implements I
             result.close();
             st.close();
 
-            return new PersistedEmployee(id, name, lastName, birthDate, departmentId);
+            return new PersistedEmployee(id, name, lastName, birthDate, departmentId, null);
         } catch (Exception e){
             System.out.println("The Employee Persistence log.\n\t" + e.getMessage());
         }
@@ -67,11 +67,12 @@ public class MockEmployeeRepository extends PersistenceConnectivity implements I
 
             result.next();
             IPersistedEmployee persistedEmployee = new PersistedEmployee(
-                    result.getInt("id"),
-                    result.getString("name"),
-                    result.getString("last_name"),
-                    result.getDate("birth_date"),
-                    result.getInt("department_id")
+                result.getInt("id"),
+                result.getString("name"),
+                result.getString("last_name"),
+                result.getDate("bd"),
+                result.getInt("dep_id"),
+                result.getString("department")
             );
 
             result.close();
@@ -97,8 +98,9 @@ public class MockEmployeeRepository extends PersistenceConnectivity implements I
                         result.getInt("id"),
                         result.getString("name"),
                         result.getString("last_name"),
-                        result.getDate("birth_date"),
-                        result.getInt("department_id")
+                        result.getDate("bd"),
+                        result.getInt("dep_id"),
+                        result.getString("department")
                 ));
             }
 

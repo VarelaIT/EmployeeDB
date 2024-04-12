@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -54,9 +55,20 @@ public class EmployeePersistenceTest {
 
         IPersistedEmployee sameEmployee = employeeRepository.get(newEmployee.getId());
 
-        System.out.println(sameEmployee.getName());
         assertEquals(newEmployee.getId(), sameEmployee.getId());
         assertEquals(newEmployee.getName(), sameEmployee.getName());
         assertEquals(newEmployee.getBirthDate(), sameEmployee.getBirthDate());
+    }
+    @Test
+    public void getPersistedEmployeesList() throws ParseException {
+        java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1999").getTime());
+        IEmployee employeeA = new Employee("Juan", "Rodriguez", birthDate, null);
+        IEmployee employeeB = new Employee("Elias", "Mejia", birthDate, null);
+        IPersistedEmployee newEmployeeA = employeeRepository.save(employeeA);
+        IPersistedEmployee newEmployeeB = employeeRepository.save(employeeB);
+
+        List<IPersistedEmployee> listOfEmployees = employeeRepository.get();
+
+        assertTrue(listOfEmployees.size()>1);
     }
 }

@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class Employee extends HumanResourse implements IEmployee{
     public Integer departmentId = null;
+
     public Employee(String name, String lastName, java.sql.Date birthDate, Integer dpId) {
         this.name = name;
         this.lastName = lastName;

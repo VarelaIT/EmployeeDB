@@ -10,10 +10,15 @@ public class EmployeeRepository  extends PersistenceConnectivity implements IEmp
 
     protected String insertionQuery = "INSERT INTO employees (name, last_name, birth_date, department_id) VALUES (?, ?, ?, ?)"
             + " RETURNING id, name, last_name, birth_date, department_id";
-    protected String selectAllQuery = "SELECT id, name, last_name, birth_date, departments.name as department FROM employees"
-            + " LEFT JOIN departments ON employees.id = departments.id";
-    protected String selectOneQuery = "SELECT id, name, last_name, birth_date, departments.name as department FROM employees"
-            + " LEFT JOIN departments ON employees.id = departments.id WHERE employees.id = ?";
+    protected String selectAllQuery = "SELECT"
+        + " e.id as id, e.name as name, e.last_name as last_name, e.birth_date as bd, d.id as dep_id, d.name as department"
+        + " FROM employees e"
+        + " LEFT JOIN departments d ON e.department_id = d.id";
+    protected String selectOneQuery = "SELECT"
+        + " e.id as id, e.name as name, e.last_name as last_name, e.birth_date as bd, d.id as dep_id, d.name as department"
+        + " FROM employees e"
+        + " LEFT JOIN departments d ON e.department_id = d.id"
+        + " WHERE e.id = ?";
 
     @Override
     public IPersistedEmployee save(IEmployee employee) {
@@ -40,7 +45,7 @@ public class EmployeeRepository  extends PersistenceConnectivity implements IEmp
             result.close();
             st.close();
 
-            return new PersistedEmployee(id, name, lastName, birthDate, departmentId);
+            return new PersistedEmployee(id, name, lastName, birthDate, departmentId, null);
         } catch (Exception e){
             System.out.println("The Employee Persistence log.\n\t" + e.getMessage());
         }
@@ -58,11 +63,12 @@ public class EmployeeRepository  extends PersistenceConnectivity implements IEmp
 
             result.next();
             IPersistedEmployee persistedEmployee = new PersistedEmployee(
-                    result.getInt("id"),
-                    result.getString("name"),
-                    result.getString("last_name"),
-                    result.getDate("birth_date"),
-                    result.getInt("department_id")
+                result.getInt("id"),
+                result.getString("name"),
+                result.getString("last_name"),
+                result.getDate("bd"),
+                result.getInt("dep_id"),
+                result.getString("department")
             );
 
             result.close();
@@ -88,8 +94,9 @@ public class EmployeeRepository  extends PersistenceConnectivity implements IEmp
                         result.getInt("id"),
                         result.getString("name"),
                         result.getString("last_name"),
-                        result.getDate("birth_date"),
-                        result.getInt("department_id")
+                        result.getDate("bd"),
+                        result.getInt("dep_id"),
+                        result.getString("department")
                 ));
             }
 
