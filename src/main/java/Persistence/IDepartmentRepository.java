@@ -10,4 +10,5 @@ public interface IDepartmentRepository {
     IPersistedDepartment get(int id);
     List<IPersistedDepartment> getAll();
     IPersistedDepartment update(int id, IDepartment department);
+    IPersistedDepartment delete(int id);
 }

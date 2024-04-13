@@ -15,8 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeePersistenceTest {
 
@@ -82,5 +81,18 @@ public class EmployeePersistenceTest {
         IPersistedEmployee upToDateEmployee = employeeRepository.get(persistedEmployee.getId());
         assertEquals(1, affectedRows);
         assertEquals(updateEmployee.getName(), upToDateEmployee.getName());
+    }
+
+    @Test
+    public void deletePersistedEmployee() throws ParseException {
+        java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1987").getTime());
+        IEmployee employee = new Employee("Ramon", "De Leon", birthDate, null);
+        IPersistedEmployee persistedEmployee = employeeRepository.save(employee);
+
+        IPersistedEmployee deletedEmployee = employeeRepository.delete(persistedEmployee.getId());
+
+        IPersistedEmployee notfoundEmployee = employeeRepository.get(persistedEmployee.getId());
+        assertEquals(persistedEmployee.getName(), deletedEmployee.getName());
+        assertNull(notfoundEmployee);
     }
 }

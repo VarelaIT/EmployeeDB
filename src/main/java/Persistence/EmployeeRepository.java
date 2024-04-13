@@ -145,8 +145,26 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
         return affectedRows;
     }
 
+    private String deleteOneQuery = """
+        DELETE FROM employees WHERE id = ?
+    """;
     @Override
-    public void dropTable() {
+    public IPersistedEmployee delete(int id) {
+        IPersistedEmployee targetEmployee = get(id);
 
+        try {
+            PreparedStatement st = conn.prepareStatement(deleteOneQuery);
+            st.setInt(1, targetEmployee.getId());
+            int affectedRows = st.executeUpdate();
+
+            if (affectedRows != 1)
+                return null;
+
+            st.close();
+        } catch (Exception e) {
+            System.out.println("Delete, Employee Persistence log.\n\t" + e.getMessage());
+        }
+
+        return targetEmployee;
     }
 }

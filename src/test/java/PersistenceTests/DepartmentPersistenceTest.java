@@ -71,4 +71,16 @@ public class DepartmentPersistenceTest {
         assertEquals(updatedDepartment.getName(), department.getName());
         assertNotEquals(updatedDepartment.getName(), persistedDepartment.getName());
     }
+
+    @Test
+    public void deletePersistedDepartment(){
+        IDepartment department = new Department("Psicology", "The department I need to visit after dealing with Java.");
+        IPersistedDepartment persistedDepartment = departmentRepository.save(department);
+
+        IPersistedDepartment deletedDepartment = departmentRepository.delete(persistedDepartment.getId());
+        IPersistedDepartment notfoundDepartment = departmentRepository.get(persistedDepartment.getId());
+
+        assertEquals(persistedDepartment.getName(), deletedDepartment.getName());
+        assertNull(notfoundDepartment);
+    }
 }

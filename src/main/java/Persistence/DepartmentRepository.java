@@ -14,6 +14,7 @@ import java.util.List;
 public class DepartmentRepository extends PersistenceConnectivity  implements IDepartmentRepository{
     public String seletAllQuery = "SELECT id, name, description FROM departments";
     public String seletOneQuery = "SELECT id, name, description FROM departments WHERE id = ?";
+    public String deleteOneQuery = "DELETE FROM departments WHERE id = ?";
     public String insertionQuery = """
        INSERT INTO departments (name, description)
        VALUES ( ?, ?)
@@ -123,6 +124,26 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
         }
 
         return null;
+    }
+
+    @Override
+    public IPersistedDepartment delete(int id){
+        IPersistedDepartment department = get(id);
+
+        try {
+            PreparedStatement st = conn.prepareStatement(deleteOneQuery);
+            st.setInt(1, department.getId());
+            int affectedRows = st.executeUpdate();
+
+            if (affectedRows != 1)
+                return null;
+
+            st.close();
+        } catch (Exception e) {
+            System.out.println("Persistence logs error while deleting the department.\n\t" + e.getMessage());
+        }
+
+        return department;
     }
 
 }
