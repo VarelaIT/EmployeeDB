@@ -14,11 +14,16 @@ import java.util.List;
 public class DepartmentRepository extends PersistenceConnectivity  implements IDepartmentRepository{
     public String seletAllQuery = "SELECT id, name, description FROM departments";
     public String seletOneQuery = "SELECT id, name, description FROM departments WHERE id = ?";
-    public String insertionQuery =
-            "INSERT INTO departments ( name, description)"
-                    + " VALUES"
-                    + " ( ?, ?)"
-                    + " RETURNING id, name, description";
+    public String insertionQuery = """
+       INSERT INTO departments (name, description)
+       VALUES ( ?, ?)
+       RETURNING id, name, description
+    """;
+    public String updateQuery = """
+       UPDATE departments SET name = ?, description = ?
+       Where id = ?
+       RETURNING id, name, description
+    """;
 
     public  IPersistedDepartment save(IDepartment newDepartment) {
         try {
@@ -39,6 +44,34 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
             return new PersistedDepartment(id, name, description);
         } catch (Exception e){
             System.out.println("The Department Persistence log.\n\t" + e.getMessage());
+        }
+
+        return null;
+    }
+
+    public  IPersistedDepartment update(int id, IDepartment department) {
+        try {
+            PreparedStatement st = conn.prepareStatement(updateQuery);
+            st.setString(1, department.getName());
+            st.setString(2, department.getDescription());
+            st.setInt(3, id);
+
+            ResultSet result = st.executeQuery();
+            IPersistedDepartment persistedDepartment;
+
+            result.next();
+            persistedDepartment = new PersistedDepartment(
+                    result.getInt("id"),
+                    result.getString("name"),
+                    result.getString("description")
+            );
+
+            result.close();
+            st.close();
+
+            return persistedDepartment;
+        } catch (Exception e){
+            System.out.println("Persistence log error while updating the department.\n\t" + e.getMessage());
         }
 
         return null;
@@ -90,11 +123,6 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
         }
 
         return null;
-    }
-
-    @Override
-    public void dropTable() {
-
     }
 
 }

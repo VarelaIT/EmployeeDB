@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DepartmentPersistenceTest {
 
@@ -59,5 +58,17 @@ public class DepartmentPersistenceTest {
         List<IPersistedDepartment> inStorageDepartments = departmentRepository.getAll();
 
         assertTrue(inStorageDepartments.size() > 1);
+    }
+
+    @Test
+    public void updatePersistedDepartment(){
+        IDepartment department = new Department("Psicology", "The department I need to visit after dealing with Java.");
+        IPersistedDepartment persistedDepartment = departmentRepository.save(department);
+        department.setName("Health care");
+
+        IPersistedDepartment updatedDepartment = departmentRepository.update(persistedDepartment.getId(), department);
+
+        assertEquals(updatedDepartment.getName(), department.getName());
+        assertNotEquals(updatedDepartment.getName(), persistedDepartment.getName());
     }
 }
