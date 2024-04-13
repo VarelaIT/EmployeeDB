@@ -10,7 +10,6 @@ public class Employee extends HumanResourse implements IEmployee{
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.departmentId = dpId;
-
     }
 
     public void setId(int index) {

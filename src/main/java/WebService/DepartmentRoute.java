@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 @WebServlet("/api/department")
 public class DepartmentRoute extends HttpServlet {
 
@@ -31,12 +33,28 @@ public class DepartmentRoute extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        IDepartmentRequest createDepartment = new DepartmentRequest(
+        IDepartmentRequest department2Create = new DepartmentRequest(
+                request.getParameter("department"),
+                request.getParameter("description")
+        );
+
+        IDepartmentResponse department = new DepartmentLogic().save(department2Create);
+        String rawPayload = new Object2TextParser().departmentTableRow(department);
+
+        response.setContentType("text/html");
+        response.getWriter().append(rawPayload);
+    }
+
+    @Override
+    public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        IDepartmentRequest department2Update = new DepartmentRequest(
             request.getParameter("department"),
             request.getParameter("description")
         );
 
-        IDepartmentResponse department = new DepartmentLogic().save(createDepartment);
+        int id = parseInt(request.getParameter("id"));
+
+        IDepartmentResponse department = new DepartmentLogic().update(id, department2Update);
         String rawPayload = new Object2TextParser().departmentTableRow(department);
 
         response.setContentType("text/html");

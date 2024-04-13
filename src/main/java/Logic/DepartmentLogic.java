@@ -1,5 +1,6 @@
 package Logic;
 
+import Entities.IPersistedDepartment;
 import Persistence.DepartmentRepository;
 import Persistence.IDepartmentRepository;
 
@@ -26,13 +27,38 @@ public class DepartmentLogic implements IDepartmentLogic{
 
 
     public IDepartmentResponse get(int id){
-        IDepartmentResponse response = new DepartmentResponse(departmentRepository.get(id));
-        return response;
+        IPersistedDepartment response = departmentRepository.get(id);
+
+        if(response != null)
+            return new DepartmentResponse(response);
+
+        return null;
     }
 
     public IDepartmentResponse save(IDepartmentRequest departmentRequest) {
-        IDepartmentResponse response = new DepartmentResponse(departmentRepository.save(departmentRequest));
+        IPersistedDepartment response = departmentRepository.save(departmentRequest);
 
-        return response;
+        if (response != null)
+            return new DepartmentResponse(response);
+
+        return null;
+    }
+
+    public IDepartmentResponse update(int id, IDepartmentRequest departmentRequest) {
+        IPersistedDepartment response = departmentRepository.update(id, departmentRequest);
+
+        if (response != null)
+            return new DepartmentResponse(response);
+
+        return null;
+    }
+
+    public IDepartmentResponse delete(int id){
+        IPersistedDepartment response = departmentRepository.delete(id);
+
+        if(response != null)
+            return new DepartmentResponse(response);
+
+        return null;
     }
 }

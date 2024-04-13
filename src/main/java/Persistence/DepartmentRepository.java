@@ -79,17 +79,19 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
     }
 
     public IPersistedDepartment get(int id) {
+        IPersistedDepartment persistedDepartment = null;
         try {
             PreparedStatement stm = conn.prepareStatement(seletOneQuery);
             stm.setInt(1, id);
             ResultSet result = stm.executeQuery();
 
-            result.next();
-            IPersistedDepartment persistedDepartment = new PersistedDepartment(
-                    result.getInt("id"),
-                    result.getString("name"),
-                    result.getString("description")
-            );
+            if (result.next()) {
+                persistedDepartment = new PersistedDepartment(
+                        result.getInt("id"),
+                        result.getString("name"),
+                        result.getString("description")
+                );
+            }
 
             result.close();
             stm.close();
