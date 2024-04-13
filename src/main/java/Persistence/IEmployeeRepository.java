@@ -1,8 +1,6 @@
 package Persistence;
 
-import Entities.Employee;
 import Entities.IEmployee;
-import Entities.IPersistedEmployee;
 
 import java.util.List;
 

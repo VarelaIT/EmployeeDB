@@ -1,10 +1,7 @@
 package Persistence;
 
 import Entities.IEmployee;
-import Entities.IPersistedEmployee;
 import Entities.PersistedEmployee;
-import Persistence.IEmployeeRepository;
-import Persistence.PersistenceConnectivity;
 
 import java.sql.*;
 import java.util.ArrayList;

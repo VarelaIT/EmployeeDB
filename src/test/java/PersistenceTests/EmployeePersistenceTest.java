@@ -2,7 +2,7 @@ package PersistenceTests;
 
 import Entities.IEmployee;
 import Entities.Employee;
-import Entities.IPersistedEmployee;
+import Persistence.IPersistedEmployee;
 import Persistence.EmployeeRepository;
 import Persistence.IEmployeeRepository;
 import Persistence.JDBC.DBConn;

@@ -1,4 +1,6 @@
-package Entities;
+package Persistence;
+
+import Entities.IEmployee;
 
 import java.util.Date;
 

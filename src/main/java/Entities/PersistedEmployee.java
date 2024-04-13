@@ -1,5 +1,7 @@
 package Entities;
 
+import Persistence.IPersistedEmployee;
+
 import java.sql.Date;
 
 public class PersistedEmployee extends HumanResourse implements IPersistedEmployee {
