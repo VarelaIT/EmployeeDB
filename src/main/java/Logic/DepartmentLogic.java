@@ -1,9 +1,9 @@
 package Logic;
 
-import Entities.IPersistedDepartment;
 import Persistence.DepartmentRepository;
 import Persistence.IDepartmentRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DepartmentLogic implements IDepartmentLogic{
@@ -17,32 +17,21 @@ public class DepartmentLogic implements IDepartmentLogic{
         this.departmentRepository = departmentRepository;
     }
 
-    public String get(){
-        List<IPersistedDepartment> inStorageDepartments = departmentRepository.getAll();
+    public List<IDepartmentResponse> get(){
+        List<IDepartmentResponse> inStorageDepartments = new ArrayList<IDepartmentResponse>();
+        departmentRepository.getAll().forEach(department -> inStorageDepartments.add(new DepartmentResponse(department)));
 
-        String rawPayload = "";
-
-        for (IPersistedDepartment department : inStorageDepartments) {
-            String tableRow = new Object2TextParser().departmentTableRow(department);
-
-            rawPayload = rawPayload.concat(tableRow);
-        }
-
-        return rawPayload;
+        return inStorageDepartments;
     }
 
 
-    public String get(int id){
-        return new Object2TextParser().departmentTableRow(departmentRepository.get(id));
+    public IDepartmentResponse get(int id){
+        IDepartmentResponse response = new DepartmentResponse(departmentRepository.get(id));
+        return response;
     }
 
-    public String save(IDepartmentRequest departmentRequest) {
-        String response = "The request input is invalid.";
-
-        if(departmentRequest.verifyInput()) {
-            IPersistedDepartment department = departmentRepository.save(departmentRequest);
-            response = new Object2TextParser().departmentTableRow(department);
-        }
+    public IDepartmentResponse save(IDepartmentRequest departmentRequest) {
+        IDepartmentResponse response = new DepartmentResponse(departmentRepository.save(departmentRequest));
 
         return response;
     }

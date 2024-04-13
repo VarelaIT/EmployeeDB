@@ -1,8 +1,7 @@
 package WebService;
 
-import Logic.DepartmentLogic;
-import Logic.DepartmentRequest;
-import Logic.IDepartmentRequest;
+import Entities.IPersistedDepartment;
+import Logic.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,8 +16,15 @@ public class DepartmentRoute extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        String rawPayload = new DepartmentLogic().get();
+        List<IDepartmentResponse> inStorageDepartments = new DepartmentLogic().get();
 
+        String rawPayload = "";
+
+        for (IPersistedDepartment department : inStorageDepartments) {
+            String tableRow = new Object2TextParser().departmentTableRow(department);
+
+            rawPayload = rawPayload.concat(tableRow);
+        }
         response.setContentType("text/html");
         response.getWriter().append(rawPayload);
     }
@@ -30,7 +36,8 @@ public class DepartmentRoute extends HttpServlet {
             request.getParameter("description")
         );
 
-        String rawPayload = new DepartmentLogic().save(createDepartment);
+        IDepartmentResponse department = new DepartmentLogic().save(createDepartment);
+        String rawPayload = new Object2TextParser().departmentTableRow(department);
 
         response.setContentType("text/html");
         response.getWriter().append(rawPayload);

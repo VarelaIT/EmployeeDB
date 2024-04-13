@@ -1,7 +1,9 @@
 package Logic;
 
+import java.util.List;
+
 public interface IDepartmentLogic {
-    String get();
-    String get(int id);
-    String save(IDepartmentRequest departmentRequest);
+    List<IDepartmentResponse> get();
+    IDepartmentResponse get(int id);
+    IDepartmentResponse save(IDepartmentRequest departmentRequest);
 }

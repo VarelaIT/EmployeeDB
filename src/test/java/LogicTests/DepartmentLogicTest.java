@@ -1,9 +1,11 @@
 package LogicTests;
 
+import java.util.List;
 import Logic.DepartmentLogic;
 import Logic.DepartmentRequest;
 import Logic.IDepartmentLogic;
 import Logic.IDepartmentRequest;
+import Logic.IDepartmentResponse;
 import Persistence.DepartmentRepository;
 import Persistence.IDepartmentRepository;
 import Persistence.JDBC.DBConn;
@@ -32,9 +34,20 @@ public class DepartmentLogicTest {
         IDepartmentRequest department = new DepartmentRequest("Data Analysis", "");
         IDepartmentLogic departmentLogic = new DepartmentLogic(departmentRepository);
 
-        String row = departmentLogic.save(department);
+        IDepartmentResponse  storedDepartment = (IDepartmentResponse) departmentLogic.save(department);
 
-        assertTrue(row.length() > 1);
+        assertEquals(department.getName(), storedDepartment.getName());
+    }
+
+    @Test
+    void getOneDepartment(){
+        IDepartmentLogic departmentLogic = new DepartmentLogic(departmentRepository);
+        IDepartmentRequest department = new DepartmentRequest("R&D", "Research and development");
+        IDepartmentResponse storedDepartment = departmentLogic.save(department);
+
+        IDepartmentResponse retrivedDepartment = departmentLogic.get(storedDepartment.getId());
+
+        assertEquals(retrivedDepartment.getName(), storedDepartment.getName());
     }
 
     @Test
@@ -42,16 +55,15 @@ public class DepartmentLogicTest {
         IDepartmentRequest departmentA = new DepartmentRequest("Data Analysis", "");
         IDepartmentRequest departmentB = new DepartmentRequest("Design", "Graphical & visual design");
         IDepartmentLogic departmentLogic = new DepartmentLogic(departmentRepository);
-        String rowA = departmentLogic.save(departmentA);
-        String rowB = departmentLogic.save(departmentB);
-        String payload =  rowA + rowB;
+        IDepartmentResponse storedDepartmentA = departmentLogic.save(departmentA);
+        IDepartmentResponse storedDepartmentB = departmentLogic.save(departmentB);
 
+        List<IDepartmentResponse> instorageDepartments = departmentLogic.get();
 
-
-        String rawPayload = departmentLogic.get();
-
-        assertTrue(rawPayload.length() > 1);
-        assertEquals(payload, rawPayload);
+        assertEquals(storedDepartmentA.getId(), instorageDepartments.get(0).getId());
+        assertEquals(storedDepartmentA.getId(), instorageDepartments.get(0).getId());
+        assertEquals(storedDepartmentB.getName(), instorageDepartments.get(1).getName());
+        assertEquals(storedDepartmentB.getName(), instorageDepartments.get(1).getName());
     }
 
 }
