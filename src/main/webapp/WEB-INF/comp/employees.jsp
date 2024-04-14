@@ -36,13 +36,14 @@
                                 <th>Age</th>
                                 <th>Department</th>
                                 <th>Id</th>
+                                <th>Options</th>
                             </tr>
                         </thead>
 
                         <tbody
                             id="employeesTableBody"
                             hx-get="./api/employee"
-                            hx-trigger="load"
+                            hx-trigger="load, newEmployee form:body"
                             hx-swap="innerHTML"
                         >
                             <tr>
@@ -51,27 +52,43 @@
                                 <td>38</td>
                                 <td>R&D, department example.</td>
                                 <td>1</td>
+                                <td><button>Edit</button><button>Delete</button></td>
                             </tr>
                         </tbody>
 
-                        <tr>
-                            <form
-                                hx-post="./api/department"
-                                hx-trigger="submit"
-                                hx-swap="afterend"
-                                hx-target="#departmentTableBody"
-                            >
-                            <td>
-                                <input name="department" placeholder="Department name" required/>
-                            </td>
-                            <td>
-                                <input name="description" placeholder="Brief department description" required/>
-                            </td>
-                            <td>
-                                <input type="submit" value="Add"/>
-                            </td>
-                            <form>
-                        </tr>
+                        <tbody id='table-form-container'>
+                            <tr>
+                                <form
+                                    hx-post="./api/employee"
+                                    hx-trigger="submit"
+                                    hx-swap="none"
+                                >
+                                <td>
+                                    <input name="name" placeholder="Employee name" required/>
+                                </td>
+                                <td>
+                                    <input name="lastName" placeholder="Employee last name" required/>
+                                </td>
+                                <td>
+                                    <input name="birthDate" type="date" required/>
+                                </td>
+                                <td>
+                                    <select name='departmentId' required
+                                       hx-get='./api/department?mode=options'
+                                       hx-trigger='load'
+                                       hx-swap='outterHTML'
+                                    >
+                                        <option value='1'>R&D</option>
+                                    <select/>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                    <input type="submit" value="Add"/>
+                                </td>
+                                <form>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
 

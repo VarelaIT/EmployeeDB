@@ -53,12 +53,11 @@ public class Object2TextParser {
             <td colspan='2'><input name='age' value='$age' placeholder='Employee lastName' required/></td>
             <td>
                 <input name='id' value='$id' type='hidden' required  style='max-width: 200px;'/>
-                <select name='departmentId' required'>
-                     <option value='$departmentId'>$department</option>
-                     <div 
-                        hx-get='/EmployeeDB/api/department?mode=options
-                     >
-                     </div>
+                <select name='departmentId' required' value='$departmentId'
+                   hx-get='./api/department?mode=options
+                   hx-trigger='load'
+                >
+                    <option value='$departmentId'>$department</option>
                 <select/>
             </td>
             <td colspan='2'><input type='submit' value='Edit'/></td>

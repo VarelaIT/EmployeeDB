@@ -2,6 +2,8 @@ package WebService;
 
 import Logic.EmployeeLogic;
 import Logic.IEmployeeResponse;
+import Logic.IEmployeeRequest;
+import Logic.EmployeeRequest;
 import Persistence.IPersistedEmployee;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,12 +11,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
 @WebServlet("/api/employee")
 public class EmployeeRoute extends HttpServlet {
+
+    private DateFormat dateFormat= new SimpleDateFormat("dd-MM-yyyy");
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -38,10 +46,19 @@ public class EmployeeRoute extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws  IOException {
+        java.sql.Date birthDate = null;
+        try {
+            birthDate = (Date) dateFormat.parse(request.getParameter("birthDate"));
+        } catch (ParseException e) {
+            throw new RuntimeException("The date format is invalid.");
+        }//encapsulate in logic
+        int departmentId = parseInt(request.getParameter("departmentId"));
         IEmployeeRequest employeeData = new EmployeeRequest(
-                request.getParameter("employee"),
-                request.getParameter("description")
+                request.getParameter("name"),
+                request.getParameter("lastName"),
+                birthDate,
+                departmentId
         );
 
         IEmployeeResponse employee = null;
@@ -56,26 +73,6 @@ public class EmployeeRoute extends HttpServlet {
         response.getWriter().append(rawPayload);
     }
 
-    @Override
-    public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        IEmployeeRequest employee2Update = new EmployeeRequest(
-            request.getParameter("employee"),
-            request.getParameter("description")
-        );
-        IEmployeeResponse updatedEmployee = null;
-        if (request.getParameter("id") != null)
-            updatedEmployee= new EmployeeLogic().update(parseInt(request.getParameter("id")), employee2Update);
-
-        String rawPayload;
-        if (updatedEmployee != null)
-            rawPayload = new Object2TextParser().employeeDefaultForm();
-        else
-            rawPayload = "<p>The employee was not updated</p>";
-
-        response.setContentType("text/html");
-        response.addHeader("HX-Trigger", "newEmployee");
-        response.getWriter().append(rawPayload);
-    }
 
     @Override
     public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {

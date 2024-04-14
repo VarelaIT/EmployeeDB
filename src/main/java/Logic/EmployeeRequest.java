@@ -10,8 +10,4 @@ public class EmployeeRequest extends Employee implements IEmployeeRequest{
         super(name, lastName, birthDate, dpId);
     }
 
-    @Override
-    public boolean verifyInput() {
-        return false;
-    }
 }
