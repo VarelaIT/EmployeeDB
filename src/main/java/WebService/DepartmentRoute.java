@@ -18,15 +18,20 @@ public class DepartmentRoute extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        List<IDepartmentResponse> inStorageDepartments = new DepartmentLogic().get();
-
         String rawPayload = "";
 
-        for (IPersistedDepartment department : inStorageDepartments) {
-            String tableRow = new Object2TextParser().departmentTableRow(department);
+        if (request.getParameter("id") != null){
+            IDepartmentResponse inStorageDepartment = new DepartmentLogic().get(parseInt(request.getParameter("id")));
+            rawPayload = new Object2TextParser().buildDepartment(request.getParameter("mode"), inStorageDepartment);
+        } else {
+            List<IDepartmentResponse> inStorageDepartments = new DepartmentLogic().get();
+            for (IPersistedDepartment department : inStorageDepartments) {
+                String tableRow = new Object2TextParser().departmentTableRow(department);
 
-            rawPayload = rawPayload.concat(tableRow);
+                rawPayload = rawPayload.concat(tableRow);
+            }
         }
+
         response.setContentType("text/html");
         response.getWriter().append(rawPayload);
     }
@@ -42,6 +47,7 @@ public class DepartmentRoute extends HttpServlet {
         String rawPayload = new Object2TextParser().departmentTableRow(department);
 
         response.setContentType("text/html");
+        response.addHeader("HX-Trigger", "newDepartment");
         response.getWriter().append(rawPayload);
     }
 

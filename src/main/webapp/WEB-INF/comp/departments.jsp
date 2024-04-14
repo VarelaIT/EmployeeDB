@@ -31,43 +31,48 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Department</th>
-                                <th>Description</th>
+                                <th colspan="2">Department</th>
+                                <th colspan="3">Description</th>
                                 <th>Id</th>
+                                <th colspan="2">Options</th>
                             </tr>
                         </thead>
 
                         <tbody
                             id="departmentTableBody"
                             hx-get="./api/department"
-                            hx-trigger="load"
+                            hx-trigger="load, newDepartment from:body"
                             hx-swap="innerHTML"
                         >
                             <tr>
                                 <td>HHRR</td>
                                 <td>Human Resources, department example.</td>
                                 <td>1</td>
+                                <td>Options go here!</td>
                             </tr>
                         </tbody>
 
-                        <tr>
-                            <form
-                                hx-post="./api/department"
-                                hx-trigger="submit"
-                                hx-swap="afterend"
-                                hx-target="#departmentTableBody"
-                            >
-                            <td>
-                                <input name="department" placeholder="Department name" required/>
-                            </td>
-                            <td>
-                                <input name="description" placeholder="Brief department description" required/>
-                            </td>
-                            <td>
-                                <input type="submit" value="Add"/>
-                            </td>
-                            <form>
-                        </tr>
+                        <tbody id='table-form-container'>
+                            <tr>
+                                <form
+                                    hx-post="./api/department"
+                                    hx-trigger="submit"
+                                    hx-swap="none"
+                                >
+                                <td colspan='2'>
+                                    <input name="department" placeholder="Department name" required/>
+                                </td>
+                                <td colspan='3'>
+                                    <input name="description" placeholder="Brief department description" required/>
+                                </td>
+                                <td>
+                                </td>
+                                <td colspan='2'>
+                                    <input type="submit" value="Add"/>
+                                </td>
+                                <form>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
 
