@@ -38,14 +38,18 @@ public class DepartmentRoute extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        IDepartmentRequest department2Create = new DepartmentRequest(
+        IDepartmentRequest departmentData = new DepartmentRequest(
                 request.getParameter("department"),
                 request.getParameter("description")
         );
 
-        IDepartmentResponse department = new DepartmentLogic().save(department2Create);
-        String rawPayload = new Object2TextParser().departmentTableRow(department);
+        IDepartmentResponse department = null;
+        if (request.getParameter("id") != null)
+            department = new DepartmentLogic().update(parseInt(request.getParameter("id")), departmentData);
+        else
+            department = new DepartmentLogic().save(departmentData);
 
+        String rawPayload = new Object2TextParser().departmentTableRow(department);
         response.setContentType("text/html");
         response.addHeader("HX-Trigger", "newDepartment");
         response.getWriter().append(rawPayload);
@@ -57,14 +61,34 @@ public class DepartmentRoute extends HttpServlet {
             request.getParameter("department"),
             request.getParameter("description")
         );
+        IDepartmentResponse updatedDepartment = null;
+        if (request.getParameter("id") != null)
+            updatedDepartment= new DepartmentLogic().update(parseInt(request.getParameter("id")), department2Update);
 
-        int id = parseInt(request.getParameter("id"));
-
-        IDepartmentResponse department = new DepartmentLogic().update(id, department2Update);
-        String rawPayload = new Object2TextParser().departmentTableRow(department);
+        String rawPayload;
+        if (updatedDepartment != null)
+            rawPayload = new Object2TextParser().departmentDefaultForm();
+        else
+            rawPayload = "<p>The department was not updated</p>";
 
         response.setContentType("text/html");
+        response.addHeader("HX-Trigger", "newDepartment");
         response.getWriter().append(rawPayload);
     }
 
+    @Override
+    public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        String rawPayload = "<p>The department could not be deleted.</p>";
+
+        if (request.getParameter("id") != null) {
+            IDepartmentResponse deletedDepartment = new DepartmentLogic().delete(parseInt(request.getParameter("id")));
+            if(deletedDepartment != null)
+                rawPayload = "<p>The department was deleted successfully!.</p>";
+        }
+
+        response.setContentType("text/html");
+        response.addHeader("HX-Trigger", "newDepartment");
+        response.getWriter().append(rawPayload);
+    }
 }

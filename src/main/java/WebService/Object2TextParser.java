@@ -5,6 +5,30 @@ import Logic.IDepartmentResponse;
 
 public class Object2TextParser {
 
+    public String departmentDefaultForm(){
+        return """
+            <tr>
+                <form
+                    hx-post="./api/department"
+                    hx-trigger="submit"
+                    hx-swap="none"
+                >
+                <td colspan='2'>
+                    <input name="department" placeholder="Department name" required/>
+                </td>
+                <td colspan='3'>
+                    <input name="description" placeholder="Brief department description" required/>
+                </td>
+                <td>
+                </td>
+                <td colspan='2'>
+                    <input type="submit" value="Add"/>
+                </td>
+                <form>
+            </tr>
+        """;
+    }
+
     public String buildDepartment(String mode, IDepartmentResponse department){
         if (mode.equals("tableForm"))
             return departmentFormRow(department);
@@ -16,13 +40,13 @@ public class Object2TextParser {
         String id = "" + department.getId();
         String tableForm = """
             <tr><form
-            hx-put='./api/department'
+            hx-post='./api/department'
             hx-trigger='submit'
             hx-swap='none'
             >
             <td colspan='2'><input name='department' value='$department' placeholder='Department name' required/></td>
             <td colspan='3'><input name='description' value='$description' placeholder='Brief department description' required/></td>
-            <td><input name='id' value='$id' required disabled style='max-width: 200px;'/></td>
+            <td><input name='id' value='$id' type='hidden' required  style='max-width: 200px;'/></td>
             <td colspan='2'><input type='submit' value='Edit'/></td>
             </form></tr>
         """;
@@ -45,7 +69,12 @@ public class Object2TextParser {
                     hx-target='#table-form-container'
                     hx-swap='innerHTML'
                 >Edit</button>
-                <button>Delete</button></td>
+                <button
+                    hx-delete='./api/department?id=$id'
+                    hx-trigger='click'
+                    hx-target='#table-form-container'
+                    hx-swap='innerHTML'
+                >Delete</button></td>
             </tr>
         """;
         return row
