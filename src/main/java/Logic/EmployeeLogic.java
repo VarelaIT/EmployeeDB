@@ -11,7 +11,7 @@ public class EmployeeLogic implements IEmployeeLogic {
 
     IEmployeeRepository employeeRepository;
 
-    EmployeeLogic(){
+    public EmployeeLogic(){
         this.employeeRepository = new EmployeeRepository();
     }
 
