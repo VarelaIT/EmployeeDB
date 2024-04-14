@@ -1,6 +1,5 @@
 package WebService;
 
-import Entities.IPersistedDepartment;
 import Logic.IDepartmentResponse;
 import Logic.IEmployeeResponse;
 import Persistence.IPersistedEmployee;
@@ -105,11 +104,13 @@ public class Object2TextParser {
     public String buildDepartment(String mode, IDepartmentResponse department){
         if (mode.equals("tableForm"))
             return departmentFormRow(department);
+        if (mode.equals("options"))
+            return departmentOptions(department);
 
         return departmentTableRow(department);
     }
 
-    public String departmentFormRow(IPersistedDepartment department){
+    public String departmentFormRow(IDepartmentResponse department){
         String id = "" + department.getId();
         String tableForm = """
             <tr><form
@@ -129,7 +130,7 @@ public class Object2TextParser {
                 .replace("$id", id);
     }
 
-    public String departmentTableRow(IPersistedDepartment department){
+    public String departmentTableRow(IDepartmentResponse department){
         String id = "" + department.getId();
         String row = """
             <tr>
@@ -156,7 +157,7 @@ public class Object2TextParser {
                 .replace("$id", id);
     }
 
-    public String departmentOptions(IPersistedDepartment department){
+    public String departmentOptions(IDepartmentResponse department){
         String id = "" + department.getId();
         String option = """
             <option value='$id'>$department</option>

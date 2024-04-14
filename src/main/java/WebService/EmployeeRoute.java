@@ -22,7 +22,7 @@ import static java.lang.Integer.parseInt;
 @WebServlet("/api/employee")
 public class EmployeeRoute extends HttpServlet {
 
-    private DateFormat dateFormat= new SimpleDateFormat("dd-MM-yyyy");
+    private DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -47,9 +47,9 @@ public class EmployeeRoute extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws  IOException {
-        java.sql.Date birthDate = null;
+        java.sql.Date birthDate;
         try {
-            birthDate = (Date) dateFormat.parse(request.getParameter("birthDate"));
+            birthDate = new java.sql.Date(dateFormat.parse(request.getParameter("birthDate")).getTime());
         } catch (ParseException e) {
             throw new RuntimeException("The date format is invalid.");
         }//encapsulate in logic
