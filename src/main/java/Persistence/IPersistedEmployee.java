@@ -2,14 +2,13 @@ package Persistence;
 
 import Entities.IEmployee;
 
-import java.util.Date;
 
 public interface IPersistedEmployee extends IEmployee {
     int getId();
     void setId(int id);
     void setName(String name);
     void setLastName(String lastName);
-    void setBirthDate(Date bd);
+    void setBirthDate(java.sql.Date bd);
     void setDepartmentId(Integer id);
     String getDepartment();
     void setDepartment(String department);

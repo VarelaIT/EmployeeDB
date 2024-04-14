@@ -10,7 +10,7 @@ public class PersistedEmployee extends HumanResourse implements IPersistedEmploy
     private Integer departmentId = null;
     public String department = null;
 
-    public PersistedEmployee(int id, String name, String lastName, java.util.Date birthDate, Integer departmentId, String department) {
+    public PersistedEmployee(int id, String name, String lastName, java.sql.Date birthDate, Integer departmentId, String department) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -59,8 +59,9 @@ public class PersistedEmployee extends HumanResourse implements IPersistedEmploy
         this.lastName = lastName;
     }
 
+
     @Override
-    public void setBirthDate(java.util.Date bd) {
+    public void setBirthDate(java.sql.Date bd) {
         this.birthDate = bd;
     }
 

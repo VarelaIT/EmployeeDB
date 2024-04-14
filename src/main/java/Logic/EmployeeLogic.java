@@ -21,7 +21,7 @@ public class EmployeeLogic implements IEmployeeLogic {
 
     @Override
     public IEmployeeResponse save(IEmployeeRequest employee) {
-        IEmployeeResponse storedEmployee = (IEmployeeResponse) employeeRepository.save(employee);
+        IEmployeeResponse storedEmployee = new EmployeeResponse(employeeRepository.save(employee));
 
         if(storedEmployee == null)
             throw new RuntimeException("The new employee could not be stored in this service. Please try again latter.");
