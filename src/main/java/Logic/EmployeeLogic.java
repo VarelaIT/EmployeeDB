@@ -36,19 +36,19 @@ public class EmployeeLogic implements IEmployeeLogic {
         if (rowsAffected != 1)
             throw new RuntimeException("The targeted employee was not affected by the change.");
 
-        IEmployeeResponse affectedEmployee = (IEmployeeResponse) employeeRepository.get(id);
+        IPersistedEmployee affectedEmployee = employeeRepository.get(id);
 
         if (affectedEmployee == null)
             throw new RuntimeException("The targeted employee was updated, but could not be indexed.");
 
-        return affectedEmployee;
+        return new EmployeeResponse(affectedEmployee);
     }
 
     @Override
     public List<IEmployeeResponse> get() {
         List<IEmployeeResponse> affectedEmployees = new ArrayList<IEmployeeResponse>();
         employeeRepository.get().forEach(employee ->
-                affectedEmployees.add((IEmployeeResponse) employee)
+                affectedEmployees.add(new EmployeeResponse(employee))
         );
 
         return affectedEmployees;
@@ -56,16 +56,17 @@ public class EmployeeLogic implements IEmployeeLogic {
 
     @Override
     public IEmployeeResponse get(int id) {
-        IEmployeeResponse affectedEmployee = (IEmployeeResponse) employeeRepository.get(id);
+        IPersistedEmployee affectedEmployee = employeeRepository.get(id);
 
         if (affectedEmployee == null)
-            throw new RuntimeException("The targeted employee could not be found.");
+            return null;
 
-        return affectedEmployee;
+        return new EmployeeResponse(affectedEmployee);
     }
 
     @Override
     public IEmployeeResponse delete(int id) {
-        return null;
+        IEmployeeResponse deleted = new EmployeeResponse(employeeRepository.delete(id));
+        return deleted;
     }
 }

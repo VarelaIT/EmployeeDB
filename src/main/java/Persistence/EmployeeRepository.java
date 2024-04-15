@@ -61,20 +61,22 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
 
     @Override
     public IPersistedEmployee get(int id) {
+        IPersistedEmployee persistedEmployee = null;
         try {
             PreparedStatement stm = conn.prepareStatement(selectOneQuery);
             stm.setInt(1, id);
             ResultSet result = stm.executeQuery();
 
-            result.next();
-            IPersistedEmployee persistedEmployee = new PersistedEmployee(
-                result.getInt("id"),
-                result.getString("name"),
-                result.getString("last_name"),
-                result.getDate("bd"),
-                result.getInt("dep_id"),
-                result.getString("department")
-            );
+            if (result.next()) {
+                persistedEmployee = new PersistedEmployee(
+                        result.getInt("id"),
+                        result.getString("name"),
+                        result.getString("last_name"),
+                        result.getDate("bd"),
+                        result.getInt("dep_id"),
+                        result.getString("department")
+                );
+            }
 
             result.close();
             stm.close();
