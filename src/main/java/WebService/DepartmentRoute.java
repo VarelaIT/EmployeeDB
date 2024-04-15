@@ -17,7 +17,7 @@ public class DepartmentRoute extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String mode = request.getParameter("mode");
+        String mode = request.getParameter("mode") != null? request.getParameter("mode") : "";
         String rawPayload = "";
 
         if (request.getParameter("id") != null){
@@ -27,7 +27,6 @@ public class DepartmentRoute extends HttpServlet {
             List<IDepartmentResponse> inStorageDepartments = new DepartmentLogic().get();
             for (IDepartmentResponse department : inStorageDepartments) {
                 String parsedDepartment = new Object2TextParser().buildDepartment(mode, department);
-
                 rawPayload = rawPayload.concat(parsedDepartment);
             }
         }

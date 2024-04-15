@@ -8,12 +8,12 @@ public class Object2TextParser {
 
     public String employeeTableRow(IPersistedEmployee employee){
         String id = "" + employee.getId();
-        String age = "" + employee.getId();
+        String birth = employee.getBirthDate().toString();
         String row = """
             <tr>
                 <td colspan='2'>$name</td>
                 <td colspan='2'>$lastName</td>
-                <td colspan='2'>$age</td>
+                <td>$birth</td>
                 <td colspan='2'>$department</td>
                 <td>$id</td>
                 <td colspan='2'><button
@@ -33,14 +33,14 @@ public class Object2TextParser {
         return row
                 .replace("$name", employee.getName())
                 .replace("$lastName", employee.getLastName())
-                .replace("$age", age)
+                .replace("$birth", birth)
                 .replace("$department", employee.getDepartment())
                 .replace("$id", id);
     }
 
     public String employeeFormRow(IPersistedEmployee employee){
         String id = "" + employee.getId();
-        String age = "" + employee.getBirthDate();
+        String birth = employee.getBirthDate().toString();
         String tableForm = """
             <tr><form
             hx-post='./api/employee'
@@ -49,7 +49,7 @@ public class Object2TextParser {
             >
             <td colspan='2'><input name='name' value='$name' placeholder='Employee name' required/></td>
             <td colspan='2'><input name='lastName' value='$lastName' placeholder='Employee lastName' required/></td>
-            <td colspan='2'><input name='age' value='$age' placeholder='Employee lastName' required/></td>
+            <td ><input name='birthDate' type='date' value='$birth' required/></td>
             <td>
                 <input name='id' value='$id' type='hidden' required  style='max-width: 200px;'/>
                 <select name='departmentId' required' value='$departmentId'
@@ -64,8 +64,8 @@ public class Object2TextParser {
         """;
         return tableForm
                 .replace("$name", employee.getName())
-                .replace("$latName", employee.getLastName())
-                .replace("$age", age)
+                .replace("$lastName", employee.getLastName())
+                .replace("$birth", birth)
                 .replace("$department", employee.getDepartment())
                 .replace("$id", id);
     }

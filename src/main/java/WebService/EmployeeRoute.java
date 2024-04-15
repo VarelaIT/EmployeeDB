@@ -11,18 +11,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
 @WebServlet("/api/employee")
 public class EmployeeRoute extends HttpServlet {
-
-    private DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -49,17 +44,12 @@ public class EmployeeRoute extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws  IOException {
         int departmentId = parseInt(request.getParameter("departmentId"));
         String birthDate = request.getParameter("birthDate");
-        IEmployeeRequest employeeData = null;
-        try {
-            employeeData = new EmployeeRequest(
-                    request.getParameter("name"),
-                    request.getParameter("lastName"),
-                    birthDate,
-                    departmentId
-            );
-        } catch (ParseException e) {
-            throw new RuntimeException("Invalid format while trying to store employee.");
-        }
+        IEmployeeRequest employeeData =  new EmployeeRequest(
+            request.getParameter("name"),
+            request.getParameter("lastName"),
+            birthDate,
+            departmentId
+        );
 
         IEmployeeResponse employee = null;
         if (request.getParameter("id") != null)

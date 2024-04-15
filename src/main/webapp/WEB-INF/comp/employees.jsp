@@ -31,12 +31,12 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Last Name</th>
+                                <th colspan='2'>Name</th>
+                                <th colspan='2'>Last Name</th>
                                 <th>Age</th>
-                                <th>Department</th>
+                                <th colspan='2'>Department</th>
                                 <th>Id</th>
-                                <th>Options</th>
+                                <th colspan='2'>Options</th>
                             </tr>
                         </thead>
 
@@ -47,12 +47,12 @@
                             hx-swap="innerHTML"
                         >
                             <tr>
-                                <td>Ismael</td>
-                                <td>Varela</td>
+                                <td colspan='2'>Ismael</td>
+                                <td colspan='2'>Varela</td>
                                 <td>38</td>
-                                <td>R&D, department example.</td>
+                                <td colspan='2'>R&D, department example.</td>
                                 <td>1</td>
-                                <td><button>Edit</button><button>Delete</button></td>
+                                <td colspan='2'><button>Edit</button><button>Delete</button></td>
                             </tr>
                         </tbody>
 
@@ -63,16 +63,16 @@
                                     hx-trigger="submit"
                                     hx-swap="none"
                                 >
-                                <td>
+                                <td colspan='2'>
                                     <input name="name" placeholder="Employee name" required/>
                                 </td>
-                                <td>
+                                <td colspan='2'>
                                     <input name="lastName" placeholder="Employee last name" required/>
                                 </td>
                                 <td>
                                     <input name="birthDate" type="date" required/>
                                 </td>
-                                <td>
+                                <td colspan='2'>
                                     <select name='departmentId' required
                                        hx-get='./api/department?mode=options'
                                        hx-trigger='load'
@@ -83,7 +83,7 @@
                                 </td>
                                 <td>
                                 </td>
-                                <td>
+                                <td colspan='2'>
                                     <input type="submit" value="Add"/>
                                 </td>
                                 <form>
