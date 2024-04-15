@@ -12,11 +12,11 @@ public class EmployeeLogic implements IEmployeeLogic {
     IEmployeeRepository employeeRepository;
 
     public EmployeeLogic(){
-        this.employeeRepository = new EmployeeRepository("test");
+        this.employeeRepository = new EmployeeRepository();
     }
 
-    EmployeeLogic(IEmployeeRepository employeeRepository){
-       this.employeeRepository = employeeRepository;
+    public EmployeeLogic(String test){
+       this.employeeRepository = new EmployeeRepository(test);
     }
 
     @Override

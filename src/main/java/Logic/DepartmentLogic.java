@@ -14,8 +14,8 @@ public class DepartmentLogic implements IDepartmentLogic{
         this.departmentRepository = new DepartmentRepository();
     }
 
-    public DepartmentLogic(IDepartmentRepository departmentRepository){
-        this.departmentRepository = departmentRepository;
+    public DepartmentLogic(String test){
+        this.departmentRepository = new DepartmentRepository(test);
     }
 
     public List<IDepartmentResponse> get(){

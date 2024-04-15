@@ -25,7 +25,7 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
         WHERE e.id = ?
     """;
 
-    EmployeeRepository(){
+    public EmployeeRepository(){
         super();
     }
 
@@ -155,12 +155,13 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
         return affectedRows;
     }
 
-    private String deleteOneQuery = """
-        DELETE FROM employees WHERE id = ?
-    """;
+    private String deleteOneQuery = "DELETE FROM employees WHERE id = ?";
     @Override
     public IPersistedEmployee delete(int id) {
-        IPersistedEmployee targetEmployee = get(id);
+        IPersistedEmployee targetEmployee = this.get(id);
+
+        if (targetEmployee == null)
+            return  null;
 
         try {
             PreparedStatement st = conn.prepareStatement(deleteOneQuery);

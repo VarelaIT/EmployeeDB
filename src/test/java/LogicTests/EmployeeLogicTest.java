@@ -20,7 +20,7 @@ public class EmployeeLogicTest {
         TableSchemas.dropEmployeesTable(conn);
         TableSchemas.createEmployeesTable(conn);
         conn= null;
-        employeeLogic = new EmployeeLogic();
+        employeeLogic = new EmployeeLogic("test");
     }
 
     @Test
