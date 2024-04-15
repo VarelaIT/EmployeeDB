@@ -1,0 +1,31 @@
+<tr>
+    <form
+            hx-post="./api/employee"
+            hx-trigger="submit"
+            hx-swap="none"
+    >
+        <td colspan='2'>
+            <input name="name" placeholder="Employee name" required/>
+        </td>
+        <td colspan='2'>
+            <input name="lastName" placeholder="Employee last name" required/>
+        </td>
+        <td>
+            <input name="birthDate" type="date" required/>
+        </td>
+        <td colspan='2'>
+            <select name='departmentId' required
+                    hx-get='./api/department?mode=options'
+                    hx-trigger='load'
+                    hx-swap='innerHTML'
+            >
+                <option value='1'>R&D</option>
+            </select>
+        </td>
+        <td>
+        </td>
+        <td colspan='2'>
+            <input type="submit" value="Add"/>
+        </td>
+    <form>
+</tr>

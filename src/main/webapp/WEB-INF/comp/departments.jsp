@@ -57,7 +57,7 @@
                                 <form
                                     hx-post="./api/department"
                                     hx-trigger="submit"
-                                    hx-swap="none"
+                                    hx-target="#table-form-container"
                                 >
                                 <td colspan='2'>
                                     <input name="department" placeholder="Department name" required/>

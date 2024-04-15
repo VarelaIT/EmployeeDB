@@ -4,16 +4,15 @@ import Logic.EmployeeLogic;
 import Logic.IEmployeeResponse;
 import Logic.IEmployeeRequest;
 import Logic.EmployeeRequest;
-import Persistence.IPersistedEmployee;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 
+import static WebService.Object2TextParser.*;
 import static java.lang.Integer.parseInt;
 
 @WebServlet("/api/employee")
@@ -26,11 +25,11 @@ public class EmployeeRoute extends HttpServlet {
 
         if (request.getParameter("id") != null){
             IEmployeeResponse inStorageEmployee = new EmployeeLogic().get(parseInt(request.getParameter("id")));
-            rawPayload = new Object2TextParser().buildEmployee(request.getParameter("mode"), inStorageEmployee);
+            rawPayload = buildEmployee(request.getParameter("mode"), inStorageEmployee);
         } else {
             List<IEmployeeResponse> inStorageEmployees = new EmployeeLogic().get();
             for (IEmployeeResponse employee : inStorageEmployees) {
-                String tableRow = new Object2TextParser().employeeTableRow(employee);
+                String tableRow = employeeTableRow(employee);
 
                 rawPayload = rawPayload.concat(tableRow);
             }
@@ -56,7 +55,10 @@ public class EmployeeRoute extends HttpServlet {
         else
             employee = new EmployeeLogic().save(employeeData);
 
-        String rawPayload = new Object2TextParser().employeeTableRow(employee);
+        String rawPayload = "<p>Request fail</p>";
+        if (employee != null)
+            rawPayload = employeeDefaultForm();
+
         response.setContentType("text/html");
         response.addHeader("HX-Trigger", "newEmployee");
         response.getWriter().append(rawPayload);

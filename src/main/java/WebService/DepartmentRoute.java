@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import static WebService.Object2TextParser.*;
 import static java.lang.Integer.parseInt;
 
 @WebServlet("/api/department")
@@ -22,11 +23,11 @@ public class DepartmentRoute extends HttpServlet {
 
         if (request.getParameter("id") != null){
             IDepartmentResponse inStorageDepartment = new DepartmentLogic().get(parseInt(request.getParameter("id")));
-            rawPayload = new Object2TextParser().buildDepartment(mode, inStorageDepartment);
+            rawPayload = buildDepartment(mode, inStorageDepartment);
         } else {
             List<IDepartmentResponse> inStorageDepartments = new DepartmentLogic().get();
             for (IDepartmentResponse department : inStorageDepartments) {
-                String parsedDepartment = new Object2TextParser().buildDepartment(mode, department);
+                String parsedDepartment = buildDepartment(mode, department);
                 rawPayload = rawPayload.concat(parsedDepartment);
             }
         }
@@ -48,7 +49,10 @@ public class DepartmentRoute extends HttpServlet {
         else
             department = new DepartmentLogic().save(departmentData);
 
-        String rawPayload = new Object2TextParser().departmentTableRow(department);
+        String rawPayload = "<p>Request fail.<p>";
+        if (department != null)
+            rawPayload = "<p hx-get='./department/form/row' hx-target='#table-form-container'>Succeed<p>";
+
         response.setContentType("text/html");
         response.addHeader("HX-Trigger", "newDepartment");
         response.getWriter().append(rawPayload);
@@ -64,11 +68,9 @@ public class DepartmentRoute extends HttpServlet {
         if (request.getParameter("id") != null)
             updatedDepartment= new DepartmentLogic().update(parseInt(request.getParameter("id")), department2Update);
 
-        String rawPayload;
+        String rawPayload = "<p>The department was not updated</p>";
         if (updatedDepartment != null)
-            rawPayload = new Object2TextParser().departmentDefaultForm();
-        else
-            rawPayload = "<p>The department was not updated</p>";
+            rawPayload = departmentDefaultForm();
 
         response.setContentType("text/html");
         response.addHeader("HX-Trigger", "newDepartment");

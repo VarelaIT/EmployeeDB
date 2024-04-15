@@ -61,7 +61,7 @@
                                 <form
                                     hx-post="./api/employee"
                                     hx-trigger="submit"
-                                    hx-swap="none"
+                                    hx-trigger="#table-form-container"
                                 >
                                 <td colspan='2'>
                                     <input name="name" placeholder="Employee name" required/>
