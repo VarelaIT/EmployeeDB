@@ -26,6 +26,14 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
        RETURNING id, name, description
     """;
 
+    public DepartmentRepository(){
+        super();
+    }
+
+    public DepartmentRepository(String test){
+        super(test);
+    }
+
     public  IPersistedDepartment save(IDepartment newDepartment) {
         try {
             PreparedStatement st = conn.prepareStatement(insertionQuery);

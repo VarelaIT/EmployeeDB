@@ -21,24 +21,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>employeeFormRow</servlet-name>
-        <jsp-file>/WEB-INF/comp/employeeFormRow.html</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>employeeFormRow</servlet-name>
-        <url-pattern>/employee/form/row</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>departmentFormRow</servlet-name>
-        <jsp-file>/WEB-INF/comp/departmentFormRow.html</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>departmentFormRow</servlet-name>
-        <url-pattern>/department/form/row</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>departments</servlet-name>
         <jsp-file>/WEB-INF/comp/departments.jsp</jsp-file>
     </servlet>

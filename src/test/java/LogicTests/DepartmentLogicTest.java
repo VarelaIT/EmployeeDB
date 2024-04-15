@@ -25,7 +25,7 @@ public class DepartmentLogicTest {
         TableSchemas.dropDepartmentsTable(conn);
         TableSchemas.createDepartmentsTable(conn);
         conn= null;
-        departmentRepository = new DepartmentRepository();
+        departmentRepository = new DepartmentRepository("test");
     }
 
     @Test

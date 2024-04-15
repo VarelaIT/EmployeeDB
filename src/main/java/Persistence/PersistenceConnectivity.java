@@ -18,9 +18,12 @@ public abstract class PersistenceConnectivity {
 
             conn = ds.getConnection();
         } catch (Exception e) {
-            //System.out.println("Connection pool error:\n\t" + e.getMessage());
-            this.nonWebEnvironment();
+            System.out.println("Connection pool error:\n\t" + e.getMessage());
         }
+    }
+    protected PersistenceConnectivity(String test){
+        if (test != null)
+            nonWebEnvironment();
     }
 
     protected void nonWebEnvironment(){

@@ -1,3 +1,4 @@
+import './htmx.js';
 const themeSwitcher = document.querySelector("#themeSwitch");
 
 function setTheme(theme = false){

@@ -25,6 +25,14 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
         WHERE e.id = ?
     """;
 
+    EmployeeRepository(){
+        super();
+    }
+
+    public EmployeeRepository(String test){
+        super(test);
+    }
+
     @Override
     public IPersistedEmployee save(IEmployee employee) {
         try {

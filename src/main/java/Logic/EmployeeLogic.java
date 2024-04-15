@@ -12,7 +12,7 @@ public class EmployeeLogic implements IEmployeeLogic {
     IEmployeeRepository employeeRepository;
 
     public EmployeeLogic(){
-        this.employeeRepository = new EmployeeRepository();
+        this.employeeRepository = new EmployeeRepository("test");
     }
 
     EmployeeLogic(IEmployeeRepository employeeRepository){

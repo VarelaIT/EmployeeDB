@@ -51,25 +51,6 @@ public class DepartmentRoute extends HttpServlet {
 
         String rawPayload = "<p>Request fail.<p>";
         if (department != null)
-            rawPayload = "<p hx-get='./department/form/row' hx-target='#table-form-container'>Succeed<p>";
-
-        response.setContentType("text/html");
-        response.addHeader("HX-Trigger", "newDepartment");
-        response.getWriter().append(rawPayload);
-    }
-
-    @Override
-    public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        IDepartmentRequest department2Update = new DepartmentRequest(
-            request.getParameter("department"),
-            request.getParameter("description")
-        );
-        IDepartmentResponse updatedDepartment = null;
-        if (request.getParameter("id") != null)
-            updatedDepartment= new DepartmentLogic().update(parseInt(request.getParameter("id")), department2Update);
-
-        String rawPayload = "<p>The department was not updated</p>";
-        if (updatedDepartment != null)
             rawPayload = departmentDefaultForm();
 
         response.setContentType("text/html");

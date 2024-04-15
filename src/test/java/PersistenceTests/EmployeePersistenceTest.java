@@ -27,7 +27,7 @@ public class EmployeePersistenceTest {
         TableSchemas.dropEmployeesTable(conn);
         TableSchemas.createEmployeesTable(conn);
         conn= null;
-        employeeRepository = new EmployeeRepository();
+        employeeRepository = new EmployeeRepository("test");
     }
 
     @Test
