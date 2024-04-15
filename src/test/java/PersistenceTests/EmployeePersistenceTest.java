@@ -74,7 +74,7 @@ public class EmployeePersistenceTest {
         java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1987").getTime());
         IEmployee employee = new Employee("Lary", "Figurereo", birthDate, null);
         IPersistedEmployee persistedEmployee = employeeRepository.save(employee);
-        IEmployee updateEmployee = new Employee("Ismael", "Varela", birthDate, 1);
+        IEmployee updateEmployee = new Employee("Ismael", "Varela", birthDate, null);
 
         int affectedRows = employeeRepository.update(persistedEmployee.getId(), updateEmployee);
 

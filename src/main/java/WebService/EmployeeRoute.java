@@ -29,7 +29,7 @@ public class EmployeeRoute extends HttpServlet {
             rawPayload = new Object2TextParser().buildEmployee(request.getParameter("mode"), inStorageEmployee);
         } else {
             List<IEmployeeResponse> inStorageEmployees = new EmployeeLogic().get();
-            for (IPersistedEmployee employee : inStorageEmployees) {
+            for (IEmployeeResponse employee : inStorageEmployees) {
                 String tableRow = new Object2TextParser().employeeTableRow(employee);
 
                 rawPayload = rawPayload.concat(tableRow);
@@ -43,11 +43,10 @@ public class EmployeeRoute extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws  IOException {
         int departmentId = parseInt(request.getParameter("departmentId"));
-        String birthDate = request.getParameter("birthDate");
         IEmployeeRequest employeeData =  new EmployeeRequest(
             request.getParameter("name"),
             request.getParameter("lastName"),
-            birthDate,
+            request.getParameter("birthDate"),
             departmentId
         );
 

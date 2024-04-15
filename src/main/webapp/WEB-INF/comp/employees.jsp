@@ -22,10 +22,10 @@
 
         <section>
             <header>
-                <h1>Departments</h1>
+                <h1>Employees</h1>
             </header>
 
-            <article id="deparments-table">
+            <article id="employee-table">
 
                 <div class="overflow-auto">
                     <table>
@@ -33,17 +33,17 @@
                             <tr>
                                 <th colspan='2'>Name</th>
                                 <th colspan='2'>Last Name</th>
-                                <th>Age</th>
+                                <th>Birth</th>
                                 <th colspan='2'>Department</th>
                                 <th>Id</th>
-                                <th colspan='2'>Options</th>
+                                <th colspan='3'>Options</th>
                             </tr>
                         </thead>
 
                         <tbody
                             id="employeesTableBody"
                             hx-get="./api/employee"
-                            hx-trigger="load, newEmployee form:body"
+                            hx-trigger="load, newEmployee from:body"
                             hx-swap="innerHTML"
                         >
                             <tr>
@@ -52,7 +52,7 @@
                                 <td>38</td>
                                 <td colspan='2'>R&D, department example.</td>
                                 <td>1</td>
-                                <td colspan='2'><button>Edit</button><button>Delete</button></td>
+                                <td colspan='3'><button>Edit</button><button>Delete</button></td>
                             </tr>
                         </tbody>
 
@@ -76,10 +76,10 @@
                                     <select name='departmentId' required
                                        hx-get='./api/department?mode=options'
                                        hx-trigger='load'
-                                       hx-swap='outterHTML'
+                                       hx-swap='innerHTML'
                                     >
                                         <option value='1'>R&D</option>
-                                    <select/>
+                                    </select>
                                 </td>
                                 <td>
                                 </td>

@@ -2,12 +2,12 @@ package WebService;
 
 import Logic.IDepartmentResponse;
 import Logic.IEmployeeResponse;
-import Persistence.IPersistedEmployee;
 
 public class Object2TextParser {
 
-    public String employeeTableRow(IPersistedEmployee employee){
+    public String employeeTableRow(IEmployeeResponse employee){
         String id = "" + employee.getId();
+        String department = employee.getDepartment() != null ? employee.getDepartment() : "";
         String birth = employee.getBirthDate().toString();
         String row = """
             <tr>
@@ -16,7 +16,7 @@ public class Object2TextParser {
                 <td>$birth</td>
                 <td colspan='2'>$department</td>
                 <td>$id</td>
-                <td colspan='2'><button
+                <td colspan='3'><button
                     hx-get='./api/employee?id=$id&mode=tableForm'
                     hx-trigger='click'
                     hx-target='#table-form-container'
@@ -34,12 +34,13 @@ public class Object2TextParser {
                 .replace("$name", employee.getName())
                 .replace("$lastName", employee.getLastName())
                 .replace("$birth", birth)
-                .replace("$department", employee.getDepartment())
+                .replace("$department", department)
                 .replace("$id", id);
     }
 
-    public String employeeFormRow(IPersistedEmployee employee){
+    public String employeeFormRow(IEmployeeResponse employee){
         String id = "" + employee.getId();
+        String depId = "" + employee.getDepartmentId();
         String birth = employee.getBirthDate().toString();
         String tableForm = """
             <tr><form
@@ -51,21 +52,23 @@ public class Object2TextParser {
             <td colspan='2'><input name='lastName' value='$lastName' placeholder='Employee lastName' required/></td>
             <td ><input name='birthDate' type='date' value='$birth' required/></td>
             <td>
-                <input name='id' value='$id' type='hidden' required  style='max-width: 200px;'/>
-                <select name='departmentId' required' value='$departmentId'
+                <select name='departmentId' required 
                    hx-get='./api/department?mode=options
                    hx-trigger='load'
+                   hx-swap='innerHTML'
                 >
-                    <option value='$departmentId'>$department</option>
-                <select/>
+                    <option value='$depId'>$department</option>
+                </select>
             </td>
-            <td colspan='2'><input type='submit' value='Edit'/></td>
+            <td><input name='id' value='$id' type='hidden' required  style='max-width: 200px;'/></td>
+            <td colspan='3'><input type='submit' value='Edit'/></td>
             </form></tr>
         """;
         return tableForm
                 .replace("$name", employee.getName())
                 .replace("$lastName", employee.getLastName())
                 .replace("$birth", birth)
+                .replace("$depId", depId)
                 .replace("$department", employee.getDepartment())
                 .replace("$id", id);
     }
