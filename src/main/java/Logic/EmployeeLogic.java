@@ -47,9 +47,13 @@ public class EmployeeLogic implements IEmployeeLogic {
     @Override
     public List<IEmployeeResponse> get() {
         List<IEmployeeResponse> affectedEmployees = new ArrayList<IEmployeeResponse>();
-        employeeRepository.get().forEach(employee ->
-                affectedEmployees.add(new EmployeeResponse(employee))
-        );
+        var response = employeeRepository.get();
+
+        if (!response.isEmpty()){
+            response.forEach(employee ->
+                    affectedEmployees.add(new EmployeeResponse(employee))
+            );
+        }
 
         return affectedEmployees;
     }

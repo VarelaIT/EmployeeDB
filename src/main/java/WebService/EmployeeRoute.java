@@ -28,10 +28,14 @@ public class EmployeeRoute extends HttpServlet {
             rawPayload = buildEmployee(request.getParameter("mode"), inStorageEmployee);
         } else {
             List<IEmployeeResponse> inStorageEmployees = new EmployeeLogic().get();
-            for (IEmployeeResponse employee : inStorageEmployees) {
-                String tableRow = employeeTableRow(employee);
+            if (inStorageEmployees.isEmpty())
+                rawPayload= "<p>Nothing to show.</p>";
+            else {
+                for (IEmployeeResponse employee : inStorageEmployees) {
+                    String tableRow = employeeTableRow(employee);
 
-                rawPayload = rawPayload.concat(tableRow);
+                    rawPayload = rawPayload.concat(tableRow);
+                }
             }
         }
 
