@@ -19,16 +19,20 @@ public class DepartmentRoute extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String mode = request.getParameter("mode") != null? request.getParameter("mode") : "";
-        String rawPayload = "";
+        String rawPayload = "<p>Department not found.<p>";
 
         if (request.getParameter("id") != null){
             IDepartmentResponse inStorageDepartment = new DepartmentLogic().get(parseInt(request.getParameter("id")));
-            rawPayload = buildDepartment(mode, inStorageDepartment);
+            if (inStorageDepartment != null)
+                rawPayload = buildDepartment(mode, inStorageDepartment);
         } else {
             List<IDepartmentResponse> inStorageDepartments = new DepartmentLogic().get();
-            for (IDepartmentResponse department : inStorageDepartments) {
-                String parsedDepartment = buildDepartment(mode, department);
-                rawPayload = rawPayload.concat(parsedDepartment);
+            if (inStorageDepartments != null) {
+                rawPayload = "";
+                for (IDepartmentResponse department : inStorageDepartments) {
+                    String parsedDepartment = buildDepartment(mode, department);
+                    rawPayload = rawPayload.concat(parsedDepartment);
+                }
             }
         }
 

@@ -49,7 +49,7 @@ public class EmployeeLogic implements IEmployeeLogic {
         List<IEmployeeResponse> affectedEmployees = new ArrayList<IEmployeeResponse>();
         var response = employeeRepository.get();
 
-        if (!response.isEmpty()){
+        if (response != null){
             response.forEach(employee ->
                     affectedEmployees.add(new EmployeeResponse(employee))
             );

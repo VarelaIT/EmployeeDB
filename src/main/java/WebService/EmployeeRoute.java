@@ -28,7 +28,7 @@ public class EmployeeRoute extends HttpServlet {
             rawPayload = buildEmployee(request.getParameter("mode"), inStorageEmployee);
         } else {
             List<IEmployeeResponse> inStorageEmployees = new EmployeeLogic().get();
-            if (inStorageEmployees.isEmpty())
+            if (inStorageEmployees == null)
                 rawPayload= "<p>Nothing to show.</p>";
             else {
                 for (IEmployeeResponse employee : inStorageEmployees) {

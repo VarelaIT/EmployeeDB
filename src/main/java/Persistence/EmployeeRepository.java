@@ -35,6 +35,8 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
 
     @Override
     public IPersistedEmployee save(IEmployee employee) {
+        IPersistedEmployee response = null;
+
         try {
             PreparedStatement st = conn.prepareStatement(insertionQuery);
             st.setString(1, employee.getName());
@@ -47,18 +49,20 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
 
             ResultSet result = st.executeQuery();
 
-            result.next();
-            int id = result.getInt("id");
-            String name = result.getString("name");
-            String lastName = result.getString("last_name");
-            Date birthDate = result.getDate("birth_date");
-            int evaluate = result.getInt("department_id");
-            Integer departmentId = evaluate == 0 ? null : evaluate;
+            if(result.next()) {
+                int id = result.getInt("id");
+                String name = result.getString("name");
+                String lastName = result.getString("last_name");
+                Date birthDate = result.getDate("birth_date");
+                int evaluate = result.getInt("department_id");
+                Integer departmentId = evaluate == 0 ? null : evaluate;
+                response = new PersistedEmployee(id, name, lastName, birthDate, departmentId, null);
+            }
 
             result.close();
             st.close();
 
-            return new PersistedEmployee(id, name, lastName, birthDate, departmentId, null);
+            return response;
         } catch (Exception e){
             System.out.println("Create, Employee Persistence log.\n\t" + e.getMessage());
         }
