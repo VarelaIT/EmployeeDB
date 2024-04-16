@@ -17,13 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DepartmentPersistenceTest {
 
     public IDepartmentRepository departmentRepository;
+    public String test = "test";
 
     DepartmentPersistenceTest(){
-        Connection conn = new DBConn().getConn();
-        TableSchemas.dropDepartmentsTable(conn);
-        TableSchemas.createDepartmentsTable(conn);
-        conn= null;
-        departmentRepository = new DepartmentRepository("test");
+        TableSchemas.dropDepartmentsTable(test);
+        TableSchemas.createDepartmentsTable(test);
+        departmentRepository = new DepartmentRepository(test);
     }
 
     @Test

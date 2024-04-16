@@ -6,9 +6,12 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.sql.Connection;
 
-public abstract class PersistenceConnectivity {
-    public Connection conn;
-    protected PersistenceConnectivity(){
+public class PersistenceConnectivity {
+
+    public static Connection get(String test){
+        if (test != null)
+            return new DBConn().getConn();
+
         try{
             InitialContext cxt = new InitialContext();
             DataSource ds = (DataSource) cxt.lookup( "java:/comp/env/jdbc/postgres" );
@@ -16,17 +19,11 @@ public abstract class PersistenceConnectivity {
             if ( ds == null )
                 throw new Exception("Data source not found!");
 
-            conn = ds.getConnection();
+            return ds.getConnection();
         } catch (Exception e) {
             System.out.println("Connection pool error:\n\t" + e.getMessage());
         }
-    }
-    protected PersistenceConnectivity(String test){
-        if (test != null)
-            nonWebEnvironment();
+        return null;
     }
 
-    protected void nonWebEnvironment(){
-         conn = new DBConn().getConn();
-    }
 }

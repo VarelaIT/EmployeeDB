@@ -1,15 +1,14 @@
 package Logic;
 
-import Persistence.PersistenceConnectivity;
 import Persistence.TableSchemas;
 
-public class Setup extends PersistenceConnectivity implements IStorageSetup {
+public class Setup implements IStorageSetup {
 
     public boolean formatStorage(){
-        TableSchemas.dropDepartmentsTable(conn);
-        TableSchemas.createDepartmentsTable(conn);
-        TableSchemas.dropEmployeesTable(conn);
-        TableSchemas.createEmployeesTable(conn);
+        TableSchemas.dropDepartmentsTable(null);
+        TableSchemas.createDepartmentsTable(null);
+        TableSchemas.dropEmployeesTable(null);
+        TableSchemas.createEmployeesTable(null);
         return true;
     }
 }

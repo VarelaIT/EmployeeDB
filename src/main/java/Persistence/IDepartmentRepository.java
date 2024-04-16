@@ -12,5 +12,4 @@ public interface IDepartmentRepository {
     List<IPersistedDepartment> getAll();
     IPersistedDepartment update(int id, IDepartment department);
     IPersistedDepartment delete(int id);
-    void distroy() throws SQLException;
 }

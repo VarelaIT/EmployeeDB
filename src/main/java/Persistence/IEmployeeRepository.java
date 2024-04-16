@@ -11,5 +11,4 @@ public interface IEmployeeRepository {
     List<IPersistedEmployee> get();
     int update(int id, IEmployee employee);
     IPersistedEmployee delete(int id);
-    void distroy() throws SQLException;
 }

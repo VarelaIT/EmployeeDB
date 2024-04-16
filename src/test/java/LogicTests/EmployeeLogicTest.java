@@ -14,13 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeeLogicTest {
 
-    private IEmployeeLogic employeeLogic;
+    private final IEmployeeLogic employeeLogic;
+    public String test = "test";
     public EmployeeLogicTest(){
-        Connection conn = new DBConn().getConn();
-        TableSchemas.dropEmployeesTable(conn);
-        TableSchemas.createEmployeesTable(conn);
-        conn= null;
-        employeeLogic = new EmployeeLogic("test");
+        TableSchemas.dropEmployeesTable(test);
+        TableSchemas.createEmployeesTable(test);
+        employeeLogic = new EmployeeLogic(test);
     }
 
     @Test

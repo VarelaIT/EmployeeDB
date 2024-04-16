@@ -5,11 +5,9 @@ import Entities.Employee;
 import Persistence.IPersistedEmployee;
 import Persistence.EmployeeRepository;
 import Persistence.IEmployeeRepository;
-import Persistence.JDBC.DBConn;
 import Persistence.TableSchemas;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,14 +18,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EmployeePersistenceTest {
 
     private final IEmployeeRepository employeeRepository;
-    private DateFormat bdObj= new SimpleDateFormat("dd-MM-yyyy");
+    private final DateFormat bdObj= new SimpleDateFormat("dd-MM-yyyy");
 
+    public String test = "test";
     EmployeePersistenceTest(){
-        Connection conn = new DBConn().getConn();
-        TableSchemas.dropEmployeesTable(conn);
-        TableSchemas.createEmployeesTable(conn);
-        conn= null;
-        employeeRepository = new EmployeeRepository("test");
+        TableSchemas.dropEmployeesTable(test);
+        TableSchemas.createEmployeesTable(test);
+        employeeRepository = new EmployeeRepository(test);
     }
 
     @Test

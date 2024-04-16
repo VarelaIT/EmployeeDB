@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 
 public class TableSchemas {
-    public static void createDepartmentsTable(Connection conn) {
+    public static void createDepartmentsTable(String test) {
         String creationQuery =
                 "CREATE TABLE"
                         + " IF NOT EXISTS"
@@ -15,7 +15,7 @@ public class TableSchemas {
                         + " description VARCHAR(128)"
                         + ")";
 
-        try {
+        try (Connection conn = PersistenceConnectivity.get(test)){
             Statement st = conn.createStatement();
             st.executeUpdate(creationQuery);
             st.close();
@@ -24,7 +24,7 @@ public class TableSchemas {
         }
     }
 
-    public static void createEmployeesTable(Connection conn) {
+    public static void createEmployeesTable(String test) {
         String creationQuery =
                 "CREATE TABLE"
                         + " IF NOT EXISTS"
@@ -37,7 +37,7 @@ public class TableSchemas {
                         + " department_id smallint references departments (id)"
                         + ")";
 
-        try {
+        try (Connection conn = PersistenceConnectivity.get(test)){
             Statement st = conn.createStatement();
             st.executeUpdate(creationQuery);
             st.close();
@@ -47,11 +47,11 @@ public class TableSchemas {
     }
 
 
-    public static void dropEmployeesTable(Connection conn) {
+    public static void dropEmployeesTable(String test) {
         String creationQuery =
                 "DROP TABLE employees CASCADE";
 
-        try {
+        try (Connection conn = PersistenceConnectivity.get(test)){
             Statement st = conn.createStatement();
             st.executeUpdate(creationQuery);
             st.close();
@@ -60,11 +60,11 @@ public class TableSchemas {
         }
     }
 
-    public static void dropDepartmentsTable(Connection conn) {
+    public static void dropDepartmentsTable(String test) {
         String creationQuery =
             "DROP TABLE departments CASCADE";
 
-        try {
+        try (Connection conn = PersistenceConnectivity.get(test)){
             Statement st = conn.createStatement();
             st.executeUpdate(creationQuery);
             st.close();

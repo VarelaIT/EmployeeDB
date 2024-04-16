@@ -17,13 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DepartmentLogicTest {
 
     public IDepartmentLogic departmentLogic;
+    public String test = "test";
 
     DepartmentLogicTest(){
-        Connection conn = new DBConn().getConn();
-        TableSchemas.dropDepartmentsTable(conn);
-        TableSchemas.createDepartmentsTable(conn);
-        conn= null;
-        departmentLogic = new DepartmentLogic("test");
+        TableSchemas.dropDepartmentsTable(test);
+        TableSchemas.createDepartmentsTable(test);
+        departmentLogic = new DepartmentLogic(test);
     }
 
     @Test

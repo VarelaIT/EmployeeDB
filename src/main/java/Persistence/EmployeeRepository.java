@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeRepository extends PersistenceConnectivity implements IEmployeeRepository{
+public class EmployeeRepository implements IEmployeeRepository{
 
     protected String insertionQuery = """
         INSERT INTO employees (name, last_name, birth_date, department_id) VALUES (?, ?, ?, ?)
@@ -25,19 +25,20 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
         WHERE e.id = ?
     """;
 
+    private String test = null;
+
     public EmployeeRepository(){
-        super();
     }
 
     public EmployeeRepository(String test){
-        super(test);
+        this.test = test;
     }
 
     @Override
     public IPersistedEmployee save(IEmployee employee) {
         IPersistedEmployee response = null;
 
-        try {
+        try (Connection conn = PersistenceConnectivity.get(test)){
             PreparedStatement st = conn.prepareStatement(insertionQuery);
             st.setString(1, employee.getName());
             st.setString(2, employee.getLastName());
@@ -74,7 +75,8 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
     @Override
     public IPersistedEmployee get(int id) {
         IPersistedEmployee persistedEmployee = null;
-        try {
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
             PreparedStatement stm = conn.prepareStatement(selectOneQuery);
             stm.setInt(1, id);
             ResultSet result = stm.executeQuery();
@@ -105,7 +107,7 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
     public List<IPersistedEmployee> get() {
         List<IPersistedEmployee> response = new ArrayList<IPersistedEmployee>();
 
-        try {
+        try (Connection conn = PersistenceConnectivity.get(test)){
             Statement stm = conn.createStatement();
             ResultSet result = stm.executeQuery(selectAllQuery);
             while(result.next()) {
@@ -137,7 +139,7 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
     public int update(int id, IEmployee employee){
         int affectedRows = 0;
 
-        try {
+        try (Connection conn = PersistenceConnectivity.get(test)){
             PreparedStatement st = conn.prepareStatement(updateQuery);
             st.setString(1, employee.getName());
             st.setString(2, employee.getLastName());
@@ -167,7 +169,7 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
         if (targetEmployee == null)
             return  null;
 
-        try {
+        try (Connection conn = PersistenceConnectivity.get(test)){
             PreparedStatement st = conn.prepareStatement(deleteOneQuery);
             st.setInt(1, targetEmployee.getId());
             int affectedRows = st.executeUpdate();
@@ -182,13 +184,4 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
         return targetEmployee;
     }
 
-    @Override
-    public void distroy() {
-        try {
-            conn.close();
-            conn = null;
-        } catch (SQLException e) {
-            System.out.println("Error while closing the connection.\n\t" + e.getMessage());
-        }
-    }
 }

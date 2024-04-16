@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DepartmentRepository extends PersistenceConnectivity  implements IDepartmentRepository{
+public class DepartmentRepository implements IDepartmentRepository{
     public String seletAllQuery = "SELECT id, name, description FROM departments";
     public String seletOneQuery = "SELECT id, name, description FROM departments WHERE id = ?";
     public String deleteOneQuery = "DELETE FROM departments WHERE id = ?";
@@ -26,16 +26,17 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
        RETURNING id, name, description
     """;
 
+    private String test = null;
+
     public DepartmentRepository(){
-        super();
     }
 
     public DepartmentRepository(String test){
-        super(test);
+        this.test = test;
     }
 
     public  IPersistedDepartment save(IDepartment newDepartment) {
-        try {
+        try (Connection conn = PersistenceConnectivity.get(test)){
             PreparedStatement st = conn.prepareStatement(insertionQuery);
             st.setString(1, newDepartment.getName());
             st.setString(2, newDepartment.getDescription());
@@ -59,7 +60,7 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
     }
 
     public  IPersistedDepartment update(int id, IDepartment department) {
-        try {
+        try (Connection conn = PersistenceConnectivity.get(test)){
             PreparedStatement st = conn.prepareStatement(updateQuery);
             st.setString(1, department.getName());
             st.setString(2, department.getDescription());
@@ -88,7 +89,8 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
 
     public IPersistedDepartment get(int id) {
         IPersistedDepartment persistedDepartment = null;
-        try {
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
             PreparedStatement stm = conn.prepareStatement(seletOneQuery);
             stm.setInt(1, id);
             ResultSet result = stm.executeQuery();
@@ -115,7 +117,7 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
     public List<IPersistedDepartment> getAll() {
         List<IPersistedDepartment> response = new ArrayList<IPersistedDepartment>();
 
-        try {
+        try (Connection conn = PersistenceConnectivity.get(test)){
             Statement stm = conn.createStatement();
             ResultSet result = stm.executeQuery(seletAllQuery);
             while(result.next()) {
@@ -143,7 +145,7 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
         if (department == null)
             return null;
 
-        try {
+        try (Connection conn = PersistenceConnectivity.get(test)){
             PreparedStatement st = conn.prepareStatement(deleteOneQuery);
             st.setInt(1, department.getId());
             int affectedRows = st.executeUpdate();
@@ -156,16 +158,6 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
         }
 
         return department;
-    }
-
-    @Override
-    public void distroy() {
-        try {
-            conn.close();
-            conn = null;
-        } catch (SQLException e) {
-            System.out.println("Error while closing the connection.\n\t" + e.getMessage());
-        }
     }
 
 }
