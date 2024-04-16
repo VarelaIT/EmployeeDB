@@ -33,15 +33,17 @@ public class DepartmentLogic implements IDepartmentLogic{
 
     public IDepartmentResponse get(int id){
         IPersistedDepartment response = departmentRepository.get(id);
+        departmentRepository.distroy();
 
-        if(response != null)
-            return new DepartmentResponse(response);
+        if(response == null)
+            return null;
 
-        return null;
+        return new DepartmentResponse(response);
     }
 
     public IDepartmentResponse save(IDepartmentRequest departmentRequest) {
         IPersistedDepartment response = departmentRepository.save(departmentRequest);
+        departmentRepository.distroy();
 
         if (response != null)
             return new DepartmentResponse(response);

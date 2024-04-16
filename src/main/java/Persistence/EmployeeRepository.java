@@ -162,7 +162,7 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
     private String deleteOneQuery = "DELETE FROM employees WHERE id = ?";
     @Override
     public IPersistedEmployee delete(int id) {
-        IPersistedEmployee targetEmployee = this.get(id);
+        IPersistedEmployee targetEmployee = get(id);
 
         if (targetEmployee == null)
             return  null;
@@ -180,5 +180,15 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
         }
 
         return targetEmployee;
+    }
+
+    @Override
+    public void distroy() {
+        try {
+            conn.close();
+            conn = null;
+        } catch (SQLException e) {
+            System.out.println("Error while closing the connection.\n\t" + e.getMessage());
+        }
     }
 }

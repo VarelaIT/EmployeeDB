@@ -3,6 +3,7 @@ package Persistence;
 import Entities.IDepartment;
 import Entities.IPersistedDepartment;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface IDepartmentRepository {
@@ -11,4 +12,5 @@ public interface IDepartmentRepository {
     List<IPersistedDepartment> getAll();
     IPersistedDepartment update(int id, IDepartment department);
     IPersistedDepartment delete(int id);
+    void distroy() throws SQLException;
 }

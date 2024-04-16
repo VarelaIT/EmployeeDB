@@ -85,4 +85,13 @@ public class DepartmentLogicTest {
         assertNull(notFoundDepartment);
     }
 
+    @Test
+    void deleteNoneExistingDepartment(){
+        int id = 100;
+
+        IDepartmentResponse notFoundDepartment= departmentLogic.delete(id);
+
+        assertNull(notFoundDepartment);
+    }
+
 }

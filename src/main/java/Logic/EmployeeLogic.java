@@ -70,7 +70,11 @@ public class EmployeeLogic implements IEmployeeLogic {
 
     @Override
     public IEmployeeResponse delete(int id) {
-        IEmployeeResponse deleted = new EmployeeResponse(employeeRepository.delete(id));
-        return deleted;
+        IPersistedEmployee response = employeeRepository.delete(id);
+
+        if (response == null)
+            return null;
+
+        return new EmployeeResponse(response);
     }
 }

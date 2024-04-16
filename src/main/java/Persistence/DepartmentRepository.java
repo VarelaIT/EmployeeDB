@@ -140,6 +140,9 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
     public IPersistedDepartment delete(int id){
         IPersistedDepartment department = get(id);
 
+        if (department == null)
+            return null;
+
         try {
             PreparedStatement st = conn.prepareStatement(deleteOneQuery);
             st.setInt(1, department.getId());
@@ -153,6 +156,16 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
         }
 
         return department;
+    }
+
+    @Override
+    public void distroy() {
+        try {
+            conn.close();
+            conn = null;
+        } catch (SQLException e) {
+            System.out.println("Error while closing the connection.\n\t" + e.getMessage());
+        }
     }
 
 }

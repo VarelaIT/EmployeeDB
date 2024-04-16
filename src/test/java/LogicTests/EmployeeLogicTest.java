@@ -80,4 +80,13 @@ public class EmployeeLogicTest {
         assertEquals(storedEmployee.getId(), deletedEmployee.getId());
         assertNull(notFoundEmployee);
     }
+
+    @Test
+    public void deleteNoneExisingEmployee() throws ParseException {
+        int id = 100;
+
+        IEmployeeResponse notFoundEmployee = employeeLogic.delete(id);
+
+        assertNull(notFoundEmployee);
+    }
 }
