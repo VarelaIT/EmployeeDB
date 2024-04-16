@@ -53,15 +53,15 @@ public class Object2TextParser {
             <td ><input name='birthDate' type='date' value='$birth' required/></td>
             <td>
                 <select name='departmentId' required 
-                   hx-get='./api/department?mode=options
+                   hx-get='./api/department?mode=options'
                    hx-trigger='load'
                    hx-swap='innerHTML'
                 >
                     <option value='$depId'>$department</option>
                 </select>
             </td>
-            <td><input name='id' value='$id' type='hidden' required  style='max-width: 200px;'/></td>
-            <td colspan='3'><input type='submit' value='Edit'/></td>
+            <td><input name='id' value='$id' type='hidden' required  max-width='200px'/></td>
+            <td><input type='submit' value='Edit'/></td>
             </form></tr>
         """;
         return tableForm

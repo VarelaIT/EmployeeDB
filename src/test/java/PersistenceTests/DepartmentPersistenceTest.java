@@ -36,6 +36,18 @@ public class DepartmentPersistenceTest {
     }
 
     @Test
+    public void persistingInvalidDepartment(){
+        IDepartment department = new Department("", "Human Resources.");
+        IDepartment departmentb = new Department("", "Human Resources.");
+        IPersistedDepartment result = departmentRepository.save(department);
+
+        IPersistedDepartment resultb = departmentRepository.save(departmentb);
+
+        assertTrue(result.getId() > 0);
+        assertNull(resultb);
+    }
+
+    @Test
     public void getPersistedDepartment() {
         IDepartment department = new Department("R&D", "Research and Development.");
         IPersistedDepartment persisted = departmentRepository.save(department);

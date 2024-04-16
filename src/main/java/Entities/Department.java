@@ -2,6 +2,9 @@ package Entities;
 
 public class Department extends AbstractDepartment implements IDepartment{
     public Department(String name, String description) {
+        if (name == null | description == null)
+            throw new RuntimeException("The department values are invalid.");
+
         this.name = name;
         this.description = description;
     }

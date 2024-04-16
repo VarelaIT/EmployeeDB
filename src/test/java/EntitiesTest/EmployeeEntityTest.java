@@ -4,40 +4,42 @@ import Entities.Employee;
 import Entities.IEmployee;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeeEntityTest {
 
-    public IEmployee employ;
-    public String name = "Ismael";
-    public String lastName = "Varela";
-    public java.sql.Date birthDate ;
-    public Integer deparmentId = null;
-
-    EmployeeEntityTest() throws ParseException {
-        DateFormat bdObj= new SimpleDateFormat("dd-MM-yyyy");
-        birthDate = new java.sql.Date(bdObj.parse("02-04-2000").getTime());
-        employ = new Employee(name, lastName,  birthDate, deparmentId);
-    }
-
+    private final DateFormat bdObj= new SimpleDateFormat("yyyy-MM-dd");
 
     @Test
-    public void gettingName(){
-        assertEquals(name, employ.getName());
-    }
+    public void validConstuctor() throws ParseException {
+        String name = "Ismael";
+        String lastName = "Varela";
+        Date birthDate = new Date(bdObj.parse("1987-10-12").getTime());
+        Integer departmentId = 1;
 
-    @Test
-    public void gettingLastName(){
-        assertEquals(lastName, employ.getLastName());
+        Employee employee = new Employee(name, lastName, birthDate, departmentId);
+
+        assertNotNull(employee);
+        assertEquals(birthDate.toString(), employee.getBirthDate().toString());
+        assertEquals(name, employee.getName());
+        assertEquals(lastName, employee.getLastName());
     }
 
     @Test
-    public void gettingBirthDate(){
-        assertEquals(birthDate.toString(), employ.getBirthDate().toString());
+    public void inValidConstuctor() throws ParseException {
+        String name = null;
+        String lastName = "Varela";
+        Date birthDate = new Date(bdObj.parse("1987-10-12").getTime());
+        Integer departmentId = 1;
+
+        assertThrows(RuntimeException.class, () -> {
+            Employee employee = new Employee(name, lastName, birthDate, departmentId);
+        });
     }
 
 }

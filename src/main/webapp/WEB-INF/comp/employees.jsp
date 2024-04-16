@@ -36,7 +36,7 @@
                                 <th>Birth</th>
                                 <th colspan='2'>Department</th>
                                 <th>Id</th>
-                                <th colspan='3'>Options</th>
+                                <th colspan='3' style="min-width: 300px;">Options</th>
                             </tr>
                         </thead>
 

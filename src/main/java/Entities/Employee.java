@@ -6,6 +6,9 @@ public class Employee extends HumanResourse implements IEmployee{
     public Integer departmentId = null;
 
     public Employee(String name, String lastName, java.sql.Date birthDate, Integer dpId) {
+        if (name == null | lastName == null | birthDate == null | dpId == null)
+            throw new RuntimeException("The employee can not be instanced because invalid parameter.");
+
         this.name = name;
         this.lastName = lastName;
         this.birthDate = birthDate;

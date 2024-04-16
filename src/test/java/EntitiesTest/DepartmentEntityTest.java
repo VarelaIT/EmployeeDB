@@ -4,28 +4,37 @@ import Entities.Department;
 import Entities.IDepartment;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DepartmentEntityTest {
 
-    public IDepartment department;
-    public String name = "HHRR";
-    public String description = "Human Resourses";
-
-    DepartmentEntityTest() {
-        department = new Department(name, description);
-    }
-
     @Test
-    public void constructor(){
+    public void validConstructor(){
+        var name = "HHRR";
+        var description = "Human Resources";
+
+        var department = new Department(name,description);
+
         assertSame(department.getName(), name);
         assertSame(department.getDescription(), description);
     }
 
     @Test
+    public void invalidConstructor(){
+        String name = null;
+        String description = null;
+
+        assertThrows(RuntimeException.class, () -> {
+            Department department = new Department(name, description);
+        });
+    }
+
+    @Test
     public void settingAndGettingName(){
-        String newName = "Manases";
+        var name = "HHRR";
+        var description = "Human Resources";
+        var department = new Department(name,description);
+        var newName = "Music";
 
         department.setName(newName);
 
@@ -34,7 +43,10 @@ public class DepartmentEntityTest {
 
     @Test
     public void settingAndGettingDescription(){
-        String newDescription = "Lovera";
+        var name = "HHRR";
+        var description = "Human Resources";
+        var department = new Department(name,description);
+        String newDescription = "The new description";
 
         department.setDescription(newDescription);
 

@@ -34,7 +34,7 @@
                                 <th colspan="2">Department</th>
                                 <th colspan="3">Description</th>
                                 <th>Id</th>
-                                <th colspan="2">Options</th>
+                                <th colspan="2" min-width='250px'>Options</th>
                             </tr>
                         </thead>
 

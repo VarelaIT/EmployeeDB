@@ -167,11 +167,10 @@ public class EmployeeRepository extends PersistenceConnectivity implements IEmpl
             PreparedStatement st = conn.prepareStatement(deleteOneQuery);
             st.setInt(1, targetEmployee.getId());
             int affectedRows = st.executeUpdate();
+            st.close();
 
             if (affectedRows != 1)
                 return null;
-
-            st.close();
         } catch (Exception e) {
             System.out.println("Delete, Employee Persistence log.\n\t" + e.getMessage());
         }

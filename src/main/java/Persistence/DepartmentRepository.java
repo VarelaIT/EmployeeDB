@@ -144,11 +144,10 @@ public class DepartmentRepository extends PersistenceConnectivity  implements ID
             PreparedStatement st = conn.prepareStatement(deleteOneQuery);
             st.setInt(1, department.getId());
             int affectedRows = st.executeUpdate();
+            st.close();
 
             if (affectedRows != 1)
                 return null;
-
-            st.close();
         } catch (Exception e) {
             System.out.println("Persistence logs error while deleting the department.\n\t" + e.getMessage());
         }

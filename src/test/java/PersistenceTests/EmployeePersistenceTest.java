@@ -33,7 +33,7 @@ public class EmployeePersistenceTest {
     @Test
     public void persistEmployee() throws ParseException {
         java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1987").getTime());
-        Integer departmentID = null;
+        Integer departmentID = 1;
         IEmployee employee = new Employee("Ismael", "Varela", birthDate, departmentID);
 
         IPersistedEmployee persistedEmployee = employeeRepository.save(employee);
@@ -47,7 +47,7 @@ public class EmployeePersistenceTest {
     @Test
     public void getPersistedEmployee() throws ParseException {
         java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1993").getTime());
-        IEmployee employee = new Employee("Juan Elias", "Rodriguez", birthDate, null);
+        IEmployee employee = new Employee("Juan Elias", "Rodriguez", birthDate, 1);
         IPersistedEmployee newEmployee = employeeRepository.save(employee);
 
         IPersistedEmployee sameEmployee = employeeRepository.get(newEmployee.getId());
@@ -59,8 +59,8 @@ public class EmployeePersistenceTest {
     @Test
     public void getPersistedEmployeesList() throws ParseException {
         java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1999").getTime());
-        IEmployee employeeA = new Employee("Juan", "Rodriguez", birthDate, null);
-        IEmployee employeeB = new Employee("Elias", "Mejia", birthDate, null);
+        IEmployee employeeA = new Employee("Juan", "Rodriguez", birthDate, 1);
+        IEmployee employeeB = new Employee("Elias", "Mejia", birthDate, 1);
         IPersistedEmployee newEmployeeA = employeeRepository.save(employeeA);
         IPersistedEmployee newEmployeeB = employeeRepository.save(employeeB);
 
@@ -72,9 +72,9 @@ public class EmployeePersistenceTest {
     @Test
     public void  updatePersistedEmployee() throws ParseException {
         java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1987").getTime());
-        IEmployee employee = new Employee("Lary", "Figurereo", birthDate, null);
+        IEmployee employee = new Employee("Lary", "Figurereo", birthDate, 1);
         IPersistedEmployee persistedEmployee = employeeRepository.save(employee);
-        IEmployee updateEmployee = new Employee("Ismael", "Varela", birthDate, null);
+        IEmployee updateEmployee = new Employee("Ismael", "Varela", birthDate, 1);
 
         int affectedRows = employeeRepository.update(persistedEmployee.getId(), updateEmployee);
 
@@ -86,7 +86,7 @@ public class EmployeePersistenceTest {
     @Test
     public void deletePersistedEmployee() throws ParseException {
         java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1987").getTime());
-        IEmployee employee = new Employee("Ramon", "De Leon", birthDate, null);
+        IEmployee employee = new Employee("Ramon", "De Leon", birthDate, 1);
         IPersistedEmployee persistedEmployee = employeeRepository.save(employee);
 
         IPersistedEmployee deletedEmployee = employeeRepository.delete(persistedEmployee.getId());
