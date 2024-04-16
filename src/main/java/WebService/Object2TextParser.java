@@ -46,7 +46,7 @@ public class Object2TextParser {
             <tr><form
             hx-post='./api/employee'
             hx-trigger='submit'
-            hx-trigger="#table-form-container"
+            hx-target="#table-form-container"
             >
             <td colspan='2'><input name='name' value='$name' placeholder='Employee name' required/></td>
             <td colspan='2'><input name='lastName' value='$lastName' placeholder='Employee lastName' required/></td>
@@ -86,7 +86,7 @@ public class Object2TextParser {
                 <form
                         hx-post="./api/employee"
                         hx-trigger="submit"
-                        hx-trigger="#table-form-container"
+                        hx-target="#table-form-container"
                 >
                     <td colspan='2'>
                         <input name="name" placeholder="Employee name" required/>

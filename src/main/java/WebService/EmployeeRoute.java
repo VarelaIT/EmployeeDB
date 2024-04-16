@@ -72,12 +72,12 @@ public class EmployeeRoute extends HttpServlet {
     @Override
     public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        String rawPayload = "<p>The employee could not be deleted.</p>";
+        String rawPayload = "<p>The employee could not be deleted. Try again.</p>";
 
         if (request.getParameter("id") != null) {
             IEmployeeResponse deletedEmployee = new EmployeeLogic().delete(parseInt(request.getParameter("id")));
             if(deletedEmployee != null)
-                rawPayload = "<p>The employee was deleted successfully!.</p>";
+                rawPayload = employeeDefaultForm();
         }
 
         response.setContentType("text/html");

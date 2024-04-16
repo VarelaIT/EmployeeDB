@@ -70,7 +70,7 @@ public class DepartmentRoute extends HttpServlet {
         if (request.getParameter("id") != null) {
             IDepartmentResponse deletedDepartment = new DepartmentLogic().delete(parseInt(request.getParameter("id")));
             if(deletedDepartment != null)
-                rawPayload = "<p>The department was deleted successfully!.</p>";
+                rawPayload = departmentDefaultForm();
         }
 
         response.setContentType("text/html");
