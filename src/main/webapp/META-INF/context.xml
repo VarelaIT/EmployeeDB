@@ -1,7 +1,18 @@
 <Context>
-    <Resource name="jdbc/postgres" auth="Container"
-              type="javax.sql.DataSource" driverClassName="org.postgresql.Driver"
+    <Resource name="jdbc/postgres"
+              auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="org.postgresql.Driver"
               url="jdbc:postgresql://127.0.0.1:5432/employee_db"
-              username="remoteuser" password="remoteuser" maxTotal="20" maxIdle="10"
-              maxWaitMillis="2000"/>
+              username="remoteuser"
+              password="remoteuser"
+              maxTotal="10"
+              maxIdle="5"
+              logAbandoned="true"
+              removeAbandonedTimeout="60"
+              removeAbandonedOnBorrow="true"
+              removeAbandonedOnMaintenance="true"
+              maxWaitMillis="2000"
+    />
+
 </Context>
