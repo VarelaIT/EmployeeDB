@@ -6,6 +6,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,6 +17,8 @@ import static java.lang.Integer.parseInt;
 
 @WebServlet("/api/department")
 public class DepartmentRoute extends HttpServlet {
+
+    //private static final Logger logger = LogManager.getLogger("regular");
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

@@ -3,12 +3,15 @@ package Logic;
 import Persistence.EmployeeRepository;
 import Persistence.IEmployeeRepository;
 import Persistence.IPersistedEmployee;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeLogic implements IEmployeeLogic {
 
+    private static final Logger logger = LogManager.getLogger("regular");
     IEmployeeRepository employeeRepository;
 
     public EmployeeLogic(){
@@ -20,28 +23,36 @@ public class EmployeeLogic implements IEmployeeLogic {
     }
 
     @Override
-    public IEmployeeResponse save(IEmployeeRequest employee) {
-        IEmployeeResponse storedEmployee = new EmployeeResponse(employeeRepository.save(employee));
+    public IEmployeeResponse save(IEmployeeRequest employeeRequest) {
+        IPersistedEmployee storedEmployee= employeeRepository.save(employeeRequest);
 
-        if(storedEmployee == null)
-            throw new RuntimeException("The new employee could not be stored in this service. Please try again latter.");
+        if (storedEmployee != null)
+            return new EmployeeResponse(storedEmployee);
 
-        return storedEmployee;
+        logger.trace(
+            "The requested employee was not saved successfully.\n\tName: " + employeeRequest.getName()
+            + ",\n\tDescription:" + employeeRequest.getLastName()
+        );
+        return null;
     }
 
     @Override
-    public IEmployeeResponse update(int id, IEmployeeRequest employee) {
-        int rowsAffected = employeeRepository.update(id, employee);
+    public IEmployeeResponse update(int id, IEmployeeRequest employeeRequest) {
+        int rowsAffected = employeeRepository.update(id, employeeRequest);
 
         if (rowsAffected != 1)
-            throw new RuntimeException("The targeted employee was not affected by the change.");
+            logger.trace("The targeted employee was not affected by the update execution.");
 
         IPersistedEmployee affectedEmployee = employeeRepository.get(id);
 
-        if (affectedEmployee == null)
-            throw new RuntimeException("The targeted employee was updated, but could not be indexed.");
+        if (affectedEmployee != null)
+            return new EmployeeResponse(affectedEmployee);
 
-        return new EmployeeResponse(affectedEmployee);
+        logger.trace(
+            "The requested employee was not updated successfully.\n\tName: " + employeeRequest.getName()
+            + ",\n\tDescription:" + employeeRequest.getLastName()
+        );
+        return null;
     }
 
     @Override
@@ -53,28 +64,32 @@ public class EmployeeLogic implements IEmployeeLogic {
             response.forEach(employee ->
                     affectedEmployees.add(new EmployeeResponse(employee))
             );
+            return affectedEmployees;
         }
 
-        return affectedEmployees;
+        logger.trace("No employees to return.");
+        return null;
     }
 
     @Override
     public IEmployeeResponse get(int id) {
         IPersistedEmployee affectedEmployee = employeeRepository.get(id);
 
-        if (affectedEmployee == null)
-            return null;
+        if (affectedEmployee != null)
+            return new EmployeeResponse(affectedEmployee);
 
-        return new EmployeeResponse(affectedEmployee);
+        logger.trace("Employee with id " + id + " was not found.");
+        return null;
     }
 
     @Override
     public IEmployeeResponse delete(int id) {
         IPersistedEmployee response = employeeRepository.delete(id);
 
-        if (response == null)
-            return null;
+        if (response != null)
+            return new EmployeeResponse(response);
 
-        return new EmployeeResponse(response);
+        logger.trace("Employee with id " + id + " could not be deleted.");
+        return null;
     }
 }

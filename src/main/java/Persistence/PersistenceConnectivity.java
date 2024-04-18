@@ -1,12 +1,16 @@
 package Persistence;
 
 import Persistence.JDBC.DBConn;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.sql.Connection;
 
 public class PersistenceConnectivity {
+
+    private static final Logger logger = LogManager.getLogger("regular");
 
     public static Connection get(String test){
         if (test != null)
@@ -21,7 +25,7 @@ public class PersistenceConnectivity {
 
             return ds.getConnection();
         } catch (Exception e) {
-            System.out.println("Connection pool error:\n\t" + e.getMessage());
+            logger.error("Connection pool error:\n\t" + e.getMessage());
         }
         return null;
     }

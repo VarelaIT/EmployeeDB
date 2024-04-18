@@ -1,9 +1,14 @@
 package Persistence;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.Statement;
 
 public class TableSchemas {
+    private static final Logger logger = LogManager.getLogger("regular");
+
     public static void createDepartmentsTable(String test) {
         String creationQuery =
                 "CREATE TABLE"
@@ -20,7 +25,7 @@ public class TableSchemas {
             st.executeUpdate(creationQuery);
             st.close();
         } catch (Exception e){
-            System.out.println("The Department Persistence log.\n\t" + e.getMessage());
+            logger.error("While creating the department schema.\n\t" + e.getMessage());
         }
     }
 
@@ -42,7 +47,7 @@ public class TableSchemas {
             st.executeUpdate(creationQuery);
             st.close();
         } catch (Exception e){
-            System.out.println("The Employee Persistence log.\n\t" + e.getMessage());
+            logger.error("While creating the employee schema.\n\t" + e.getMessage());
         }
     }
 
@@ -56,7 +61,7 @@ public class TableSchemas {
             st.executeUpdate(creationQuery);
             st.close();
         } catch (Exception e){
-            System.out.println("The Employee Persistence log.\n\t" + e.getMessage());
+            logger.error("While deleting the employee schema.\n\t" + e.getMessage());
         }
     }
 
@@ -69,7 +74,7 @@ public class TableSchemas {
             st.executeUpdate(creationQuery);
             st.close();
         } catch (Exception e){
-            System.out.println("The Department Persistence log.\n\t" + e.getMessage());
+            logger.error("While deleting the department schema.\n\t" + e.getMessage());
         }
     }
 }

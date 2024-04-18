@@ -18,6 +18,8 @@ import static java.lang.Integer.parseInt;
 @WebServlet("/api/employee")
 public class EmployeeRoute extends HttpServlet {
 
+    //private static final Logger logger = LogManager.getLogger("regular");
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
