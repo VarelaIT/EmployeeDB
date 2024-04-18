@@ -4,6 +4,8 @@ import Entities.IDepartment;
 import Entities.IPersistedDepartment;
 import Entities.PersistedDepartment;
 import Persistence.JDBC.DBConn;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -25,8 +27,9 @@ public class DepartmentRepository implements IDepartmentRepository{
        Where id = ?
        RETURNING id, name, description
     """;
-
     private String test = null;
+
+    private static final Logger logger = LogManager.getLogger("regular");
 
     public DepartmentRepository(){
     }
@@ -53,7 +56,7 @@ public class DepartmentRepository implements IDepartmentRepository{
 
             return new PersistedDepartment(id, name, description);
         } catch (Exception e){
-            System.out.println("The Department Persistence log.\n\t" + e.getMessage());
+            logger.error("While persisting a department.\n\t" + e.getMessage());
         }
 
         return null;
@@ -81,7 +84,7 @@ public class DepartmentRepository implements IDepartmentRepository{
 
             return persistedDepartment;
         } catch (Exception e){
-            System.out.println("Persistence log error while updating the department.\n\t" + e.getMessage());
+            logger.error("While updating a department.\n\t" + e.getMessage());
         }
 
         return null;
@@ -107,7 +110,7 @@ public class DepartmentRepository implements IDepartmentRepository{
             stm.close();
             return persistedDepartment;
         } catch (Exception e) {
-            System.out.println("Error while withdrawing the department:\n\t" + e.getMessage());
+            logger.error("While withdrawing a department:\n\t" + e.getMessage());
         }
 
         return null;
@@ -132,7 +135,7 @@ public class DepartmentRepository implements IDepartmentRepository{
             stm.close();
             return response;
         } catch (Exception e) {
-            System.out.println("Error while withdrawing list of departments:\n\t" + e.getMessage());
+            logger.error("While withdrawing the departments:\n\t" + e.getMessage());
         }
 
         return null;
@@ -154,7 +157,7 @@ public class DepartmentRepository implements IDepartmentRepository{
             if (affectedRows != 1)
                 return null;
         } catch (Exception e) {
-            System.out.println("Persistence logs error while deleting the department.\n\t" + e.getMessage());
+            logger.error("While deleting a departments:\n\t" + e.getMessage());
         }
 
         return department;
