@@ -2,6 +2,8 @@ package Persistence;
 
 import Entities.IEmployee;
 import Entities.PersistedEmployee;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,8 +26,9 @@ public class EmployeeRepository implements IEmployeeRepository{
         LEFT JOIN departments d ON e.department_id = d.id
         WHERE e.id = ?
     """;
-
     private String test = null;
+
+    private static final Logger logger = LogManager.getLogger("regular");
 
     public EmployeeRepository(){
     }
@@ -65,7 +68,7 @@ public class EmployeeRepository implements IEmployeeRepository{
 
             return response;
         } catch (Exception e){
-            System.out.println("Create, Employee Persistence log.\n\t" + e.getMessage());
+            logger.error("While persisting an employee.\n\t" + e.getMessage());
         }
 
         return null;
@@ -96,7 +99,7 @@ public class EmployeeRepository implements IEmployeeRepository{
             stm.close();
             return persistedEmployee;
         } catch (Exception e) {
-            System.out.println("Error while withdrawing the employee:\n\t" + e.getMessage());
+            logger.error("While withdrawing an employee.\n\t" + e.getMessage());
         }
 
 
@@ -125,7 +128,7 @@ public class EmployeeRepository implements IEmployeeRepository{
             stm.close();
             return response;
         } catch (Exception e) {
-            System.out.println("Error while withdrawing list of employees:\n\t" + e.getMessage());
+            logger.error("While withdrawing employees.\n\t" + e.getMessage());
         }
         return null;
     }
@@ -155,7 +158,7 @@ public class EmployeeRepository implements IEmployeeRepository{
             st.close();
             return affectedRows;
         } catch (Exception e){
-            System.out.println("Update, Employee Persistence log.\n\t" + e.getMessage());
+            logger.error("While updating an employee.\n\t" + e.getMessage());
         }
 
         return affectedRows;
@@ -178,7 +181,7 @@ public class EmployeeRepository implements IEmployeeRepository{
             if (affectedRows != 1)
                 return null;
         } catch (Exception e) {
-            System.out.println("Delete, Employee Persistence log.\n\t" + e.getMessage());
+            logger.error("While deleting an employee.\n\t" + e.getMessage());
         }
 
         return targetEmployee;
