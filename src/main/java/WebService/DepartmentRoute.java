@@ -14,6 +14,7 @@ import java.util.List;
 
 import static WebService.Object2TextParser.*;
 import static java.lang.Integer.parseInt;
+import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
 @WebServlet("/api/department")
 public class DepartmentRoute extends HttpServlet {
@@ -26,7 +27,8 @@ public class DepartmentRoute extends HttpServlet {
         String rawPayload = "<p>Department not found.<p>";
 
         if (request.getParameter("id") != null){
-            IDepartmentResponse inStorageDepartment = new DepartmentLogic().get(parseInt(request.getParameter("id")));
+            int id =parseInt( escapeHtml4(request.getParameter("id")));
+            IDepartmentResponse inStorageDepartment = new DepartmentLogic().get(id);
             if (inStorageDepartment != null)
                 rawPayload = buildDepartment(mode, inStorageDepartment);
         } else {
@@ -46,24 +48,29 @@ public class DepartmentRoute extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        IDepartmentRequest departmentData = new DepartmentRequest(
-                request.getParameter("department"),
-                request.getParameter("description")
-        );
-
-        IDepartmentResponse department = null;
-        if (request.getParameter("id") != null)
-            department = new DepartmentLogic().update(parseInt(request.getParameter("id")), departmentData);
-        else
-            department = new DepartmentLogic().save(departmentData);
-
-        String rawPayload = "<p>Request fail.<p>";
-        if (department != null)
-            rawPayload = departmentDefaultForm();
-
         response.setContentType("text/html");
-        response.addHeader("HX-Trigger", "newDepartment");
-        response.getWriter().append(rawPayload);
+
+            response.getWriter().append("<p>The request is invalid</p>");
+        else {
+
+            String department = escapeHtml4(request.getParameter("department"));
+            String description = escapeHtml4(request.getParameter("description"));
+
+            IDepartmentRequest departmentData = new DepartmentRequest(department, description);
+
+            IDepartmentResponse departmentResponse = null;
+            if (request.getParameter("id") != null)
+                departmentResponse = new DepartmentLogic().update(parseInt(request.getParameter("id")), departmentData);
+            else
+                departmentResponse = new DepartmentLogic().save(departmentData);
+
+            String rawPayload = "<p>Request fail.<p>";
+            if (departmentResponse != null)
+                rawPayload = departmentDefaultForm();
+
+            response.addHeader("HX-Trigger", "newDepartment");
+            response.getWriter().append(rawPayload);
+        }
     }
 
     @Override
