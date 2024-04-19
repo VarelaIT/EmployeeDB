@@ -11,7 +11,7 @@ public class DepartmentRequest implements IDepartmentRequest {
 
     @Override
     public void setName(String name) {
-
+        this.name = name;
     }
 
     @Override
@@ -31,7 +31,12 @@ public class DepartmentRequest implements IDepartmentRequest {
 
     @Override
     public boolean verifyInput() {
-        //Implement latter
+        if (name == null || description == null)
+            return false;
+
+        if (name.length() < 2 || description.length() < 6)
+            return false;
+
         return true;
     }
 }

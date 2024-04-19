@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### choose to ignore ###
+*.log
+*ValidateDepartmentInput.java

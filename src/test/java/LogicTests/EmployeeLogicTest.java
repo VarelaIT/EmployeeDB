@@ -33,6 +33,18 @@ public class EmployeeLogicTest {
     }
 
     @Test
+    public void createInvalidEmployee(){
+        IEmployeeRequest noNameEmployee = new EmployeeRequest(null, "Adesagna", "2000-5-15", 1);
+        IEmployeeRequest not18Employee = new EmployeeRequest("Isrrael", "Adesagna", "2010-5-15", 1);
+
+        IEmployeeResponse invalidNameEmployee = employeeLogic.save(noNameEmployee);
+        IEmployeeResponse invalidDateEmployee = employeeLogic.save(not18Employee);
+
+        assertNull(invalidNameEmployee);
+        assertNull(invalidDateEmployee);
+    }
+
+    @Test
     public void updateEmployee() throws ParseException {
         IEmployeeRequest newEmployee = new EmployeeRequest("Isrrael", "Adesagna", "2000-5-15", 1);
         IEmployeeResponse storedEmployee = employeeLogic.save(newEmployee);
@@ -43,6 +55,20 @@ public class EmployeeLogicTest {
         assertEquals(newEmployee.getName(), storedEmployee.getName());
         assertEquals(storedEmployee.getId(), updatedEmployee.getId());
         assertNotEquals(storedEmployee.getName(), updatedEmployee.getName());
+    }
+
+    @Test
+    public void updateInvalidEmployee() throws ParseException {
+        IEmployeeRequest newEmployee = new EmployeeRequest("Isrrael", "Adesagna", "2000-5-15", 1);
+        IEmployeeResponse storedEmployee = employeeLogic.save(newEmployee);
+        IEmployeeRequest noNameEmployee = new EmployeeRequest(null, "Adesagna", "2000-5-15", 1);
+        IEmployeeRequest not18Employee = new EmployeeRequest("Isrrael", "Adesagna", "2010-5-15", 1);
+
+        IEmployeeResponse updatedEmployee = employeeLogic.update(storedEmployee.getId(), noNameEmployee);
+        IEmployeeResponse updatedEmployeeB = employeeLogic.update(storedEmployee.getId(), not18Employee);
+
+        assertNull(updatedEmployee);
+        assertNull(updatedEmployeeB);
     }
 
     @Test

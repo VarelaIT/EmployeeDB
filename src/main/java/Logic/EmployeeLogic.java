@@ -1,5 +1,6 @@
 package Logic;
 
+import Entities.Employee;
 import Persistence.EmployeeRepository;
 import Persistence.IEmployeeRepository;
 import Persistence.IPersistedEmployee;
@@ -24,6 +25,11 @@ public class EmployeeLogic implements IEmployeeLogic {
 
     @Override
     public IEmployeeResponse save(IEmployeeRequest employeeRequest) {
+        if (!employeeRequest.verifyInput()) {
+            logger.warn(Employee.class + " invalid input while trying to store an employee.");
+            return null;
+        }
+
         IPersistedEmployee storedEmployee= employeeRepository.save(employeeRequest);
 
         if (storedEmployee != null)
@@ -38,8 +44,13 @@ public class EmployeeLogic implements IEmployeeLogic {
 
     @Override
     public IEmployeeResponse update(Integer id, IEmployeeRequest employeeRequest) {
-        if (id == null | employeeRequest == null)
+        if (id == null || employeeRequest == null)
             return null;
+
+        if (!employeeRequest.verifyInput()) {
+            logger.warn(Employee.class + " invalid input while trying to store an employee.");
+            return null;
+        }
 
         int rowsAffected = employeeRepository.update(id, employeeRequest);
 

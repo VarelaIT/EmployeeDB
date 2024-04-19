@@ -12,6 +12,7 @@ public class EmployeeRequest implements IEmployeeRequest{
     protected String name;
     protected String lastName;
     protected java.sql.Date birthDate;
+    protected java.sql.Date today = new java.sql.Date(new java.util.Date().getTime());
     protected Integer departmentId;
 
     public EmployeeRequest(String name, String lastName, String birthDate, Integer dpId){
@@ -45,5 +46,16 @@ public class EmployeeRequest implements IEmployeeRequest{
     @Override
     public Integer getDepartmentId() {
         return departmentId;
+    }
+
+    @Override
+    public boolean verifyInput() {
+        if (name == null || lastName == null || birthDate == null || departmentId == null)
+            return false;
+
+        if (name.length() < 2 || lastName.length() < 4 || today.getYear() - birthDate.getYear() < 18 )
+            return false;
+
+        return true;
     }
 }
