@@ -62,18 +62,17 @@ public class DepartmentRoute extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, String> params = getParams(request);
-
         String department = params.getOrDefault("department", null);
         String description = params.getOrDefault("description", null);
         IDepartmentRequest departmentData = new DepartmentRequest(department, description);
         IDepartmentResponse departmentResponse = null;
+        String rawPayload = "<p>Request fail.<p>";
 
         if (request.getParameter("id") != null)
             departmentResponse = new DepartmentLogic().update(parseInt(request.getParameter("id")), departmentData);
         else
             departmentResponse = new DepartmentLogic().save(departmentData);
 
-        String rawPayload = "<p>Request fail.<p>";
         if (departmentResponse != null)
             rawPayload = departmentDefaultForm();
 

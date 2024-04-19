@@ -37,7 +37,10 @@ public class EmployeeLogic implements IEmployeeLogic {
     }
 
     @Override
-    public IEmployeeResponse update(int id, IEmployeeRequest employeeRequest) {
+    public IEmployeeResponse update(Integer id, IEmployeeRequest employeeRequest) {
+        if (id == null | employeeRequest == null)
+            return null;
+
         int rowsAffected = employeeRepository.update(id, employeeRequest);
 
         if (rowsAffected != 1)
