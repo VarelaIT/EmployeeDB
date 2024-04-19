@@ -27,10 +27,13 @@ public class DepartmentRoute extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, String> params = getParams(request);
         String rawPayload = "<p>Department not found.<p>";
-        String mode = null;
+        String mode = params.getOrDefault("mode", "");
+        Integer size = null;
+        Integer page = null;
         Integer id = null;
         try {
-            mode = params.getOrDefault("mode", "");
+            page = parseInt(params.getOrDefault("size",null));
+            size = parseInt(params.getOrDefault("size",null));
             id = parseInt(params.getOrDefault("id", null));
         } catch (Exception e){
             logger.warn(
@@ -45,7 +48,7 @@ public class DepartmentRoute extends HttpServlet {
             if (inStorageDepartment != null)
                 rawPayload = buildDepartment(mode, inStorageDepartment);
         } else {
-            List<IDepartmentResponse> inStorageDepartments = new DepartmentLogic().get();
+            List<IDepartmentResponse> inStorageDepartments = new DepartmentLogic().get(page, size);
             if (inStorageDepartments != null) {
                 rawPayload = "";
                 for (IDepartmentResponse department : inStorageDepartments) {
@@ -54,6 +57,8 @@ public class DepartmentRoute extends HttpServlet {
                 }
             }
         }
+
+        rawPayload.concat(PagerComponent.department(size, page));
 
         response.setContentType("text/html");
         response.getWriter().append(rawPayload);

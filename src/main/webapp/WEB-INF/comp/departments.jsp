@@ -45,10 +45,7 @@
                             hx-swap="innerHTML"
                         >
                             <tr>
-                                <td>HHRR</td>
-                                <td>Human Resources, department example.</td>
-                                <td>1</td>
-                                <td>Options go here!</td>
+                                <p>Connection not establish yet</p>
                             </tr>
                         </tbody>
 

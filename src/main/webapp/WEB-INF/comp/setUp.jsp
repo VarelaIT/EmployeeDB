@@ -25,12 +25,13 @@
                 <h1>Set up</h1>
             </header>
 
-            <article>
+            <article id="format-storage">
                 <p>This button formats the entire storage</p>
                 <button
                     hx-post="api/setup"
                     hx-trigger="click"
-                    hx-swap="outterHTML"
+                    hx-target="#format-storage"
+                    hx-swap="innerHTML"
                 >Format Storage</button>
             </article>
         </section>
