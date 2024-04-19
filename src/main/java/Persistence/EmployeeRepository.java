@@ -19,6 +19,7 @@ public class EmployeeRepository implements IEmployeeRepository{
         SELECT e.id as id, e.name as name, e.last_name as last_name, e.birth_date as bd, d.id as dep_id, d.name as department
         FROM employees e
         LEFT JOIN departments d ON e.department_id = d.id
+        LIMIT ? OFFSET ?
     """;
     protected String selectOneQuery = """
         SELECT e.id as id, e.name as name, e.last_name as last_name, e.birth_date as bd, d.id as dep_id, d.name as department
@@ -108,11 +109,17 @@ public class EmployeeRepository implements IEmployeeRepository{
 
     @Override
     public List<IPersistedEmployee> get() {
+        return get(25, 0);
+    }
+    @Override
+    public List<IPersistedEmployee> get(int size, int page) {
         List<IPersistedEmployee> response = new ArrayList<IPersistedEmployee>();
 
         try (Connection conn = PersistenceConnectivity.get(test)){
-            Statement stm = conn.createStatement();
-            ResultSet result = stm.executeQuery(selectAllQuery);
+            PreparedStatement stm = conn.prepareStatement(selectAllQuery);
+            stm.setInt(1, size);
+            stm.setInt(2, page);
+            ResultSet result = stm.executeQuery();
             while(result.next()) {
                 response.add(new PersistedEmployee(
                         result.getInt("id"),

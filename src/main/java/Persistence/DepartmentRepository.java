@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DepartmentRepository implements IDepartmentRepository{
-    public String seletAllQuery = "SELECT id, name, description FROM departments";
+    public String seletAllQuery = "SELECT id, name, description FROM departments ORDER BY id LIMIT ? OFFSET ?";
     public String seletOneQuery = "SELECT id, name, description FROM departments WHERE id = ?";
     public String deleteOneQuery = "DELETE FROM departments WHERE id = ?";
     public String insertionQuery = """
@@ -118,11 +118,18 @@ public class DepartmentRepository implements IDepartmentRepository{
 
     @Override
     public List<IPersistedDepartment> getAll() {
+        return getAll(25, 0);
+    }
+
+    @Override
+    public List<IPersistedDepartment> getAll(int size, int page) {
         List<IPersistedDepartment> response = new ArrayList<IPersistedDepartment>();
 
         try (Connection conn = PersistenceConnectivity.get(test)){
-            Statement stm = conn.createStatement();
-            ResultSet result = stm.executeQuery(seletAllQuery);
+            PreparedStatement stm = conn.prepareStatement(seletAllQuery);
+            stm.setInt(1, size);
+            stm.setInt(2, page);
+            ResultSet result = stm.executeQuery();
             while(result.next()) {
                 response.add(new PersistedDepartment(
                         result.getInt("id"),

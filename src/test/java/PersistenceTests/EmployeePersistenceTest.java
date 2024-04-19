@@ -6,6 +6,7 @@ import Persistence.IPersistedEmployee;
 import Persistence.EmployeeRepository;
 import Persistence.IEmployeeRepository;
 import Persistence.TableSchemas;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
@@ -17,11 +18,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeePersistenceTest {
 
-    private final IEmployeeRepository employeeRepository;
+    private IEmployeeRepository employeeRepository;
     private final DateFormat bdObj= new SimpleDateFormat("dd-MM-yyyy");
 
     public String test = "test";
-    EmployeePersistenceTest(){
+
+    @BeforeEach
+    public void employeeStorageInitialization(){
         TableSchemas.dropEmployeesTable(test);
         TableSchemas.createEmployeesTable(test);
         employeeRepository = new EmployeeRepository(test);
@@ -53,6 +56,7 @@ public class EmployeePersistenceTest {
         assertEquals(newEmployee.getName(), sameEmployee.getName());
         assertEquals(newEmployee.getBirthDate(), sameEmployee.getBirthDate());
     }
+
     @Test
     public void getPersistedEmployeesList() throws ParseException {
         java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1999").getTime());
@@ -63,7 +67,26 @@ public class EmployeePersistenceTest {
 
         List<IPersistedEmployee> listOfEmployees = employeeRepository.get();
 
-        assertTrue(listOfEmployees.size()>1);
+        assertEquals(newEmployeeA.getName(), listOfEmployees.get(0).getName());
+        assertEquals(newEmployeeB.getName(), listOfEmployees.get(1).getName());
+    }
+
+    @Test
+    public void getPersistedEmployeesListPaginated() throws ParseException {
+        java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1999").getTime());
+        IEmployee employeeA = new Employee("Juan", "Rodriguez", birthDate, 1);
+        IEmployee employeeB = new Employee("Elias", "Mejia", birthDate, 1);
+        IEmployee employeeC = new Employee("Kendry", "Grullon", birthDate, 1);
+        IPersistedEmployee newEmployeeA = employeeRepository.save(employeeA);
+        IPersistedEmployee newEmployeeB = employeeRepository.save(employeeB);
+        IPersistedEmployee newEmployeeC = employeeRepository.save(employeeC);
+
+        List<IPersistedEmployee> listOfEmployees = employeeRepository.get(2, 0);
+        List<IPersistedEmployee> listOfEmployeesB = employeeRepository.get(2, 2);
+
+        assertEquals(newEmployeeA.getName(), listOfEmployees.get(0).getName());
+        assertEquals(newEmployeeB.getName(), listOfEmployees.get(1).getName());
+        assertEquals(newEmployeeC.getName(), listOfEmployeesB.get(0).getName());
     }
 
     @Test

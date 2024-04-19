@@ -79,7 +79,7 @@ public class DepartmentLogicTest {
 
     @Test
     void getallDepartments(){
-        IDepartmentRequest departmentA = new DepartmentRequest("Data Analysis", "");
+        IDepartmentRequest departmentA = new DepartmentRequest("Data Analysis", "Analytics of data and processes");
         IDepartmentRequest departmentB = new DepartmentRequest("Design", "Graphical & visual design");
         IDepartmentResponse storedDepartmentA = departmentLogic.save(departmentA);
         IDepartmentResponse storedDepartmentB = departmentLogic.save(departmentB);

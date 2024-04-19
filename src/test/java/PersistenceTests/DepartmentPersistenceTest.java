@@ -7,6 +7,7 @@ import Persistence.DepartmentRepository;
 import Persistence.IDepartmentRepository;
 import Persistence.JDBC.DBConn;
 import Persistence.TableSchemas;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
@@ -19,7 +20,8 @@ public class DepartmentPersistenceTest {
     public IDepartmentRepository departmentRepository;
     public String test = "test";
 
-    DepartmentPersistenceTest(){
+    @BeforeEach
+    public void storageInitialization(){
         TableSchemas.dropDepartmentsTable(test);
         TableSchemas.createDepartmentsTable(test);
         departmentRepository = new DepartmentRepository(test);
@@ -68,12 +70,30 @@ public class DepartmentPersistenceTest {
 
         List<IPersistedDepartment> inStorageDepartments = departmentRepository.getAll();
 
-        assertTrue(inStorageDepartments.size() > 1);
+        assertEquals(inStorageDepartments.get(0).getName(), persistedA.getName());
+        assertEquals(inStorageDepartments.get(1).getName(), persistedB.getName());
+    }
+
+    @Test
+    public void getAllPersistedDepartmentsPaginated(){
+        IDepartment departmentA = new Department("Data Analysis", "Analyzes data and other stuff");
+        IDepartment departmentB = new Department("Design", "Graphical & visual design");
+        IDepartment departmentC = new Department("Kitchen", "Where the food is cooked");
+        IPersistedDepartment persistedA = departmentRepository.save(departmentA);
+        IPersistedDepartment persistedB = departmentRepository.save(departmentB);
+        IPersistedDepartment persistedC = departmentRepository.save(departmentC);
+
+        List<IPersistedDepartment> inStorageDepartments = departmentRepository.getAll(2, 0);
+        List<IPersistedDepartment> inStorageDepartmentsB = departmentRepository.getAll(2, 2);
+
+        assertEquals(inStorageDepartments.get(0).getName(), persistedA.getName());
+        assertEquals(inStorageDepartments.get(1).getName(), persistedB.getName());
+        assertEquals(inStorageDepartmentsB.get(0).getName(), persistedC.getName());
     }
 
     @Test
     public void updatePersistedDepartment(){
-        IDepartment department = new Department("Psicology", "The department I need to visit after dealing with Java.");
+        IDepartment department = new Department("Psychology", "The department I need to visit after dealing with Java.");
         IPersistedDepartment persistedDepartment = departmentRepository.save(department);
         department.setName("Health care");
 
