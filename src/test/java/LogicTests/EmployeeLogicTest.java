@@ -83,7 +83,7 @@ public class EmployeeLogicTest {
     }
 
     @Test
-    public void getManyEmployee() throws ParseException {
+    public void getManyEmployee(){
         IEmployeeRequest employeeA = new EmployeeRequest("Isrrael", "Adesagna", "2000-5-15", 1);
         IEmployeeRequest employeeB = new EmployeeRequest("Samuel", "Ureña", "2004-5-15", 1);
         IEmployeeResponse storedEmployeeA = employeeLogic.save(employeeA);
@@ -91,7 +91,25 @@ public class EmployeeLogicTest {
 
         List<IEmployeeResponse> retrievedEmployees = employeeLogic.get();
 
-        assertTrue(retrievedEmployees.size() > 1);
+        assertEquals(storedEmployeeA.getName(), retrievedEmployees.get(0).getName());
+        assertEquals(storedEmployeeB.getName(), retrievedEmployees.get(1).getName());
+    }
+
+    @Test
+    public void getManyEmployeePaginated(){
+        IEmployeeRequest employeeA = new EmployeeRequest("Isrrael", "Adesagna", "2000-5-15", 1);
+        IEmployeeRequest employeeB = new EmployeeRequest("Samuel", "Ureña", "2004-5-15", 1);
+        IEmployeeRequest employeeC = new EmployeeRequest("Ismael", "Varela", "2004-5-15", 1);
+        IEmployeeResponse storedEmployeeA = employeeLogic.save(employeeA);
+        IEmployeeResponse storedEmployeeB = employeeLogic.save(employeeB);
+        IEmployeeResponse storedEmployeeC = employeeLogic.save(employeeC);
+
+        List<IEmployeeResponse> retrievedEmployees = employeeLogic.get(2,0);
+        List<IEmployeeResponse> retrievedEmployeesB = employeeLogic.get(2,2);
+
+        assertEquals(storedEmployeeA.getName(), retrievedEmployees.get(0).getName());
+        assertEquals(storedEmployeeB.getName(), retrievedEmployees.get(1).getName());
+        assertEquals(storedEmployeeC.getName(), retrievedEmployeesB.get(0).getName());
     }
 
     @Test

@@ -59,10 +59,18 @@ public class DepartmentLogic implements IDepartmentLogic{
     }
 
     public List<IDepartmentResponse> get(){
+        return get(25, 0);
+    }
+
+    public List<IDepartmentResponse> get(Integer size, Integer page){
         List<IDepartmentResponse> inStorageDepartments = new ArrayList<IDepartmentResponse>();
         List<IPersistedDepartment> response;
 
-        response = departmentRepository.getAll();
+        if (size != null || page !=null)
+            response = departmentRepository.getAll(size, page);
+        else
+            response = departmentRepository.getAll(25, 0);
+
         if (response != null){
             response.forEach(department -> inStorageDepartments.add(new DepartmentResponse(department)));
             return inStorageDepartments;

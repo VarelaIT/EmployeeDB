@@ -19,6 +19,7 @@ public class EmployeeRepository implements IEmployeeRepository{
         SELECT e.id as id, e.name as name, e.last_name as last_name, e.birth_date as bd, d.id as dep_id, d.name as department
         FROM employees e
         LEFT JOIN departments d ON e.department_id = d.id
+        ORDER BY id
         LIMIT ? OFFSET ?
     """;
     protected String selectOneQuery = """

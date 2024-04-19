@@ -8,6 +8,7 @@ import Logic.IDepartmentRequest;
 import Logic.IDepartmentResponse;
 import Persistence.JDBC.DBConn;
 import Persistence.TableSchemas;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
@@ -19,7 +20,8 @@ public class DepartmentLogicTest {
     public IDepartmentLogic departmentLogic;
     public String test = "test";
 
-    DepartmentLogicTest(){
+    @BeforeEach
+    public void departmentStorageInitialization(){
         TableSchemas.dropDepartmentsTable(test);
         TableSchemas.createDepartmentsTable(test);
         departmentLogic = new DepartmentLogic(test);
@@ -90,6 +92,23 @@ public class DepartmentLogicTest {
         assertEquals(storedDepartmentA.getId(), instorageDepartments.get(0).getId());
         assertEquals(storedDepartmentB.getName(), instorageDepartments.get(1).getName());
         assertEquals(storedDepartmentB.getName(), instorageDepartments.get(1).getName());
+    }
+
+    @Test
+    void getallDepartmentsPaginated(){
+        IDepartmentRequest departmentA = new DepartmentRequest("Data Analysis", "Analytics of data and processes");
+        IDepartmentRequest departmentB = new DepartmentRequest("Design", "Graphical & visual design");
+        IDepartmentRequest departmentC = new DepartmentRequest("Kitchen", "Where the food is cooked");
+        IDepartmentResponse storedDepartmentA = departmentLogic.save(departmentA);
+        IDepartmentResponse storedDepartmentB = departmentLogic.save(departmentB);
+        IDepartmentResponse storedDepartmentC = departmentLogic.save(departmentC);
+
+        List<IDepartmentResponse> inStorageDepartments = departmentLogic.get(2, 0);
+        List<IDepartmentResponse> inStorageDepartmentsB = departmentLogic.get(2, 2);
+
+        assertEquals(storedDepartmentA.getName(), inStorageDepartments.get(0).getName());
+        assertEquals(storedDepartmentB.getName(), inStorageDepartments.get(1).getName());
+        assertEquals(storedDepartmentC.getName(), inStorageDepartmentsB.get(0).getName());
     }
 
     @Test

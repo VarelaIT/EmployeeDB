@@ -29,18 +29,19 @@ public class TableSchemas {
         }
     }
 
+    // " department_id smallint references departments (id)"
     public static void createEmployeesTable(String test) {
         String creationQuery =
                 "CREATE TABLE"
-                        + " IF NOT EXISTS"
-                        + " employees"
-                        + "("
-                        + " id SERIAL PRIMARY KEY,"
-                        + " name VARCHAR(64) NOT NULL,"
-                        + " last_name VARCHAR(64) NOT NULL,"
-                        + " birth_date date NOT NULL,"
-                        + " department_id smallint references departments (id)"
-                        + ")";
+                + " IF NOT EXISTS"
+                + " employees"
+                + "("
+                + " id SERIAL PRIMARY KEY,"
+                + " name VARCHAR(64) NOT NULL,"
+                + " last_name VARCHAR(64) NOT NULL,"
+                + " birth_date date NOT NULL,"
+                + " department_id smallint"
+                + ")";
 
         try (Connection conn = PersistenceConnectivity.get(test)){
             Statement st = conn.createStatement();
