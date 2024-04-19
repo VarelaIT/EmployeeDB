@@ -21,6 +21,43 @@ public class DepartmentLogic implements IDepartmentLogic{
         this.departmentRepository = new DepartmentRepository(test);
     }
 
+    public IDepartmentResponse save(IDepartmentRequest departmentRequest) {
+        if (!departmentRequest.verifyInput()) {
+            logger.warn(DepartmentLogic.class + " Invalid input while trying to store a department.");
+            return null;
+        }
+
+        IPersistedDepartment response = departmentRepository.save(departmentRequest);
+
+        if (response != null)
+            return new DepartmentResponse(response);
+
+        logger.trace(
+                "Department was not saved successfully.\n\tName: " + departmentRequest.getName()
+                        + ",\n\tDescription:" + departmentRequest.getDescription()
+        );
+        return null;
+    }
+
+    public IDepartmentResponse update(int id, IDepartmentRequest departmentRequest) {
+        if (!departmentRequest.verifyInput()) {
+            logger.warn(DepartmentLogic.class + " Invalid input while trying to update a department.");
+            return null;
+        }
+
+        IPersistedDepartment response = departmentRepository.update(id, departmentRequest);
+
+        if (response != null)
+            return new DepartmentResponse(response);
+
+        logger.trace(
+                "Department was not updated successfully.\n\tId: " + id
+                        + "\n\tName: " + departmentRequest.getName()
+                        + ",\n\tDescription:" + departmentRequest.getDescription()
+        );
+        return null;
+    }
+
     public List<IDepartmentResponse> get(){
         List<IDepartmentResponse> inStorageDepartments = new ArrayList<IDepartmentResponse>();
         List<IPersistedDepartment> response;
@@ -44,33 +81,6 @@ public class DepartmentLogic implements IDepartmentLogic{
             return new DepartmentResponse(response);
 
         logger.trace("Department not retrieved while getting by id.");
-        return null;
-    }
-
-    public IDepartmentResponse save(IDepartmentRequest departmentRequest) {
-        IPersistedDepartment response = departmentRepository.save(departmentRequest);
-
-        if (response != null)
-            return new DepartmentResponse(response);
-
-        logger.trace(
-            "Department was not saved successfully.\n\tName: " + departmentRequest.getName()
-            + ",\n\tDescription:" + departmentRequest.getDescription()
-        );
-        return null;
-    }
-
-    public IDepartmentResponse update(int id, IDepartmentRequest departmentRequest) {
-        IPersistedDepartment response = departmentRepository.update(id, departmentRequest);
-
-        if (response != null)
-            return new DepartmentResponse(response);
-
-        logger.trace(
-            "Department was not updated successfully.\n\tId: " + id
-            + "\n\tName: " + departmentRequest.getName()
-            + ",\n\tDescription:" + departmentRequest.getDescription()
-        );
         return null;
     }
 

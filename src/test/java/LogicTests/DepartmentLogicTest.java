@@ -27,7 +27,7 @@ public class DepartmentLogicTest {
 
     @Test
     void saveDepartments(){
-        IDepartmentRequest department = new DepartmentRequest("Data Analysis", "");
+        IDepartmentRequest department = new DepartmentRequest("Data Analysis", "Analytics of data and processes");
 
         IDepartmentResponse  storedDepartment = departmentLogic.save(department);
 
@@ -35,16 +35,36 @@ public class DepartmentLogicTest {
     }
 
     @Test
-    void updateDepartments(){
+    void saveInvalidDepartments(){
         IDepartmentRequest department = new DepartmentRequest("Data Analysis", "");
+
         IDepartmentResponse  storedDepartment = departmentLogic.save(department);
-        IDepartmentRequest updatedVersion = new DepartmentRequest("Data Analytics", "had a typo");
+
+        assertNull(storedDepartment);
+    }
+
+    @Test
+    void updateDepartments(){
+        IDepartmentRequest department = new DepartmentRequest("Delivery", "Deliver");
+        IDepartmentResponse  storedDepartment = departmentLogic.save(department);
+        IDepartmentRequest updatedVersion = new DepartmentRequest("Delivery", "Deliver products");
 
         IDepartmentResponse  updatedDepartment = departmentLogic.update(storedDepartment.getId(), updatedVersion);
 
         assertEquals(updatedVersion.getName(), updatedDepartment.getName());
         assertEquals(updatedVersion.getDescription(), updatedDepartment.getDescription());
-        assertNotEquals(storedDepartment.getName(), updatedDepartment.getName());
+        assertNotEquals(storedDepartment.getDescription(), updatedDepartment.getDescription());
+    }
+
+    @Test
+    void updateInvalidDepartments(){
+        IDepartmentRequest department = new DepartmentRequest("Delivery", "Deliver");
+        IDepartmentResponse  storedDepartment = departmentLogic.save(department);
+        IDepartmentRequest updatedVersion = new DepartmentRequest("", "Deliver products");
+
+        IDepartmentResponse  updatedDepartment = departmentLogic.update(storedDepartment.getId(), updatedVersion);
+
+        assertNull(updatedDepartment);
     }
 
     @Test
