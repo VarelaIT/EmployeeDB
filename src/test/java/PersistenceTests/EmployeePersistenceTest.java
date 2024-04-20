@@ -35,11 +35,13 @@ public class EmployeePersistenceTest {
         java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1999").getTime());
         IEmployee employeeA = new Employee("Juan", "Rodriguez", birthDate, 1);
         IEmployee employeeB = new Employee("Elias", "Mejia", birthDate, 1);
+
+        int zero = employeeRepository.countRegisters();
         IPersistedEmployee newEmployeeA = employeeRepository.save(employeeA);
         IPersistedEmployee newEmployeeB = employeeRepository.save(employeeB);
-
         int count = employeeRepository.countRegisters();
 
+        assertEquals(0, zero);
         assertEquals(2, count);
     }
 

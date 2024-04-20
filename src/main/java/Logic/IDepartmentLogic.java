@@ -9,4 +9,5 @@ public interface IDepartmentLogic {
     IDepartmentResponse save(IDepartmentRequest departmentRequest);
     IDepartmentResponse update(int id, IDepartmentRequest departmentRequest);
     IDepartmentResponse delete(int id);
+    int countDepartments();
 }

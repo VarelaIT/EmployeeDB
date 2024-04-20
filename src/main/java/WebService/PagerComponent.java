@@ -1,8 +1,10 @@
 package WebService;
 
+import Logic.DepartmentLogic;
+
 public class PagerComponent {
     public static String department(Integer size, Integer page) {
-        Integer rows = 5;
+        Integer rows = new DepartmentLogic().countDepartments();
         Integer count = 1;
         String previousButton = "";
         String nextButton = "";

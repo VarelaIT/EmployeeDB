@@ -116,4 +116,8 @@ public class EmployeeLogic implements IEmployeeLogic {
         logger.trace("Employee with id " + id + " could not be deleted.");
         return null;
     }
+
+    public int countEmployees(){
+        return employeeRepository.countRegisters();
+    }
 }

@@ -31,11 +31,13 @@ public class DepartmentPersistenceTest {
     public void countingDepartments(){
         IDepartment departmentA = new Department("HHRR", "Human Resources.");
         IDepartment departmentB = new Department("R&D", "Research and Development.");
+
+        int zero = departmentRepository.countRegisters();
         IPersistedDepartment presistedDepartmentA = departmentRepository.save(departmentA);
         IPersistedDepartment presistedDepartmentB = departmentRepository.save(departmentB);
-
         int count = departmentRepository.countRegisters();
 
+        assertEquals(0, zero);
         assertEquals(2, count);
     }
 

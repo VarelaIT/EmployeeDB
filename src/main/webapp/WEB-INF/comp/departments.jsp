@@ -44,9 +44,6 @@
                             hx-trigger="load, newDepartment from:body"
                             hx-swap="innerHTML"
                         >
-                            <tr>
-                                <p>Connection not establish yet</p>
-                            </tr>
                         </tbody>
 
                         <tbody id='table-form-container'>

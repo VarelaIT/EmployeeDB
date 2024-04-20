@@ -81,7 +81,11 @@ public class DepartmentLogic implements IDepartmentLogic{
         return null;
     }
 
-
+    /**
+     *
+     * @param id hello world
+     * @return
+     */
     public IDepartmentResponse get(int id){
         IPersistedDepartment response = departmentRepository.get(id);
 
@@ -99,5 +103,9 @@ public class DepartmentLogic implements IDepartmentLogic{
             return new DepartmentResponse(response);
 
         return null;
+    }
+
+    public int countDepartments(){
+        return departmentRepository.countRegisters();
     }
 }

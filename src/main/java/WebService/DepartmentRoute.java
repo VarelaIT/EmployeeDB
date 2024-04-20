@@ -16,7 +16,6 @@ import java.util.Map;
 import static WebService.Object2TextParser.*;
 import static WebService.RequestSanitizer.getParams;
 import static java.lang.Integer.parseInt;
-import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
 @WebServlet("/api/department")
 public class DepartmentRoute extends HttpServlet {
@@ -32,8 +31,8 @@ public class DepartmentRoute extends HttpServlet {
         Integer page = null;
         Integer id = null;
         try {
-            page = parseInt(params.getOrDefault("size",null));
-            size = parseInt(params.getOrDefault("size",null));
+            page = parseInt(params.getOrDefault("page","0"));
+            size = parseInt(params.getOrDefault("size","25"));
             id = parseInt(params.getOrDefault("id", null));
         } catch (Exception e){
             logger.warn(
@@ -48,17 +47,16 @@ public class DepartmentRoute extends HttpServlet {
             if (inStorageDepartment != null)
                 rawPayload = buildDepartment(mode, inStorageDepartment);
         } else {
-            List<IDepartmentResponse> inStorageDepartments = new DepartmentLogic().get(page, size);
+            List<IDepartmentResponse> inStorageDepartments = new DepartmentLogic().get(size, page);
             if (inStorageDepartments != null) {
                 rawPayload = "";
                 for (IDepartmentResponse department : inStorageDepartments) {
                     String parsedDepartment = buildDepartment(mode, department);
                     rawPayload = rawPayload.concat(parsedDepartment);
                 }
+                //rawPayload= rawPayload.concat(PagerComponent.department(size, page));
             }
         }
-
-        rawPayload.concat(PagerComponent.department(size, page));
 
         response.setContentType("text/html");
         response.getWriter().append(rawPayload);

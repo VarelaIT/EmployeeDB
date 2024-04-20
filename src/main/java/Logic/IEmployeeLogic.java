@@ -9,5 +9,6 @@ public interface IEmployeeLogic {
     List<IEmployeeResponse> get(Integer size, Integer page);
     IEmployeeResponse get(int id);
     IEmployeeResponse delete(int id);
+    int countEmployees();
 
 }
