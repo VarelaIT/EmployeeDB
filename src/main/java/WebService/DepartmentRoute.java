@@ -54,12 +54,11 @@ public class DepartmentRoute extends HttpServlet {
                     String parsedDepartment = buildDepartment(mode, department);
                     rawPayload = rawPayload.concat(parsedDepartment);
                 }
-                //rawPayload= rawPayload.concat(PagerComponent.department(size, page));
             }
         }
 
         response.setContentType("text/html");
-        response.getWriter().append(rawPayload);
+        response.getWriter().append(rawPayload).append(PagerComponent.department(size, page));
     }
 
     @Override
