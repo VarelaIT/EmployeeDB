@@ -9,6 +9,22 @@ import java.sql.Statement;
 public class TableSchemas {
     private static final Logger logger = LogManager.getLogger("regular");
 
+    public static void createEmployeesView(String test) {
+        String creationQuery = """
+            CREATE VIEW employee_full_name AS
+            SELECT e.id, CONCAT (e.name, ' ', last_name) AS full_name, d.name AS department
+            FROM employees e LEFT JOIN departments d ON department_id = d.id
+        """;
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            Statement st = conn.createStatement();
+            st.executeUpdate(creationQuery);
+            st.close();
+        } catch (Exception e){
+            logger.error("While creating the department schema.\n\t" + e.getMessage());
+        }
+    }
+
     public static void createDepartmentsTable(String test) {
         String creationQuery =
                 "CREATE TABLE"
@@ -52,6 +68,17 @@ public class TableSchemas {
         }
     }
 
+    public static void dropEmployeesView(String test) {
+        String creationQuery =
+                "DROP VIEW IF EXIST employees_full_name";
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            Statement st = conn.createStatement();
+            st.executeUpdate(creationQuery);
+            st.close();
+        } catch (Exception e){
+            logger.error("While deleting the employee schema.\n\t" + e.getMessage());
+        }
+    }
 
     public static void dropEmployeesTable(String test) {
         String creationQuery =
