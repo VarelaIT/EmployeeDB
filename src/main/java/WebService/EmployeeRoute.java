@@ -33,7 +33,7 @@ public class EmployeeRoute extends HttpServlet {
         Integer page = null;
         Integer id = null;
         try {
-            page = parseInt(params.getOrDefault("page","0"));
+            page = parseInt(params.getOrDefault("page","1"));
             size = parseInt(params.getOrDefault("size","25"));
             id = parseInt(params.getOrDefault("id", null));
         } catch (Exception e){

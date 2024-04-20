@@ -23,17 +23,16 @@ public class PagerComponent {
             page = 1;
 
         int totalPage = (int) Math.ceil((double) rows / size);
-        int currentPage = (int) Math.ceil((double) (page + 1) / size);
-        counter = currentPage + "/" + totalPage;
-        int nextPage = size + page;
+        counter = page + "/" + totalPage;
+        int nextPage = page + 1;
 
-        if (page >= size)
+        if (page > 1)
             previousButton = "<button hx-trigger='click' hx-target='#"
                     + entity + "TableBody' hx-get='/EmployeeDB/api/"
                     + entity + "?size="
-                    + size + "&page=" + (page - size) + "'>Previous</button>";
+                    + size + "&page=" + (page - 1) + "'>Previous</button>";
 
-        if (nextPage < rows)
+        if (nextPage * size < rows + size)
             nextButton = "<button hx-trigger='click' hx-target='#"
                     + entity + "TableBody' hx-get='/EmployeeDB/api/"
                     + entity + "?size="
@@ -41,7 +40,7 @@ public class PagerComponent {
 
 
         String payload = """
-        <tr>
+        <tr colspan='6'>
             <td class='pager-container'>
                 $prevBtn
                 <span>Page $count</span>
