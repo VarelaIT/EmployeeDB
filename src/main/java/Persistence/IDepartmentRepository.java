@@ -13,4 +13,5 @@ public interface IDepartmentRepository {
     List<IPersistedDepartment> getAll(int size, int page);
     IPersistedDepartment update(int id, IDepartment department);
     IPersistedDepartment delete(int id);
+    int countRegisters();
 }

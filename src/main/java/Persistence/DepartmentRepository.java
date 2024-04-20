@@ -13,6 +13,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 public class DepartmentRepository implements IDepartmentRepository{
     public String seletAllQuery = "SELECT id, name, description FROM departments ORDER BY id LIMIT ? OFFSET ?";
     public String seletOneQuery = "SELECT id, name, description FROM departments WHERE id = ?";
@@ -168,6 +170,28 @@ public class DepartmentRepository implements IDepartmentRepository{
         }
 
         return department;
+    }
+
+    @Override
+    public int countRegisters(){
+        int count = 0;
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            Statement stm = conn.createStatement();
+            ResultSet result = stm.executeQuery("SELECT COUNT(*) FROM departments");
+
+            if (result.next())
+                count = parseInt(String.valueOf(result.getInt(1)));
+
+            result.close();
+            stm.close();
+
+           return count;
+        } catch (Exception e) {
+            logger.error("While counting departments:\n\t" + e.getMessage());
+        }
+
+        return 0;
     }
 
 }

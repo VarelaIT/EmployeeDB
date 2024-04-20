@@ -28,12 +28,26 @@ public class DepartmentPersistenceTest {
     }
 
     @Test
+    public void countingDepartments(){
+        IDepartment departmentA = new Department("HHRR", "Human Resources.");
+        IDepartment departmentB = new Department("R&D", "Research and Development.");
+        IPersistedDepartment presistedDepartmentA = departmentRepository.save(departmentA);
+        IPersistedDepartment presistedDepartmentB = departmentRepository.save(departmentB);
+
+        int count = departmentRepository.countRegisters();
+
+        assertEquals(2, count);
+    }
+
+    @Test
     public void persistingNewDepartment(){
         IDepartment department = new Department("HHRR", "Human Resources.");
 
         IPersistedDepartment result = departmentRepository.save(department);
 
         assertTrue(result.getId() > 0);
+        assertEquals(department.getName(), result.getName());
+        assertEquals(department.getDescription(), result.getDescription());
     }
 
     @Test
