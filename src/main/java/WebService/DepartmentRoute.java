@@ -1,6 +1,5 @@
 package WebService;
 
-import Entities.IPersistedDepartment;
 import Logic.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -54,11 +53,14 @@ public class DepartmentRoute extends HttpServlet {
                     String parsedDepartment = buildDepartment(mode, department);
                     rawPayload = rawPayload.concat(parsedDepartment);
                 }
+
+                if (mode.isEmpty())
+                    rawPayload = rawPayload.concat(PagerComponent.build("employee", size, page));
             }
         }
 
         response.setContentType("text/html");
-        response.getWriter().append(rawPayload).append(PagerComponent.department(size, page));
+        response.getWriter().append(rawPayload);
     }
 
     @Override

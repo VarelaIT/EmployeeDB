@@ -27,11 +27,14 @@ public class EmployeeRoute extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, String> params = getParams(request);
-        String rawPayload = "";
-        String mode = null;
+        String rawPayload= "<p>Nothing to show.</p>";
+        String mode = params.getOrDefault("mode", "");
+        Integer size = null;
+        Integer page = null;
         Integer id = null;
         try {
-            mode = params.getOrDefault("mode", "");
+            page = parseInt(params.getOrDefault("page","0"));
+            size = parseInt(params.getOrDefault("size","25"));
             id = parseInt(params.getOrDefault("id", null));
         } catch (Exception e){
             logger.warn("While parsing request parameters in " + DepartmentRoute.class + ":\n\t" + e.getMessage());
@@ -41,15 +44,16 @@ public class EmployeeRoute extends HttpServlet {
             IEmployeeResponse inStorageEmployee = new EmployeeLogic().get(id);
             rawPayload = buildEmployee(mode, inStorageEmployee);
         } else {
-            List<IEmployeeResponse> inStorageEmployees = new EmployeeLogic().get();
-            if (inStorageEmployees == null)
-                rawPayload= "<p>Nothing to show.</p>";
-            else {
+            List<IEmployeeResponse> inStorageEmployees = new EmployeeLogic().get(size, page);
+            if (inStorageEmployees != null){
+                rawPayload = "";
                 for (IEmployeeResponse employee : inStorageEmployees) {
                     String tableRow = employeeTableRow(employee);
-
                     rawPayload = rawPayload.concat(tableRow);
                 }
+
+                if (mode.isEmpty())
+                    rawPayload = rawPayload.concat(PagerComponent.build("employee", size, page));
             }
         }
 

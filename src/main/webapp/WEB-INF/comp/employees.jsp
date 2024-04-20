@@ -41,7 +41,7 @@
                         </thead>
 
                         <tbody
-                            id="employeesTableBody"
+                            id="employeeTableBody"
                             hx-get="./api/employee"
                             hx-trigger="load, newEmployee from:body"
                             hx-swap="innerHTML"
