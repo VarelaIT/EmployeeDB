@@ -9,6 +9,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 public class EmployeeRepository implements IEmployeeRepository{
 
     protected String insertionQuery = """
@@ -193,6 +195,28 @@ public class EmployeeRepository implements IEmployeeRepository{
         }
 
         return targetEmployee;
+    }
+
+    @Override
+    public int countRegisters(){
+        int count = 0;
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            Statement stm = conn.createStatement();
+            ResultSet result = stm.executeQuery("SELECT COUNT(*) FROM employees");
+
+            if (result.next())
+                count = parseInt(String.valueOf(result.getInt(1)));
+
+            result.close();
+            stm.close();
+
+            return count;
+        } catch (Exception e) {
+            logger.error("While counting departments:\n\t" + e.getMessage());
+        }
+
+        return 0;
     }
 
 }

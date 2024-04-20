@@ -31,6 +31,19 @@ public class EmployeePersistenceTest {
     }
 
     @Test
+    public void countEmployeeRegisters() throws ParseException {
+        java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1999").getTime());
+        IEmployee employeeA = new Employee("Juan", "Rodriguez", birthDate, 1);
+        IEmployee employeeB = new Employee("Elias", "Mejia", birthDate, 1);
+        IPersistedEmployee newEmployeeA = employeeRepository.save(employeeA);
+        IPersistedEmployee newEmployeeB = employeeRepository.save(employeeB);
+
+        int count = employeeRepository.countRegisters();
+
+        assertEquals(2, count);
+    }
+
+    @Test
     public void persistEmployee() throws ParseException {
         java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1987").getTime());
         Integer departmentID = 1;

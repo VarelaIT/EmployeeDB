@@ -12,4 +12,5 @@ public interface IEmployeeRepository {
     List<IPersistedEmployee> get(int size, int page);
     int update(int id, IEmployee employee);
     IPersistedEmployee delete(int id);
+    int countRegisters();
 }
