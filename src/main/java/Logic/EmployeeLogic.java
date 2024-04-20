@@ -74,7 +74,7 @@ public class EmployeeLogic implements IEmployeeLogic {
         return get(25, 1);
     }
 
-        @Override
+    @Override
     public List<IEmployeeResponse> get(Integer size, Integer page) {
         List<IEmployeeResponse> affectedEmployees = new ArrayList<IEmployeeResponse>();
         List<IPersistedEmployee> response;
@@ -93,6 +93,25 @@ public class EmployeeLogic implements IEmployeeLogic {
         }
 
         logger.trace("No employees to return.");
+        return null;
+    }
+
+    @Override
+    public List<IEmployeeResponse> find(String pattern) {
+        List<IEmployeeResponse> affectedEmployees = new ArrayList<IEmployeeResponse>();
+        List<IPersistedEmployee> response = null;
+
+        if (pattern != null)
+            response = employeeRepository.find(pattern);
+
+        if (response != null){
+            response.forEach(employee ->
+                    affectedEmployees.add(new EmployeeResponse(employee))
+            );
+            return affectedEmployees;
+        }
+
+        logger.trace(EmployeeLogic.class + " No employees were found.");
         return null;
     }
 

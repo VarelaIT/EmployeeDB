@@ -4,6 +4,7 @@ package LogicTests;
 import Logic.*;
 import Persistence.JDBC.DBConn;
 import Persistence.TableSchemas;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
@@ -14,12 +15,33 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeeLogicTest {
 
-    private final IEmployeeLogic employeeLogic;
+    private IEmployeeLogic employeeLogic;
     public String test = "test";
-    public EmployeeLogicTest(){
+
+    @BeforeEach
+    public void setEmployeeStorage(){
         TableSchemas.dropEmployeesTable(test);
         TableSchemas.createEmployeesTable(test);
+        TableSchemas.createEmployeesView(test);
         employeeLogic = new EmployeeLogic(test);
+    }
+
+    @Test
+    public void findEmployee(){
+        IEmployeeRequest employee = new EmployeeRequest("Ismael", "Varela", "1988-5-15", 1);
+        IEmployeeRequest employeeA = new EmployeeRequest("Lary", "Figuereo", "2000-5-15", 1);
+        IEmployeeRequest employeeB = new EmployeeRequest("Isrrael", "Adesagna", "2000-5-15", 1);
+        IEmployeeResponse storedEmployee = employeeLogic.save(employee);
+        IEmployeeResponse storedEmployeeA = employeeLogic.save(employeeA);
+        IEmployeeResponse storedEmployeeB = employeeLogic.save(employeeB);
+
+        List<IEmployeeResponse> employeeList = employeeLogic.find("ismael");
+        List<IEmployeeResponse> employeeListA = employeeLogic.find("figuereo");
+        List<IEmployeeResponse> employeeListB = employeeLogic.find("el ad");
+
+        assertEquals(storedEmployee.getName(), employeeList.get(0).getName());
+        assertEquals(storedEmployeeA.getName(), employeeListA.get(0).getName());
+        assertEquals(storedEmployeeB.getName(), employeeListB.get(0).getName());
     }
 
     @Test
