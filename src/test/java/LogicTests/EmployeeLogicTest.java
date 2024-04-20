@@ -104,7 +104,7 @@ public class EmployeeLogicTest {
         IEmployeeResponse storedEmployeeB = employeeLogic.save(employeeB);
         IEmployeeResponse storedEmployeeC = employeeLogic.save(employeeC);
 
-        List<IEmployeeResponse> retrievedEmployees = employeeLogic.get(2,0);
+        List<IEmployeeResponse> retrievedEmployees = employeeLogic.get(2,1);
         List<IEmployeeResponse> retrievedEmployeesB = employeeLogic.get(2,2);
 
         assertEquals(storedEmployeeA.getName(), retrievedEmployees.get(0).getName());

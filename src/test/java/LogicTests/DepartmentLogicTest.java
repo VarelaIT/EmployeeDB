@@ -103,7 +103,7 @@ public class DepartmentLogicTest {
         IDepartmentResponse storedDepartmentB = departmentLogic.save(departmentB);
         IDepartmentResponse storedDepartmentC = departmentLogic.save(departmentC);
 
-        List<IDepartmentResponse> inStorageDepartments = departmentLogic.get(2, 0);
+        List<IDepartmentResponse> inStorageDepartments = departmentLogic.get(2, 1);
         List<IDepartmentResponse> inStorageDepartmentsB = departmentLogic.get(2, 2);
 
         assertEquals(storedDepartmentA.getName(), inStorageDepartments.get(0).getName());

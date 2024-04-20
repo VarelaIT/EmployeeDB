@@ -55,7 +55,7 @@ public class DepartmentRoute extends HttpServlet {
                 }
 
                 if (mode.isEmpty())
-                    rawPayload = rawPayload.concat(PagerComponent.build("employee", size, page));
+                    rawPayload = rawPayload.concat(PagerComponent.build("department", size, page));
             }
         }
 

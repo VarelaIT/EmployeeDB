@@ -40,8 +40,8 @@ public class PagerComponent {
 
 
         String payload = """
-        <tr colspan='6'>
-            <td class='pager-container'>
+        <tr>
+            <td colspan='6' class='pager-container'>
                 $prevBtn
                 <span>Page $count</span>
                 $nextBtn

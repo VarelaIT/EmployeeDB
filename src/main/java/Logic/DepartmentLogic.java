@@ -59,16 +59,17 @@ public class DepartmentLogic implements IDepartmentLogic{
     }
 
     public List<IDepartmentResponse> get(){
-        return get(25, 0);
+        return get(25, 1);
     }
 
     public List<IDepartmentResponse> get(Integer size, Integer page){
         List<IDepartmentResponse> inStorageDepartments = new ArrayList<IDepartmentResponse>();
         List<IPersistedDepartment> response;
 
-        if (size != null || page !=null)
-            response = departmentRepository.getAll(size, page);
-        else
+        if (size != null && page !=null) {
+            int row = (page - 1) * size;
+            response = departmentRepository.getAll(size, row);
+        }else
             response = departmentRepository.getAll(25, 0);
 
         if (response != null){
@@ -81,11 +82,6 @@ public class DepartmentLogic implements IDepartmentLogic{
         return null;
     }
 
-    /**
-     *
-     * @param id hello world
-     * @return
-     */
     public IDepartmentResponse get(int id){
         IPersistedDepartment response = departmentRepository.get(id);
 

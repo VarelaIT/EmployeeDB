@@ -71,7 +71,7 @@ public class EmployeeLogic implements IEmployeeLogic {
 
     @Override
     public List<IEmployeeResponse> get() {
-        return get(25, 0);
+        return get(25, 1);
     }
 
         @Override
@@ -79,10 +79,11 @@ public class EmployeeLogic implements IEmployeeLogic {
         List<IEmployeeResponse> affectedEmployees = new ArrayList<IEmployeeResponse>();
         List<IPersistedEmployee> response;
 
-        if (size != null || page != null)
-            response = employeeRepository.get(size, page);
-        else
-            response = employeeRepository.get(25, 0);
+        if (size != null && page !=null) {
+            int row = (page - 1) * size;
+            response = employeeRepository.get(size, row);
+        }else
+            response = employeeRepository.get(25, 1);
 
         if (response != null){
             response.forEach(employee ->
