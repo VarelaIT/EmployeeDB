@@ -12,7 +12,8 @@ public class TableSchemas {
     public static void createEmployeesView(String test) {
         String creationQuery = """
             CREATE VIEW employee_full_name AS
-            SELECT e.id, CONCAT (e.name, ' ', last_name) AS full_name, d.name AS department
+            SELECT CONCAT (e.name, ' ', last_name) AS full_name, e.id, e.name, e.last_name, e.birth_date AS bd,
+            d.id AS dep_id, d.name AS department
             FROM employees e LEFT JOIN departments d ON department_id = d.id
         """;
 
@@ -70,7 +71,7 @@ public class TableSchemas {
 
     public static void dropEmployeesView(String test) {
         String creationQuery =
-                "DROP VIEW IF EXIST employees_full_name";
+                "DROP VIEW employees_full_name";
         try (Connection conn = PersistenceConnectivity.get(test)){
             Statement st = conn.createStatement();
             st.executeUpdate(creationQuery);

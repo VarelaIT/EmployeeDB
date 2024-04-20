@@ -79,7 +79,7 @@ public class EmployeeLogic implements IEmployeeLogic {
         List<IEmployeeResponse> affectedEmployees = new ArrayList<IEmployeeResponse>();
         List<IPersistedEmployee> response;
 
-        if (size != null && page !=null) {
+        if (size != null && size < 101 && page !=null) {
             int row = (page - 1) * size;
             response = employeeRepository.get(size, row);
         }else

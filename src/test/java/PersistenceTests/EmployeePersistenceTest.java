@@ -25,9 +25,27 @@ public class EmployeePersistenceTest {
 
     @BeforeEach
     public void employeeStorageInitialization(){
+        TableSchemas.dropEmployeesView(test);
         TableSchemas.dropEmployeesTable(test);
         TableSchemas.createEmployeesTable(test);
+        TableSchemas.createEmployeesView(test);
         employeeRepository = new EmployeeRepository(test);
+    }
+
+    @Test
+    public void findEmployee() throws ParseException {
+        String pattern = "ismael varela";
+        java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1987").getTime());
+        IEmployee employee = new Employee("Ismael", "Varela", birthDate, 1);
+        IEmployee employeeA = new Employee("Juan", "Rodriguez", birthDate, 1);
+        IEmployee employeeB = new Employee("Elias", "Mejia", birthDate, 1);
+        IPersistedEmployee persistedEmployee = employeeRepository.save(employee);
+        IPersistedEmployee newEmployeeA = employeeRepository.save(employeeA);
+        IPersistedEmployee newEmployeeB = employeeRepository.save(employeeB);
+
+        List<IPersistedEmployee> listOfEmployees = employeeRepository.find(pattern);
+
+        assertTrue(listOfEmployees.size() == 1);
     }
 
     @Test

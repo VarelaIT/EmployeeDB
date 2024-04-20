@@ -13,6 +13,9 @@ import static java.lang.Integer.parseInt;
 
 public class EmployeeRepository implements IEmployeeRepository{
 
+    protected String findNameQuery = """
+        SELECT * FROM employee_full_name WHERE full_name ILIKE '%?%' LIMIT 100
+    """;
     protected String insertionQuery = """
         INSERT INTO employees (name, last_name, birth_date, department_id) VALUES (?, ?, ?, ?)
         RETURNING id, name, last_name, birth_date, department_id
@@ -114,6 +117,7 @@ public class EmployeeRepository implements IEmployeeRepository{
     public List<IPersistedEmployee> get() {
         return get(25, 0);
     }
+
     @Override
     public List<IPersistedEmployee> get(int size, int page) {
         List<IPersistedEmployee> response = new ArrayList<IPersistedEmployee>();
@@ -122,6 +126,34 @@ public class EmployeeRepository implements IEmployeeRepository{
             PreparedStatement stm = conn.prepareStatement(selectAllQuery);
             stm.setInt(1, size);
             stm.setInt(2, page);
+            ResultSet result = stm.executeQuery();
+            while(result.next()) {
+                response.add(new PersistedEmployee(
+                        result.getInt("id"),
+                        result.getString("name"),
+                        result.getString("last_name"),
+                        result.getDate("bd"),
+                        result.getInt("dep_id"),
+                        result.getString("department")
+                ));
+            }
+
+            result.close();
+            stm.close();
+            return response;
+        } catch (Exception e) {
+            logger.error("While withdrawing employees.\n\t" + e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public List<IPersistedEmployee> find(String pattern) {
+        List<IPersistedEmployee> response = new ArrayList<IPersistedEmployee>();
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            PreparedStatement stm = conn.prepareStatement(findNameQuery);
+            stm.setString(1, pattern);
             ResultSet result = stm.executeQuery();
             while(result.next()) {
                 response.add(new PersistedEmployee(
