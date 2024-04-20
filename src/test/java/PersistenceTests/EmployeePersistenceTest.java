@@ -25,7 +25,6 @@ public class EmployeePersistenceTest {
 
     @BeforeEach
     public void employeeStorageInitialization(){
-        TableSchemas.dropEmployeesView(test);
         TableSchemas.dropEmployeesTable(test);
         TableSchemas.createEmployeesTable(test);
         TableSchemas.createEmployeesView(test);
@@ -35,17 +34,23 @@ public class EmployeePersistenceTest {
     @Test
     public void findEmployee() throws ParseException {
         String pattern = "ismael varela";
+        String patternA = "rodriguez";
+        String patternB = "as me";
         java.sql.Date birthDate = new java.sql.Date(bdObj.parse("02-08-1987").getTime());
         IEmployee employee = new Employee("Ismael", "Varela", birthDate, 1);
         IEmployee employeeA = new Employee("Juan", "Rodriguez", birthDate, 1);
         IEmployee employeeB = new Employee("Elias", "Mejia", birthDate, 1);
-        IPersistedEmployee persistedEmployee = employeeRepository.save(employee);
+        IPersistedEmployee newEmployee = employeeRepository.save(employee);
         IPersistedEmployee newEmployeeA = employeeRepository.save(employeeA);
         IPersistedEmployee newEmployeeB = employeeRepository.save(employeeB);
 
         List<IPersistedEmployee> listOfEmployees = employeeRepository.find(pattern);
+        List<IPersistedEmployee> listOfEmployeesA = employeeRepository.find(patternA);
+        List<IPersistedEmployee> listOfEmployeesB = employeeRepository.find(patternB);
 
-        assertTrue(listOfEmployees.size() == 1);
+        assertEquals(newEmployee.getName(), listOfEmployees.get(0).getName());
+        assertEquals(newEmployeeA.getName(), listOfEmployeesA.get(0).getName());
+        assertEquals(newEmployeeB.getName(), listOfEmployeesB.get(0).getName());
     }
 
     @Test

@@ -5,7 +5,6 @@ import Persistence.TableSchemas;
 public class Setup implements IStorageSetup {
 
     public boolean formatStorage(){
-        TableSchemas.dropEmployeesView(null);
         TableSchemas.dropDepartmentsTable(null);
         TableSchemas.createDepartmentsTable(null);
         TableSchemas.dropEmployeesTable(null);

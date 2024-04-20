@@ -14,7 +14,7 @@ import static java.lang.Integer.parseInt;
 public class EmployeeRepository implements IEmployeeRepository{
 
     protected String findNameQuery = """
-        SELECT * FROM employee_full_name WHERE full_name ILIKE '%?%' LIMIT 100
+        SELECT * FROM employee_full_name WHERE full_name ILIKE ? LIMIT 100
     """;
     protected String insertionQuery = """
         INSERT INTO employees (name, last_name, birth_date, department_id) VALUES (?, ?, ?, ?)
@@ -149,7 +149,11 @@ public class EmployeeRepository implements IEmployeeRepository{
 
     @Override
     public List<IPersistedEmployee> find(String pattern) {
+        if (pattern == null)
+            return null;
+
         List<IPersistedEmployee> response = new ArrayList<IPersistedEmployee>();
+        pattern = "%" + pattern + "%";
 
         try (Connection conn = PersistenceConnectivity.get(test)){
             PreparedStatement stm = conn.prepareStatement(findNameQuery);
