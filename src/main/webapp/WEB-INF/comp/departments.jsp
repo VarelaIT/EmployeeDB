@@ -25,7 +25,7 @@
                 <h1>Departments</h1>
             </header>
 
-            <article id="deparments-table">
+            <article id="departments-table">
 
                 <div class="overflow-auto">
                     <table>
@@ -54,10 +54,10 @@
                                     hx-target="#table-form-container"
                                 >
                                 <td colspan='2'>
-                                    <input name="department" placeholder="Department name" required/>
+                                    <input name="department" placeholder="Department name" required pattern=".{2,32}"/>
                                 </td>
                                 <td colspan='3'>
-                                    <input name="description" placeholder="Brief department description" required/>
+                                    <input name="description" placeholder="Brief department description" required pattern=".{8,64}"/>
                                 </td>
                                 <td>
                                 </td>

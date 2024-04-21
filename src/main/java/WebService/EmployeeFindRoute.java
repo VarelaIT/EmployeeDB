@@ -27,12 +27,14 @@ public class EmployeeFindRoute extends HttpServlet{
         String pattern = params.getOrDefault("pattern", null);
         String rawPayload= "<p>Pattern " + pattern + " not found.</p>";
 
-        List<IEmployeeResponse> inStorageEmployees = new EmployeeLogic().find(pattern);
-        if (inStorageEmployees != null){
-            rawPayload = "";
-            for (IEmployeeResponse employee : inStorageEmployees) {
-                String tableRow = employeeTableRow(employee);
-                rawPayload = rawPayload.concat(tableRow);
+        if (pattern != null) {
+            List<IEmployeeResponse> inStorageEmployees = new EmployeeLogic().find(pattern);
+            if (inStorageEmployees != null && !inStorageEmployees.isEmpty()) {
+                rawPayload = "";
+                for (IEmployeeResponse employee : inStorageEmployees) {
+                    String tableRow = employeeTableRow(employee);
+                    rawPayload = rawPayload.concat(tableRow);
+                }
             }
         }
 

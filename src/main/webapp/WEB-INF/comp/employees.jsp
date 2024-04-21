@@ -34,7 +34,7 @@
                         hx-target="#employeeTableBody"
                         hx-swap="innerHTML"
                     >
-                        <input name="pattern" type="search" pattern="\w{2,64}" required placeholder="Name of the employee"/>
+                        <input name="pattern" type="search" pattern=".{2,64}" required placeholder="Name of the employee"/>
                         <input type="submit" value="Search"/>
                     </form>
                 </header>
@@ -72,13 +72,13 @@
                                 <form
                                     hx-post="./api/employee"
                                     hx-trigger="submit"
-                                    hx-trigger="#table-form-container"
+                                    hx-target="#table-form-container"
                                 >
                                 <td colspan='2'>
-                                    <input name="name" placeholder="Employee name" required/>
+                                    <input name="name" placeholder="Employee name" required pattern=".{2,32}"/>
                                 </td>
                                 <td colspan='2'>
-                                    <input name="lastName" placeholder="Employee last name" required/>
+                                    <input name="lastName" placeholder="Employee last name" required pattern=".{2,64}"/>
                                 </td>
                                 <td>
                                     <input name="birthDate" type="date" required/>

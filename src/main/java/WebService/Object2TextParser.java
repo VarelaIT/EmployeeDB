@@ -48,8 +48,8 @@ public class Object2TextParser {
             hx-trigger='submit'
             hx-target="#table-form-container"
             >
-            <td colspan='2'><input name='name' value='$name' placeholder='Employee name' required/></td>
-            <td colspan='2'><input name='lastName' value='$lastName' placeholder='Employee lastName' required/></td>
+            <td colspan='2'><input name='name' value='$name' placeholder='Employee name' required pattern=".{2,32}"/></td>
+            <td colspan='2'><input name='lastName' value='$lastName' placeholder='Employee lastName' required pattern=".{2,64}"/></td>
             <td ><input name='birthDate' type='date' value='$birth' required/></td>
             <td>
                 <select name='departmentId' required 
@@ -89,10 +89,10 @@ public class Object2TextParser {
                         hx-target="#table-form-container"
                 >
                     <td colspan='2'>
-                        <input name="name" placeholder="Employee name" required/>
+                        <input name="name" placeholder="Employee name" required pattern=".{2,32}"/>
                     </td>
                     <td colspan='2'>
-                        <input name="lastName" placeholder="Employee last name" required/>
+                        <input name="lastName" placeholder="Employee last name" required pattern=".{2,64}"/>
                     </td>
                     <td>
                         <input name="birthDate" type="date" required/>
@@ -125,10 +125,10 @@ public class Object2TextParser {
                     hx-target="#table-form-container"
                 >
                 <td colspan='2'>
-                    <input name="department" placeholder="Department name" required/>
+                    <input name="department" placeholder="Department name" required pattern=".{2,32}"/>
                 </td>
                 <td colspan='3'>
-                    <input name="description" placeholder="Brief department description" required/>
+                    <input name="description" placeholder="Brief department description" required pattern=".{8,64}"/>
                 </td>
                 <td>
                 </td>
@@ -157,8 +157,8 @@ public class Object2TextParser {
             hx-trigger='submit'
             hx-target="#table-form-container"
             >
-            <td colspan='2'><input name='department' value='$department' placeholder='Department name' required/></td>
-            <td colspan='3'><input name='description' value='$description' placeholder='Brief department description' required/></td>
+            <td colspan='2'><input name='department' value='$department' placeholder='Department name' required pattern=".{2,32}"/></td>
+            <td colspan='3'><input name='description' value='$description' placeholder='Brief department description' required pattern=".{8,64}"/></td>
             <td><input name='id' value='$id' type='hidden' required  style='max-width: 200px;'/></td>
             <td colspan='2'><input type='submit' value='Edit'/></td>
             </form></tr>
