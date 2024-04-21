@@ -28,6 +28,7 @@
 
             <article id="upload-info-container">
                 <form
+                    enctype="multipart/form-data"
                     hx-post="/EmployeeDB/api/employee/upload"
                     hx-trigger="submit"
                     hx-target="#upload-info-container"
@@ -35,12 +36,11 @@
                     <input type="hidden" name="MAX_FILE_SIZE" value="200000" />
 
                     <label>
-                        Archivo
+                        CSV file
                         <input
-                            id="text-file"
                             type="file"
-                            name="text"
-                            placeholder="Archivo de texto.md"
+                            name="file"
+                            placeholder="Select a CSV file."
                             accept=".txt, .csv"
                             required
                         />
