@@ -27,6 +27,17 @@
 
             <article id="employee-table">
 
+                <header>
+                    <form
+                        hx-get="./api/employee/find"
+                        hx-trigger="submit"
+                        hx-target="#employeeTableBody"
+                        hx-swap="innerHTML"
+                    >
+                        <input name="pattern" type="search" pattern="\w{2,64}" required placeholder="Name of the employee"/>
+                        <input type="submit" value="Search"/>
+                    </form>
+                </header>
                 <div class="overflow-auto">
                     <table>
                         <thead>

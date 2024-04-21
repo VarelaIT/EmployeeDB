@@ -7,6 +7,7 @@ public interface IEmployeeLogic {
     IEmployeeResponse update(Integer id, IEmployeeRequest employee);
     List<IEmployeeResponse> get();
     List<IEmployeeResponse> get(Integer size, Integer page);
+    List<IEmployeeResponse> find(String pattern);
     IEmployeeResponse get(int id);
     IEmployeeResponse delete(int id);
     int countEmployees();
