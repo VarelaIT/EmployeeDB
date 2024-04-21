@@ -8,17 +8,17 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
   />
-  <link rel='stylesheet' type='text/css' href='./styles/global.css'/>
+  <link rel='stylesheet' type='text/css' href='/EmployeeDB/styles/global.css'/>
   <!--<script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>-->
-  <script type="module" src="./scripts/header.js" defer></script>
-  <script type="module" src="./scripts/form.js" defer></script>
+  <script type="module" src="/EmployeeDB/scripts/header.js" defer></script>
+  <script type="module" src="/EmployeeDB/scripts/form.js" defer></script>
   <title>EmployeeDB - Employees</title>
 </head>
 <body>
 
     <main class="container">
 
-        <jsp:include page="./WEB-INF/comp/header.jsp" />
+        <jsp:include page="/WEB-INF/comp/header.jsp" />
 
         <section>
             <header>
@@ -29,7 +29,7 @@
 
                 <header>
                     <form
-                        hx-get="./api/employee/find"
+                        hx-get="/EmployeeDB/api/employee/find"
                         hx-trigger="submit"
                         hx-target="#employeeTableBody"
                         hx-swap="innerHTML"
@@ -53,7 +53,7 @@
 
                         <tbody
                             id="employeeTableBody"
-                            hx-get="./api/employee"
+                            hx-get="/EmployeeDB/api/employee"
                             hx-trigger="load, newEmployee from:body"
                             hx-swap="innerHTML"
                         >
@@ -70,7 +70,7 @@
                         <tbody id='table-form-container'>
                             <tr>
                                 <form
-                                    hx-post="./api/employee"
+                                    hx-post="/EmployeeDB/api/employee"
                                     hx-trigger="submit"
                                     hx-target="#table-form-container"
                                 >
@@ -85,7 +85,7 @@
                                 </td>
                                 <td colspan='2'>
                                     <select name='departmentId' required
-                                       hx-get='./api/department?mode=options'
+                                       hx-get='/EmployeeDB/api/department?mode=options'
                                        hx-trigger='load'
                                        hx-swap='innerHTML'
                                     >
@@ -108,7 +108,7 @@
 
         </section>
 
-        <jsp:include page="./WEB-INF/comp/footer.jsp" />
+        <jsp:include page="/WEB-INF/comp/footer.jsp" />
 
     </main>
 

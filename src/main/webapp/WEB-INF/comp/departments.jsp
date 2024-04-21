@@ -8,17 +8,17 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
   />
-  <link rel='stylesheet' type='text/css' href='./styles/global.css'/>
+  <link rel='stylesheet' type='text/css' href='/EmployeeDB/styles/global.css'/>
   <!--<script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>-->
-  <script type="module" src="./scripts/header.js" defer></script>
-  <script type="module" src="./scripts/form.js" defer></script>
+  <script type="module" src="/EmployeeDB/scripts/header.js" defer></script>
+  <script type="module" src="/EmployeeDB/scripts/form.js" defer></script>
   <title>EmployeeDB - Departments</title>
 </head>
 <body>
 
     <main class="container">
 
-        <jsp:include page="./WEB-INF/comp/header.jsp" />
+        <jsp:include page="/WEB-INF/comp/header.jsp" />
 
         <section>
             <header>
@@ -40,7 +40,7 @@
 
                         <tbody
                             id="departmentTableBody"
-                            hx-get="./api/department"
+                            hx-get="/EmployeeDB/api/department"
                             hx-trigger="load, newDepartment from:body"
                             hx-swap="innerHTML"
                         >
@@ -49,7 +49,7 @@
                         <tbody id='table-form-container'>
                             <tr>
                                 <form
-                                    hx-post="./api/department"
+                                    hx-post="/EmployeeDB/api/department"
                                     hx-trigger="submit"
                                     hx-target="#table-form-container"
                                 >
@@ -75,7 +75,7 @@
 
         </section>
 
-        <jsp:include page="./WEB-INF/comp/footer.jsp" />
+        <jsp:include page="/WEB-INF/comp/footer.jsp" />
 
     </main>
 

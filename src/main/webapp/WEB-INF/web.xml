@@ -21,6 +21,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>bulkUpload</servlet-name>
+        <jsp-file>/WEB-INF/comp/bulkUpload.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>bulkUpload</servlet-name>
+        <url-pattern>/employees/upload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>departments</servlet-name>
         <jsp-file>/WEB-INF/comp/departments.jsp</jsp-file>
     </servlet>
