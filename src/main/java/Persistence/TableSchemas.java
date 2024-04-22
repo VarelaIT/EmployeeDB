@@ -9,6 +9,41 @@ import java.sql.Statement;
 public class TableSchemas {
     private static final Logger logger = LogManager.getLogger("regular");
 
+    public static void dropUploadsTable(String test) {
+        String creationQuery =
+                "DROP TABLE uploads CASCADE";
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            Statement st = conn.createStatement();
+            st.executeUpdate(creationQuery);
+            st.close();
+        } catch (Exception e){
+            logger.error("While deleting the uploads schema.\n\t" + e.getMessage());
+        }
+    }
+
+    public static void createUploadsTable(String test) {
+        String creationQuery = """
+            CREATE TABLE IF NOT EXISTS
+            uploads (
+                id SERIAL PRIMARY KEY,
+                file VARCHAR(64) NOT NULL,
+                completed INT,
+                failed INT,
+                done BOOLEAN DEFAULT FALSE,
+                modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """;
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            Statement st = conn.createStatement();
+            st.executeUpdate(creationQuery);
+            st.close();
+        } catch (Exception e){
+            logger.error("While creating uploads schema.\n\t" + e.getMessage());
+        }
+    }
+
     public static void createEmployeesView(String test) {
         String creationQuery = """
             CREATE VIEW employee_full_name AS

@@ -1,6 +1,6 @@
 package Persistence;
 
 public interface IUploadRepository {
-    int create(String file);
+    Integer create(String file);
     IUploadStatus get(int id);
 }
