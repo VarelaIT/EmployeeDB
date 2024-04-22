@@ -22,20 +22,35 @@ public class UploadRepositoryTest {
     }
 
     @Test
-    public void updateCompletedLineUploadProcess(){
-        String fileName = "employess.csv";
+    public void updateFailedLineUploadProcess(){
+        String fileName = "employees.csv";
         Integer processId = uploadRepository.create(fileName);
-        IUploadStatus oldstatus = uploadRepository.getStatus(processId);
+        IUploadStatus oldStatus = uploadRepository.getStatus(processId);
+
+        uploadRepository.updateFailedLine(processId);
+        IUploadStatus status = uploadRepository.getStatus(processId);
+
+        assertEquals(oldStatus.getProcessId(), status.getProcessId());
+        assertEquals(oldStatus.getFileName(), status.getFileName());
+        assertEquals(oldStatus.failed() + 1, status.failed());
+        assertEquals(oldStatus.completed(), status.completed());
+        assertNotEquals(oldStatus.getTimeStamp(), status.getTimeStamp());
+    }
+
+    @Test
+    public void updateCompletedLineUploadProcess(){
+        String fileName = "employees.csv";
+        Integer processId = uploadRepository.create(fileName);
+        IUploadStatus oldStatus = uploadRepository.getStatus(processId);
 
         uploadRepository.updateCompletedLine(processId);
         IUploadStatus status = uploadRepository.getStatus(processId);
-        System.out.println(oldstatus.getTimeStamp() + " vs " + status.getTimeStamp());
 
-        assertEquals(oldstatus.getProcessId(), status.getProcessId());
-        assertEquals(oldstatus.getFileName(), status.getFileName());
-        assertEquals(oldstatus.completed() + 1, status.completed());
-        assertEquals(oldstatus.failed(), status.failed());
-        assertNotEquals(oldstatus.getTimeStamp(), status.getTimeStamp());
+        assertEquals(oldStatus.getProcessId(), status.getProcessId());
+        assertEquals(oldStatus.getFileName(), status.getFileName());
+        assertEquals(oldStatus.completed() + 1, status.completed());
+        assertEquals(oldStatus.failed(), status.failed());
+        assertNotEquals(oldStatus.getTimeStamp(), status.getTimeStamp());
     }
 
     @Test

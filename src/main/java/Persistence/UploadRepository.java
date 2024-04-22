@@ -73,6 +73,22 @@ public class UploadRepository implements IUploadRepository{
         return null;
     }
 
+    private String updateFailedLineQuery = """
+        UPDATE uploads SET failed = failed + 1, modified = NOW() WHERE id = ?
+    """;
+    @Override
+    public void updateFailedLine(int id) {
+
+        try (Connection conn = PersistenceConnectivity.get(test)) {
+            PreparedStatement st = conn.prepareStatement(updateFailedLineQuery);
+            st.setInt(1, id);
+            Integer afectedRows = st.executeUpdate();
+            st.close();
+        } catch (Exception e){
+            logger.error("While updating failed lines on uploaded register\n\t" + e.getMessage());
+        }
+    }
+
     private String updateCompletedLineQuery = """
         UPDATE uploads SET completed = completed + 1, modified = NOW() WHERE id = ?
     """;
