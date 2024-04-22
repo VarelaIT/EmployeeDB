@@ -40,3 +40,4 @@ build/
 ### choose to ignore ###
 *.log
 *ValidateDepartmentInput.java
+/webapp/uploads
