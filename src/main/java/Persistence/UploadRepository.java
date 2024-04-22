@@ -11,6 +11,9 @@ public class UploadRepository implements IUploadRepository{
     private String creationQuery = """
         INSERT INTO uploads (file) VALUES (?) RETURNING id
     """;
+    private String selectionQuery = """
+        SELECT id, file, completed, failed, done, modified FROM uploads WHERE id = ?
+    """;
     private static final Logger logger = LogManager.getLogger("regular");
     private String test = null;
 
@@ -42,6 +45,31 @@ public class UploadRepository implements IUploadRepository{
 
     @Override
     public IUploadStatus get(int id) {
+        IUploadStatus status = null;
+        try (Connection conn = PersistenceConnectivity.get(test)) {
+            PreparedStatement st = conn.prepareStatement(selectionQuery);
+            st.setInt(1, id);
+            ResultSet result = st.executeQuery();
+
+            if (result.next()) {
+                status = new UploadStatus(
+                    result.getInt("id"),
+                    result.getString("file"),
+                    result.getInt("completed"),
+                    result.getInt("failed"),
+                    result.getBoolean("done"),
+                    result.getDate("modified")
+                );
+            }
+
+            result.close();
+            st.close();
+
+            return status;
+        } catch (Exception e){
+            logger.error("While reading an upload register\n\t" + e.getMessage());
+        }
+
         return null;
     }
 }
