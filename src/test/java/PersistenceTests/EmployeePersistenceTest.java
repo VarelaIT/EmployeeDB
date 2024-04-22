@@ -32,16 +32,19 @@ public class EmployeePersistenceTest {
         employeeRepository = new EmployeeRepository(test);
     }
 
-    /*
     @Test
     public void insertChunkEmployData(){
-        String filePath = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesBadLines.csv";
+        String chunk = """
+            ('Michael', 'Johnson', '1978-11-02', 3),
+            ('Emily', 'Williams', '1982-04-10', 2),
+            ('Liam', 'Davis', '1994-03-15', 1),
+            ('Noah', 'Miller', '1982-01-05', 5)
+        """;
 
-        boolean result = ReadFile.reader(filePath);
+        int afectedRows = employeeRepository.chunkData(chunk);
 
-        assertTrue(result);
+        assertEquals(4, afectedRows);
     }
-     */
 
     @Test
     public void findEmployee() throws ParseException {

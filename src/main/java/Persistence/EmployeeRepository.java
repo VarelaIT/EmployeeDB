@@ -49,7 +49,7 @@ public class EmployeeRepository implements IEmployeeRepository{
         if (chunk == null)
             return null;
 
-        String chunkQuery = "INSERT INTO employees (name, last_name, birth_date, group_id) VALUES " + chunk;
+        String chunkQuery = "INSERT INTO employees (name, last_name, birth_date, department_id) VALUES " + chunk;
 
         try (Connection conn = PersistenceConnectivity.get(test)){
             Statement st = conn.createStatement();

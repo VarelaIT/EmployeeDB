@@ -3,8 +3,6 @@ package FileServiceTest;
 import FileService.ReadFile;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ReaderTest {
@@ -13,9 +11,10 @@ public class ReaderTest {
     public void readValidFile(){
         //String filePath = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesGPT.csv";
         String filePath = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesBadLines.csv";
+        int fileId = 1;
 
-        boolean result = ReadFile.reader(filePath);
+        ReadFile.manage(filePath);
 
-        assertTrue(result);
+        assertTrue(fileId == 1);
     }
 }
