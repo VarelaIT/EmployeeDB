@@ -2,11 +2,11 @@ package Persistence;
 
 import Entities.Upload;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class UploadStatus extends Upload implements IUploadStatus {
 
-    UploadStatus(int id, String fileName, int completed, int failed, boolean done, Date time){
+    UploadStatus(int id, String fileName, int completed, int failed, boolean done, Timestamp time){
         this.processId = id;
         this.file = fileName;
         this.completedLines = completed;
@@ -33,7 +33,7 @@ public class UploadStatus extends Upload implements IUploadStatus {
     }
 
     @Override
-    public Date getTimeStamp() {
+    public Timestamp getTimeStamp() {
         return timeStamp;
     }
 

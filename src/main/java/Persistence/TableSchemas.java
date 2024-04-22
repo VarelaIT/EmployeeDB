@@ -28,10 +28,10 @@ public class TableSchemas {
             uploads (
                 id SERIAL PRIMARY KEY,
                 file VARCHAR(64) NOT NULL,
-                completed INT,
-                failed INT,
+                completed INT DEFAULT 0,
+                failed INT DEFAULT 0,
                 done BOOLEAN DEFAULT FALSE,
-                modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                modified TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP
             )
         """;
 

@@ -44,7 +44,7 @@ public class UploadRepository implements IUploadRepository{
     }
 
     @Override
-    public IUploadStatus get(int id) {
+    public IUploadStatus getStatus(int id) {
         IUploadStatus status = null;
         try (Connection conn = PersistenceConnectivity.get(test)) {
             PreparedStatement st = conn.prepareStatement(selectionQuery);
@@ -58,7 +58,7 @@ public class UploadRepository implements IUploadRepository{
                     result.getInt("completed"),
                     result.getInt("failed"),
                     result.getBoolean("done"),
-                    result.getDate("modified")
+                    result.getTimestamp("modified")
                 );
             }
 
@@ -71,5 +71,21 @@ public class UploadRepository implements IUploadRepository{
         }
 
         return null;
+    }
+
+    private String updateCompletedLineQuery = """
+        UPDATE uploads SET completed = completed + 1, modified = NOW() WHERE id = ?
+    """;
+    @Override
+    public void updateCompletedLine(int id) {
+
+        try (Connection conn = PersistenceConnectivity.get(test)) {
+            PreparedStatement st = conn.prepareStatement(updateCompletedLineQuery);
+            st.setInt(1, id);
+            Integer afectedRows = st.executeUpdate();
+            st.close();
+        } catch (Exception e){
+            logger.error("While updating completed lines on uploaded register\n\t" + e.getMessage());
+        }
     }
 }
