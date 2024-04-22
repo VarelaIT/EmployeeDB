@@ -45,6 +45,26 @@ public class EmployeeRepository implements IEmployeeRepository{
     }
 
     @Override
+    public Integer chunkData(String chunk){
+        if (chunk == null)
+            return null;
+
+        String chunkQuery = "INSERT INTO employees (name, last_name, birth_date, group_id) VALUES " + chunk;
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            Statement st = conn.createStatement();
+            int affectedRows = st.executeUpdate(chunkQuery);
+            st.close();
+
+            return affectedRows;
+        } catch (Exception e){
+            logger.error("While chunk insert employees.\n\t" + e.getMessage());
+        }
+
+        return null;
+    }
+
+    @Override
     public IPersistedEmployee save(IEmployee employee) {
         IPersistedEmployee response = null;
 

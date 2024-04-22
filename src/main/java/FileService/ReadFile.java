@@ -59,7 +59,6 @@ public class ReadFile {
             }
 
             return "(" + fields[0] + "," + fields[1] + "," + fields[2] + "," + fields[3] + ")";
-            //if (fields[2].cont)
         }
 
         return null;

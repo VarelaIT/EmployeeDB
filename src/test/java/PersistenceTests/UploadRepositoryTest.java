@@ -40,15 +40,16 @@ public class UploadRepositoryTest {
     @Test
     public void updateCompletedLineUploadProcess(){
         String fileName = "employees.csv";
+        Integer lines = 5;
         Integer processId = uploadRepository.create(fileName);
         IUploadStatus oldStatus = uploadRepository.getStatus(processId);
 
-        uploadRepository.updateCompletedLine(processId);
+        uploadRepository.updateCompletedLine(processId, lines);
         IUploadStatus status = uploadRepository.getStatus(processId);
 
         assertEquals(oldStatus.getProcessId(), status.getProcessId());
         assertEquals(oldStatus.getFileName(), status.getFileName());
-        assertEquals(oldStatus.completed() + 1, status.completed());
+        assertEquals(oldStatus.completed() + lines, status.completed());
         assertEquals(oldStatus.failed(), status.failed());
         assertNotEquals(oldStatus.getTimeStamp(), status.getTimeStamp());
     }

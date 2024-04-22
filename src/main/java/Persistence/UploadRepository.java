@@ -12,7 +12,7 @@ public class UploadRepository implements IUploadRepository{
         INSERT INTO uploads (file) VALUES (?) RETURNING id
     """;
     private String selectionQuery = """
-        SELECT id, file, completed, failed, done, modified FROM uploads WHERE id = ?
+        SELECT id, file, completed, failed, modified FROM uploads WHERE id = ?
     """;
     private static final Logger logger = LogManager.getLogger("regular");
     private String test = null;
@@ -57,7 +57,6 @@ public class UploadRepository implements IUploadRepository{
                     result.getString("file"),
                     result.getInt("completed"),
                     result.getInt("failed"),
-                    result.getBoolean("done"),
                     result.getTimestamp("modified")
                 );
             }
@@ -90,14 +89,15 @@ public class UploadRepository implements IUploadRepository{
     }
 
     private String updateCompletedLineQuery = """
-        UPDATE uploads SET completed = completed + 1, modified = NOW() WHERE id = ?
+        UPDATE uploads SET completed = completed + ?, modified = NOW() WHERE id = ?
     """;
     @Override
-    public void updateCompletedLine(int id) {
+    public void updateCompletedLine(int id, int lines) {
 
         try (Connection conn = PersistenceConnectivity.get(test)) {
             PreparedStatement st = conn.prepareStatement(updateCompletedLineQuery);
-            st.setInt(1, id);
+            st.setInt(1, lines);
+            st.setInt(2, id);
             Integer afectedRows = st.executeUpdate();
             st.close();
         } catch (Exception e){

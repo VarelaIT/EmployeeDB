@@ -2,6 +2,7 @@ package PersistenceTests;
 
 import Entities.IEmployee;
 import Entities.Employee;
+import FileService.ReadFile;
 import Persistence.IPersistedEmployee;
 import Persistence.EmployeeRepository;
 import Persistence.IEmployeeRepository;
@@ -30,6 +31,17 @@ public class EmployeePersistenceTest {
         TableSchemas.createEmployeesView(test);
         employeeRepository = new EmployeeRepository(test);
     }
+
+    /*
+    @Test
+    public void insertChunkEmployData(){
+        String filePath = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesBadLines.csv";
+
+        boolean result = ReadFile.reader(filePath);
+
+        assertTrue(result);
+    }
+     */
 
     @Test
     public void findEmployee() throws ParseException {

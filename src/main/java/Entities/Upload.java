@@ -8,5 +8,4 @@ public abstract class Upload {
     public Integer completedLines;
     public Integer inCompletedLines;
     public Timestamp timeStamp;
-    public boolean done = false;
 }

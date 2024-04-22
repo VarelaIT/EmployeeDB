@@ -6,13 +6,12 @@ import java.sql.Timestamp;
 
 public class UploadStatus extends Upload implements IUploadStatus {
 
-    UploadStatus(int id, String fileName, int completed, int failed, boolean done, Timestamp time){
+    UploadStatus(int id, String fileName, int completed, int failed, Timestamp time){
         this.processId = id;
         this.file = fileName;
         this.completedLines = completed;
         this.inCompletedLines = failed;
         this.timeStamp = time;
-        this.done = done;
     }
     @Override
     public int getProcessId() {
@@ -37,8 +36,4 @@ public class UploadStatus extends Upload implements IUploadStatus {
         return timeStamp;
     }
 
-    @Override
-    public boolean isDone() {
-        return done;
-    }
 }

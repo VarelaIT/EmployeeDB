@@ -30,7 +30,6 @@ public class TableSchemas {
                 file VARCHAR(64) NOT NULL,
                 completed INT DEFAULT 0,
                 failed INT DEFAULT 0,
-                done BOOLEAN DEFAULT FALSE,
                 modified TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP
             )
         """;

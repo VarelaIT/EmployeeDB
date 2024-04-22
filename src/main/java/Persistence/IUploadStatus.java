@@ -8,5 +8,4 @@ public interface IUploadStatus {
     Integer completed();
     Integer failed();
     Timestamp getTimeStamp();
-    boolean isDone();
 }
