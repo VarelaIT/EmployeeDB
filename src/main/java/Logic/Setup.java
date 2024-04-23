@@ -10,6 +10,8 @@ public class Setup implements IStorageSetup {
         TableSchemas.dropEmployeesTable(null);
         TableSchemas.createEmployeesTable(null);
         TableSchemas.createEmployeesView(null);
+        TableSchemas.createUploadsTable(null);
+        TableSchemas.createFailedLinesTable(null);
         return true;
     }
 }

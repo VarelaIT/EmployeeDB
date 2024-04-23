@@ -9,7 +9,7 @@ public class UploadLogic implements IUploadLogic{
     private final IUploadRepository uploadRepository;
     private String test = null;
 
-    UploadLogic(){
+    public UploadLogic(){
         this.uploadRepository = new UploadRepository();
     }
 

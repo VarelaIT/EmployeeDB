@@ -1,5 +1,8 @@
 package WebService;
 
+import Logic.IUploadLogic;
+import Logic.IUploadStatusResponse;
+import Logic.UploadLogic;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,6 +14,10 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Map;
+
+import static WebService.RequestSanitizer.getParams;
+import static java.lang.Integer.parseInt;
 
 @WebServlet("/api/employee/upload")
 @MultipartConfig(
@@ -41,11 +48,41 @@ public class EmployeeFileRoute extends HttpServlet{
         if (fileName == null || fileName.isEmpty())
             payload = "No file selected to upload!";
         else {
+            String fileFullPath = uploadFilePath + File.separator + fileName;
             for (Part part : request.getParts()) {
-                part.write(uploadFilePath + File.separator + fileName);
+                part.write(fileFullPath);
             }
+
+            IUploadLogic uploadLogic = new UploadLogic();
+            Integer processId = uploadLogic.start(fileName, fileFullPath);
+
+            payload = uploadStatusComponent(processId, "start");
         }
 
         response.getWriter().append(payload);
+    }
+
+    private String uploadStatusComponent(Integer processId, String start) {
+        String body = """
+            <table>
+                <thead>
+                    <tr>
+                        <th>Processed registers</th>
+                        <th>Valid</th>
+                        <th>Invalid</th>
+                        <th>Total</th>
+                    </tr>
+                <thead>
+                <tbody>
+                    <tr
+                        hx-get='/EmployeeDB/api/employee/upload/status/?id=$processId'
+                        hx-trigger='load delay:0.5s'
+                        hx-swap='outerHTML'
+                    ></tr>
+                <tbody>
+            </table>
+        """;
+
+        return body.replace("$processId", "" + processId);
     }
 }
