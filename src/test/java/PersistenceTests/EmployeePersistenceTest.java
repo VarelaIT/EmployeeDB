@@ -41,7 +41,7 @@ public class EmployeePersistenceTest {
             ('Noah', 'Miller', '1982-01-05', 5)
         """;
 
-        int afectedRows = employeeRepository.chunkData(chunk);
+        int afectedRows = employeeRepository.chunkData(1, chunk);
 
         assertEquals(4, afectedRows);
     }

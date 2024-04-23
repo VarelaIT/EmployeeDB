@@ -23,7 +23,6 @@ public class ReportFailedThread implements Runnable{
     @Override
     public void run() {
         IUploadRepository uploadRepository = new UploadRepository(test);
-
         uploadRepository.updateFailedLine(processId, lineNuber);
     }
 }

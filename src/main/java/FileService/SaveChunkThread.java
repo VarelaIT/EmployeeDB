@@ -24,9 +24,6 @@ public class SaveChunkThread implements Runnable{
     @Override
     public void run() {
         IEmployeeRepository employeeRepository = new EmployeeRepository(test);
-        IUploadRepository uploadRepository = new UploadRepository(test);
-
-        int affectedRows = employeeRepository.chunkData(chunk);
-        uploadRepository.updateCompletedLine(processId, affectedRows);
+        employeeRepository.chunkData(processId, chunk);
     }
 }

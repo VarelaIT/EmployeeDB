@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IEmployeeRepository {
-    Integer chunkData(String chunk);
+    Integer chunkData(int processId, String chunk);
     IPersistedEmployee save(IEmployee employee);
     IPersistedEmployee get(int id);
     List<IPersistedEmployee> get();

@@ -45,18 +45,27 @@ public class EmployeeRepository implements IEmployeeRepository{
     }
 
     @Override
-    public Integer chunkData(String chunk){
+    public Integer chunkData(int processId, String chunk){
         if (chunk == null)
             return null;
 
         String chunkQuery = "INSERT INTO employees (name, last_name, birth_date, department_id) VALUES " + chunk;
+        String updateCompletedLineQuery = "UPDATE uploads SET completed = completed + ?, modified = NOW() WHERE id = ? ";
 
         try (Connection conn = PersistenceConnectivity.get(test)){
             Statement st = conn.createStatement();
             int affectedRows = st.executeUpdate(chunkQuery);
             st.close();
 
-            return affectedRows;
+            if (affectedRows > 0){
+                PreparedStatement pst = conn.prepareStatement(updateCompletedLineQuery);
+                pst.setInt(1, affectedRows);
+                pst.setInt(2, processId);
+                Integer afectedRowsB = pst.executeUpdate();
+                pst.close();
+            }
+
+            return  affectedRows;
         } catch (Exception e){
             logger.error("While chunk insert employees.\n\t" + e.getMessage());
         }
