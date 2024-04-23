@@ -24,6 +24,6 @@ public class ReportFailedThread implements Runnable{
     public void run() {
         IUploadRepository uploadRepository = new UploadRepository(test);
 
-        uploadRepository.updateFailedLine(processId);
+        uploadRepository.updateFailedLine(processId, lineNuber);
     }
 }

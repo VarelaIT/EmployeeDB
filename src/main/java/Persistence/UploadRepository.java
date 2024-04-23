@@ -75,13 +75,23 @@ public class UploadRepository implements IUploadRepository{
     private String updateFailedLineQuery = """
         UPDATE uploads SET failed = failed + 1, modified = NOW() WHERE id = ?
     """;
+    private String reportFailedLineQuery = """
+        INSERT INTO failed_lines (process_id, line) VALUES (?, ?)
+    """;
     @Override
-    public void updateFailedLine(int id) {
+    public void updateFailedLine(int id, int line) {
 
         try (Connection conn = PersistenceConnectivity.get(test)) {
             PreparedStatement st = conn.prepareStatement(updateFailedLineQuery);
             st.setInt(1, id);
             Integer afectedRows = st.executeUpdate();
+
+            if (afectedRows == 1) {
+                st = conn.prepareStatement(reportFailedLineQuery);
+                st.setInt(1, id);
+                st.setInt(2, line);
+                Integer afectedRowsB = st.executeUpdate();
+            }
             st.close();
         } catch (Exception e){
             logger.error("While updating failed lines on uploaded register\n\t" + e.getMessage());

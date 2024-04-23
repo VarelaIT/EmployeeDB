@@ -9,6 +9,38 @@ import java.sql.Statement;
 public class TableSchemas {
     private static final Logger logger = LogManager.getLogger("regular");
 
+    public static void dropFailedLinesTable(String test) {
+        String creationQuery =
+                "DROP TABLE failed_lines CASCADE";
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            Statement st = conn.createStatement();
+            st.executeUpdate(creationQuery);
+            st.close();
+        } catch (Exception e){
+            logger.error("While deleting the uploads schema.\n\t" + e.getMessage());
+        }
+    }
+
+    public static void createFailedLinesTable(String test) {
+        String creationQuery = """
+            CREATE TABLE IF NOT EXISTS
+            failed_lines (
+                process_id INT NOT NULL,
+                line INT NOT NULL,
+                time TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP
+            )
+        """;
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            Statement st = conn.createStatement();
+            st.executeUpdate(creationQuery);
+            st.close();
+        } catch (Exception e){
+            logger.error("While creating failed lines schema.\n\t" + e.getMessage());
+        }
+    }
+
     public static void dropUploadsTable(String test) {
         String creationQuery =
                 "DROP TABLE uploads CASCADE";

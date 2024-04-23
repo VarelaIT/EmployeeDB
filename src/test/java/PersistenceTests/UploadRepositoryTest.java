@@ -18,16 +18,20 @@ public class UploadRepositoryTest {
     public void storageInitialization(){
         TableSchemas.dropUploadsTable(test);
         TableSchemas.createUploadsTable(test);
+        TableSchemas.dropUploadsTable(test);
+        TableSchemas.createFailedLinesTable(test);
         uploadRepository = new UploadRepository(test);
     }
+
 
     @Test
     public void updateFailedLineUploadProcess(){
         String fileName = "employees.csv";
+        int failedLineNumber = 123;
         Integer processId = uploadRepository.create(fileName);
         IUploadStatus oldStatus = uploadRepository.getStatus(processId);
 
-        uploadRepository.updateFailedLine(processId);
+        uploadRepository.updateFailedLine(processId, failedLineNumber);
         IUploadStatus status = uploadRepository.getStatus(processId);
 
         assertEquals(oldStatus.getProcessId(), status.getProcessId());
