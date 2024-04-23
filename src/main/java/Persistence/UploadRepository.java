@@ -12,7 +12,7 @@ public class UploadRepository implements IUploadRepository{
         INSERT INTO uploads (file) VALUES (?) RETURNING id
     """;
     private String selectionQuery = """
-        SELECT id, file, completed, failed, modified FROM uploads WHERE id = ?
+        SELECT id, file, completed, failed, total, modified FROM uploads WHERE id = ?
     """;
     private static final Logger logger = LogManager.getLogger("regular");
     private String test = null;
@@ -57,6 +57,7 @@ public class UploadRepository implements IUploadRepository{
                     result.getString("file"),
                     result.getInt("completed"),
                     result.getInt("failed"),
+                    result.getInt("total"),
                     result.getTimestamp("modified")
                 );
             }
@@ -102,16 +103,32 @@ public class UploadRepository implements IUploadRepository{
         UPDATE uploads SET completed = completed + ?, modified = NOW() WHERE id = ?
     """;
     @Override
-    public void updateCompletedLine(int ProcessId, int lines) {
+    public void updateCompletedLines(int processId, int lines) {
 
         try (Connection conn = PersistenceConnectivity.get(test)) {
             PreparedStatement st = conn.prepareStatement(updateCompletedLineQuery);
             st.setInt(1, lines);
-            st.setInt(2, ProcessId);
+            st.setInt(2, processId);
             Integer afectedRows = st.executeUpdate();
             st.close();
         } catch (Exception e){
             logger.error("While updating completed lines on uploaded register\n\t" + e.getMessage());
+        }
+    }
+
+    private String updateTotalLinesQuery = """
+        UPDATE uploads SET total = ?, modified = NOW() WHERE id = ?
+    """;
+    @Override
+    public void updateTotalLines(int processId, int lines) {
+        try (Connection conn = PersistenceConnectivity.get(test)) {
+            PreparedStatement st = conn.prepareStatement(updateTotalLinesQuery);
+            st.setInt(1, lines);
+            st.setInt(2, processId);
+            Integer afectedRows = st.executeUpdate();
+            st.close();
+        } catch (Exception e){
+            logger.error("While setting total lines on uploaded register\n\t" + e.getMessage());
         }
     }
 }

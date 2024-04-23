@@ -1,9 +1,0 @@
-20:18:34.290 [main] ERROR regular - While persisting a department.
-	ERROR: duplicate key value violates unique constraint "departments_name_key"
-  Detail: Key (name)=() already exists.
-21:18:09.262 [main] ERROR regular - While persisting a department.
-	ERROR: duplicate key value violates unique constraint "departments_name_key"
-  Detail: Key (name)=() already exists.
-21:19:34.898 [main] ERROR regular - While persisting a department.
-	ERROR: duplicate key value violates unique constraint "departments_name_key"
-  Detail: Key (name)=() already exists.

@@ -5,7 +5,8 @@ import java.sql.Timestamp;
 public interface IUploadStatus {
     int getProcessId();
     String getFileName();
-    Integer completed();
-    Integer failed();
+    Integer getCompleted();
+    Integer getFailed();
+    Integer getTotal();
     Timestamp getTimeStamp();
 }

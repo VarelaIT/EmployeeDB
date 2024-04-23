@@ -6,10 +6,11 @@ import java.sql.Timestamp;
 
 public class UploadStatus extends Upload implements IUploadStatus {
 
-    UploadStatus(int id, String fileName, int completed, int failed, Timestamp time){
+    UploadStatus(int id, String fileName, int completed, int failed, int total, Timestamp time){
         this.processId = id;
         this.file = fileName;
-        this.completedLines = completed;
+        this.completed = completed;
+        this.total = total;
         this.inCompletedLines = failed;
         this.timeStamp = time;
     }
@@ -21,14 +22,20 @@ public class UploadStatus extends Upload implements IUploadStatus {
     public String getFileName(){
         return file;
     }
+
     @Override
-    public Integer completed() {
-        return completedLines;
+    public Integer getCompleted() {
+        return completed;
     }
 
     @Override
-    public Integer failed() {
+    public Integer getFailed() {
         return inCompletedLines;
+    }
+
+    @Override
+    public Integer getTotal() {
+        return total;
     }
 
     @Override

@@ -1,0 +1,10 @@
+John,Doe,2010-05-15,1
+Jane,<script>,1985-08-23,5
+Michael,Johnson,1978-11-02,3
+Emily,Williams,1982-04-10,2
+Matthew'; drop table employees; -- ,Jones,1991-12-21,4
+Sara,Brown,-07-30,2
+Liam,Davis,1994-03-15,1
+Olivia,Garcia,1990-09-25,3 ; drop tables; --
+Noah,Miller,1982-01-05,5
+Ava,Wilson,1985-06-09,-4

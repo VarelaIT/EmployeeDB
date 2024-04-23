@@ -62,6 +62,7 @@ public class TableSchemas {
                 file VARCHAR(64) NOT NULL,
                 completed INT DEFAULT 0,
                 failed INT DEFAULT 0,
+                total INT DEFAULT 0,
                 modified TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP
             )
         """;
