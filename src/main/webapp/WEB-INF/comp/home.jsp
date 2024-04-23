@@ -32,12 +32,13 @@
                     <p>
                         EmployeeDB is the first web application developed by Ismael Varela in Java,
                         the stakes are high... Hopping to catch the attention of the employers;
-                        <b>let`s begin!</b>
+                        <b>let`s go for the million registers!</b>
                     </p>
 
                     <ul>
-                        <li><a href="/EmployeeDB/departments">Departments</a></li>
                         <li><a href="/EmployeeDB/employees">Employees</a></li>
+                        <li><a href="/EmployeeDB/departments">Departments</a></li>
+                        <li><a href="/EmployeeDB/employees/upload">Upload Employees</a></li>
                         <li><a href="/EmployeeDB/setup">Set Up</a></li>
                     </ul>
                 </article>

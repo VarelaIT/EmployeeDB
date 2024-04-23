@@ -42,15 +42,16 @@ public class EmployeeUploadStatus extends HttpServlet {
         if (status.getCompleted() + status.getFailed() == status.getTotal())
             component= component + "<tr>";
         else {
-            component = component + "<tr hx-get='/EmployeeDB/api/employee/upload/status/?id="
+            component = component + "<tr hx-get='/EmployeeDB/api/employee/upload/status?id="
                     + status.getProcessId()
-                    + "'hx-trigger='load delay:0.5s' hx-swap='outerHTML'>";
+                    + "' hx-trigger='load delay:0.5s' hx-swap='outerHTML'>";
         }
 
         component = component
-                + "<td></td><td>" + status.getCompleted()+ "</td>"
-                + "<td></td><td>" + status.getFailed()+ "</td>"
-                + "<td></td><td>" + status.getTotal()+ "</td></tr>";
+                + "<td>" + status.getFileName() + "</td>"
+                + "<td>" + status.getCompleted()+ "</td>"
+                + "<td>" + status.getFailed()+ "</td>"
+                + "<td>" + status.getTotal()+ "</td></tr>";
 
         return component;
     }

@@ -66,14 +66,14 @@ public class EmployeeFileRoute extends HttpServlet{
                         <th>Invalid</th>
                         <th>Total</th>
                     </tr>
-                <thead>
+                </thead>
                 <tbody>
                     <tr
-                        hx-get='/EmployeeDB/api/employee/upload/status/?id=$processId'
+                        hx-get='/EmployeeDB/api/employee/upload/status?id=$processId'
                         hx-trigger='load delay:0.5s'
                         hx-swap='outerHTML'
                     ></tr>
-                <tbody>
+                </tbody>
             </table>
         """;
 
