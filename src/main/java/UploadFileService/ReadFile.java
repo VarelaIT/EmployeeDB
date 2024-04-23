@@ -1,4 +1,4 @@
-package FileService;
+package UploadFileService;
 
 import Persistence.UploadRepository;
 import org.apache.logging.log4j.LogManager;
@@ -18,12 +18,12 @@ public class ReadFile {
     public static final DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     private static final Logger logger = LogManager.getLogger("regular");
 
-    public static void manage(int processId, String file, String test){
+    public static void manage(int processId, String filePath, String test){
         int counter = 0;
         StringBuilder chunk = new StringBuilder();
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line;
             while ((line = br.readLine()) != null) {
                 String validLine = parseLine(line);

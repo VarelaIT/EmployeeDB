@@ -1,9 +1,7 @@
-package FileService;
+package UploadFileService;
 
 import Persistence.EmployeeRepository;
 import Persistence.IEmployeeRepository;
-import Persistence.IUploadRepository;
-import Persistence.UploadRepository;
 
 public class SaveChunkThread implements Runnable{
     private final String chunk;

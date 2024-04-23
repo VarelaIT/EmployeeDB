@@ -1,4 +1,4 @@
-package FileService;
+package UploadFileService;
 
 import Persistence.IUploadRepository;
 import Persistence.UploadRepository;
