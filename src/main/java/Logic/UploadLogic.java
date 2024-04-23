@@ -25,4 +25,12 @@ public class UploadLogic implements IUploadLogic{
         fileProcess.start();
         return processId;
     }
+
+    @Override
+    public IUploadStatusResponse status(Integer processId) {
+        if (processId == null)
+            return  null;
+
+        return new UploadStatusResponse(uploadRepository.getStatus(processId));
+    }
 }

@@ -1,20 +1,22 @@
-package Persistence;
+package Logic;
 
 import Entities.Upload;
+import Persistence.IUploadStatus;
 
 import java.sql.Timestamp;
 
-public class UploadStatus extends Upload implements IUploadStatus {
+public class UploadStatusResponse extends Upload implements IUploadStatusResponse{
 
-    UploadStatus(int id, String fileName, int completed, int failed, int total, Timestamp time){
-        this.processId = id;
-        this.file = fileName;
-        this.completed = completed;
-        this.total = total;
-        this.inCompletedLines = failed;
-        this.timeStamp = time;
+    UploadStatusResponse(IUploadStatus status){
+
+        this.processId = status.getProcessId();
+        this.file = status.getFileName();
+        this.completed = status.getCompleted();
+        this.inCompletedLines = status.getFailed();
+        this.total = status.getTotal();
+        this.timeStamp = status.getTimeStamp();
+
     }
-
     @Override
     public int getProcessId() {
         return processId;

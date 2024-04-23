@@ -1,6 +1,7 @@
 package LogicTests;
 
 import Logic.IUploadLogic;
+import Logic.IUploadStatusResponse;
 import Logic.UploadLogic;
 import Persistence.IUploadStatus;
 import Persistence.TableSchemas;
@@ -27,6 +28,23 @@ public class UploadLogicTest {
     }
 
     @Test
+    public void getUploadStatus() throws InterruptedException {
+        String fileName = "logicFile";
+        String location = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesGPT.csv";
+        Integer processId = uploadLogic.start(fileName, location);
+        Thread.sleep(2000);
+
+        IUploadStatusResponse status = uploadLogic.status(processId);
+        System.out.println("Total lines: " + status.getTotal() + "\nSucceed: " + status.getCompleted() + "\nFailed: " + status.getFailed());
+
+        assertNotNull(status);
+        assertEquals(processId, status.getProcessId());
+        assertEquals(fileName, status.getFileName());
+        assertEquals(status.getTotal(), status.getCompleted() + status.getFailed());
+
+    }
+
+    @Test
     public void startUpload() throws InterruptedException {
         String fileName = "logicFile";
         String location = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesGPT.csv";
@@ -39,4 +57,5 @@ public class UploadLogicTest {
         assertNotNull(status);
         assertEquals(status.getTotal(), status.getCompleted() + status.getFailed());
     }
+
 }
