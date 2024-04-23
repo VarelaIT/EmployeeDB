@@ -69,6 +69,9 @@ public class ReadFile {
             if (fields.length != 4)
                 return null;
 
+            if (fields[0].length() > 64 || fields[1].length() > 64)
+                return  null;
+
             try {
                 Date bd = new Date(formatter.parse(fields[2]).getTime());
                 if (today.getYear() - bd.getYear() < 18)
