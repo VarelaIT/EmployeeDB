@@ -30,7 +30,7 @@ public class UploadLogicTest {
     @Test
     public void getUploadStatus() throws InterruptedException {
         String fileName = "logicFile";
-        String location = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesGPT.csv";
+        String location = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesBadLines.csv";
         Integer processId = uploadLogic.start(fileName, location);
         Thread.sleep(2000);
 

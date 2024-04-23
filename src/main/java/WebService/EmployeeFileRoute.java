@@ -1,7 +1,6 @@
 package WebService;
 
 import Logic.IUploadLogic;
-import Logic.IUploadStatusResponse;
 import Logic.UploadLogic;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -13,11 +12,6 @@ import jakarta.servlet.http.Part;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Map;
-
-import static WebService.RequestSanitizer.getParams;
-import static java.lang.Integer.parseInt;
 
 @WebServlet("/api/employee/upload")
 @MultipartConfig(

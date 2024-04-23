@@ -1,4 +1,4 @@
-package Logic;
+package WebService;
 
 import Logic.Setup;
 import Logic.IStorageSetup;

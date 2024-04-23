@@ -32,10 +32,13 @@ public class EmployeeUploadStatus extends HttpServlet {
             }
         }
 
+        response.setContentType("text/html");
+        response.getWriter().append(payload);
     }
 
     private String renderStatus(IUploadStatusResponse status) {
         String component = "";
+
         if (status.getCompleted() + status.getFailed() == status.getTotal())
             component= component + "<tr>";
         else {
@@ -43,6 +46,14 @@ public class EmployeeUploadStatus extends HttpServlet {
                     + status.getProcessId()
                     + "'hx-trigger='load delay:0.5s' hx-swap='outerHTML'>";
         }
+
+        component = component
+                + "<td></td><td>" + status.getCompleted()+ "</td>"
+                + "<td></td><td>" + status.getFailed()+ "</td>"
+                + "<td></td><td>" + status.getTotal()+ "</td></tr>";
+
+        return component;
     }
+
 
 }
