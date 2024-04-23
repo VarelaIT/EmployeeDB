@@ -1,7 +1,5 @@
 package FileService;
 
-import FileService.SaveChunk;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,8 +16,9 @@ public class ReadFile {
     public static final java.sql.Date today = new java.sql.Date(new java.util.Date().getTime());
     public static final DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     private static final Logger logger = LogManager.getLogger("regular");
+    private static final String test = null;//for testing purposes
 
-    public static void manage(String file){
+    public static void manage(int processId, String file){
         int counter = 0;
         StringBuilder chunk = new StringBuilder();
 
@@ -31,22 +30,29 @@ public class ReadFile {
                 counter++;
 
                 if (validLine != null) {
-                    if (counter % 1000 == 0){
+                    if (chunk.isEmpty())
                         chunk.append(validLine);
+                    else
+                        chunk.append(", ").append(validLine);
+
+                    if (counter % 1000 == 0){
                         //save chunk
-                        Thread saveChunkThread = new Thread(new SaveChunk());
+                        Thread saveChunkThread = new Thread(new SaveChunkThread(processId, chunk.toString(), test));
+                        saveChunkThread.start();
                         //clear chunk
                         chunk = new StringBuilder();
-                    } else {
-                        chunk.append(validLine + ", ");
                     }
 
-                    System.out.println(validLine);
                 } else {
                     //new thread to report invalid line
+                    Thread failedLineThread = new Thread(new ReportFailedThread(processId, counter, test));
+                    failedLineThread.start();
                 }
             }
 
+            //remaining chunk
+            Thread saveChunkThread = new Thread(new SaveChunkThread(processId, chunk.toString(), test));
+            saveChunkThread.start();
             //new thread with total lines processed
 
         } catch (Exception e) {

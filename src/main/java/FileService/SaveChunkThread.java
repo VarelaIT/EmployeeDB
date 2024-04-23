@@ -1,24 +1,24 @@
-package FileServiceTest;
+package FileService;
 
 import Persistence.EmployeeRepository;
 import Persistence.IEmployeeRepository;
 import Persistence.IUploadRepository;
 import Persistence.UploadRepository;
 
-public class SaveChunk implements Runnable{
+public class SaveChunkThread implements Runnable{
     private final String chunk;
-    private String test = null;
     private final int processId;
+    private String test = null;
 
-    SaveChunk(int id, String chunk){
-        this.chunk = chunk;
+    SaveChunkThread(int id, String chunk){
         this.processId = id;
+        this.chunk = chunk;
     }
 
-    SaveChunk(int id, String chunk, String test){
+    SaveChunkThread(int id, String chunk, String test){
+        this.processId = id;
         this.chunk = chunk;
         this.test = test;
-        this.processId = id;
     }
 
     @Override

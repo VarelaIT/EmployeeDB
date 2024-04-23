@@ -92,12 +92,12 @@ public class UploadRepository implements IUploadRepository{
         UPDATE uploads SET completed = completed + ?, modified = NOW() WHERE id = ?
     """;
     @Override
-    public void updateCompletedLine(int id, int lines) {
+    public void updateCompletedLine(int ProcessId, int lines) {
 
         try (Connection conn = PersistenceConnectivity.get(test)) {
             PreparedStatement st = conn.prepareStatement(updateCompletedLineQuery);
             st.setInt(1, lines);
-            st.setInt(2, id);
+            st.setInt(2, ProcessId);
             Integer afectedRows = st.executeUpdate();
             st.close();
         } catch (Exception e){
