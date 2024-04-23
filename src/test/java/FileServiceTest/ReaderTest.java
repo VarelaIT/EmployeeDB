@@ -26,7 +26,7 @@ public class ReaderTest {
         String filePath = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesBadLines.csv";
         Integer processId = new UploadRepository("test").create("someFile");
 
-        ReadFile.manage(processId, filePath);
+        ReadFile.manage(processId, filePath, "test");
 
         Thread.sleep(2000);
         assertTrue(processId == 1);

@@ -9,11 +9,6 @@ public class ReportFailedThread implements Runnable{
     private final int processId;
     private String test = null;
 
-    ReportFailedThread(int id, int lineNumber){
-        this.processId = id;
-        this.lineNuber = lineNumber;
-    }
-
     ReportFailedThread(int id, int lineNumber, String test){
         this.processId = id;
         this.lineNuber = lineNumber;

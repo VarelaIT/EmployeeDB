@@ -1,5 +1,6 @@
 package FileService;
 
+import Persistence.UploadRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,10 +17,8 @@ public class ReadFile {
     public static final java.sql.Date today = new java.sql.Date(new java.util.Date().getTime());
     public static final DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     private static final Logger logger = LogManager.getLogger("regular");
-    //private static final String test = null;//for testing purposes
-    private static final String test = "test";
 
-    public static void manage(int processId, String file){
+    public static void manage(int processId, String file, String test){
         int counter = 0;
         StringBuilder chunk = new StringBuilder();
 
@@ -54,7 +53,8 @@ public class ReadFile {
             //remaining chunk
             Thread saveChunkThread = new Thread(new SaveChunkThread(processId, chunk.toString(), test));
             saveChunkThread.start();
-            //new thread with total lines processed
+            //saves total lines processed
+            new UploadRepository(test).updateTotalLines(processId, counter);
 
         } catch (Exception e) {
             logger.error("While reading file:\n\t" + e.getMessage());

@@ -10,11 +10,6 @@ public class SaveChunkThread implements Runnable{
     private final int processId;
     private String test = null;
 
-    SaveChunkThread(int id, String chunk){
-        this.processId = id;
-        this.chunk = chunk;
-    }
-
     SaveChunkThread(int id, String chunk, String test){
         this.processId = id;
         this.chunk = chunk;
