@@ -16,6 +16,8 @@ public class ReaderTest {
     public void employeeStorageInitialization(){
         TableSchemas.dropUploadsTable("test");
         TableSchemas.createUploadsTable("test");
+        TableSchemas.dropEmployeesTable("test");
+        TableSchemas.createEmployeesTable("test");
     }
 
     @Test

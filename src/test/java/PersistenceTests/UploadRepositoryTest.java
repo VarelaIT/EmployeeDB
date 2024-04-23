@@ -18,7 +18,7 @@ public class UploadRepositoryTest {
     public void storageInitialization(){
         TableSchemas.dropUploadsTable(test);
         TableSchemas.createUploadsTable(test);
-        TableSchemas.dropUploadsTable(test);
+        TableSchemas.dropFailedLinesTable(test);
         TableSchemas.createFailedLinesTable(test);
         uploadRepository = new UploadRepository(test);
     }

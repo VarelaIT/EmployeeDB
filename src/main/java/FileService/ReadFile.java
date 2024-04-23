@@ -16,7 +16,8 @@ public class ReadFile {
     public static final java.sql.Date today = new java.sql.Date(new java.util.Date().getTime());
     public static final DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     private static final Logger logger = LogManager.getLogger("regular");
-    private static final String test = null;//for testing purposes
+    //private static final String test = null;//for testing purposes
+    private static final String test = "test";
 
     public static void manage(int processId, String file){
         int counter = 0;
