@@ -3,6 +3,7 @@ package Logic;
 import java.util.List;
 
 public interface IEmployeeLogic {
+    List<IReportEmployeesPerDepartmentResponse> reportEmployeesPerDepartment();
     IEmployeeResponse save(IEmployeeRequest employee);
     IEmployeeResponse update(Integer id, IEmployeeRequest employee);
     List<IEmployeeResponse> get();

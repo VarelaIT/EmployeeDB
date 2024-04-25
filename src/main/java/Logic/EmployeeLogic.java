@@ -4,6 +4,7 @@ import Entities.Employee;
 import Persistence.EmployeeRepository;
 import Persistence.IEmployeeRepository;
 import Persistence.IPersistedEmployee;
+import Persistence.IReportEmployeesPerDepartment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,6 +22,21 @@ public class EmployeeLogic implements IEmployeeLogic {
 
     public EmployeeLogic(String test){
        this.employeeRepository = new EmployeeRepository(test);
+    }
+
+    @Override
+    public List<IReportEmployeesPerDepartmentResponse> reportEmployeesPerDepartment(){
+        List<IReportEmployeesPerDepartment> answer = employeeRepository.perDepartment();
+        List<IReportEmployeesPerDepartmentResponse> response = new ArrayList<>();
+
+        if (answer == null)
+            return  null;
+
+        for (IReportEmployeesPerDepartment element: answer){
+            response.add(new ReportEmployeesPerDepartmentResponse(element));
+        }
+
+        return response;
     }
 
     @Override
