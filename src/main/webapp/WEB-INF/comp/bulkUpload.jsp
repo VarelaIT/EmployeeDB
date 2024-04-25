@@ -33,7 +33,7 @@
                     hx-trigger="submit"
                     hx-target="#upload-info-container"
                 >
-                    <input type="hidden" name="MAX_FILE_SIZE" value="200000" />
+                    <input type="hidden" name="MAX_FILE_SIZE" value="4000000" />
 
                     <label>
                         CSV file

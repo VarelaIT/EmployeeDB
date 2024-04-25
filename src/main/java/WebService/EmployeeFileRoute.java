@@ -16,8 +16,8 @@ import java.io.IOException;
 @WebServlet("/api/employee/upload")
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
-        maxFileSize = 1024 * 1024 * 10,      // 10 MB
-        maxRequestSize = 1024 * 1024 * 10   // 10 MB
+        maxFileSize = 1024 * 1024 * 30,      // 30 MB
+        maxRequestSize = 1024 * 1024 * 50   // 50 MB
 )
 public class EmployeeFileRoute extends HttpServlet{
 

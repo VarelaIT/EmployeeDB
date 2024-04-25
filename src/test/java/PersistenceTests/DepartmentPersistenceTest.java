@@ -79,7 +79,7 @@ public class DepartmentPersistenceTest {
 
     @Test
     public void getAllPersistedDepartments(){
-        IDepartment departmentA = new Department("Data Analysis", "");
+        IDepartment departmentA = new Department("Data Analysis", "Analyzing Data and stuff");
         IDepartment departmentB = new Department("Design", "Graphical & visual design");
         IPersistedDepartment persistedA = departmentRepository.save(departmentA);
         IPersistedDepartment persistedB = departmentRepository.save(departmentB);

@@ -13,6 +13,11 @@ import static java.lang.Integer.parseInt;
 
 public class EmployeeRepository implements IEmployeeRepository{
 
+    protected String employeesPerdepartmentQuery = """
+        SELECT d.id, d.name AS department, COUNT(department_id) AS total
+        FROM employees INNER JOIN departments d ON department_id = d.id
+        GROUP BY department_id, d.id
+    """;
     protected String findNameQuery = """
         SELECT * FROM employee_full_name WHERE full_name ILIKE ? LIMIT 100
     """;
@@ -42,6 +47,33 @@ public class EmployeeRepository implements IEmployeeRepository{
 
     public EmployeeRepository(String test){
         this.test = test;
+    }
+
+    @Override
+    public List<IReportEmployeesPerDepartment> perDepartment(){
+        List<IReportEmployeesPerDepartment> report = new ArrayList<>();
+
+        try (Connection conn = PersistenceConnectivity.get(test)) {
+            Statement stm = conn.createStatement();
+            ResultSet result = stm.executeQuery(employeesPerdepartmentQuery);
+
+            while(result.next()) {
+                report.add(new ReportEmployeesPerDepartment(
+                    result.getInt("id"),
+                    result.getString("department"),
+                    result.getInt("total")
+                ));
+            }
+
+            result.close();
+            stm.close();
+            return report;
+        } catch (Exception e) {
+            logger.error("While reporting employees per department.\n\t" + e.getMessage());
+        }
+
+        return report;
+
     }
 
     @Override
