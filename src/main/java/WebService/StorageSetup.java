@@ -25,7 +25,11 @@ public class StorageSetup extends HttpServlet{
 
         if (signal) {
             logger.trace("The storage was formatted successfully.");
-            response.getWriter().append("<p>The Storage was formatted successfully.</p>");
+
+            if (manager.defaultDepartments())
+                response.getWriter().append("<p>The Storage was formatted successfully.</p>");
+            else
+                response.getWriter().append("<p>The Storage was formatted, but no default department were loaded.</p>");
         } else {
             logger.error("The storage was not formatted as expected.");
             response.getWriter().append("<p>The Storage was Not formatted. Please, try again</p>");

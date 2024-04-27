@@ -9,6 +9,27 @@ import java.sql.Statement;
 public class TableSchemas {
     private static final Logger logger = LogManager.getLogger("regular");
 
+    public static void insertDefaultDepartments(String test) {
+        String insertionQuery ="""
+            INSERT INTO departments (name, description) VALUES
+            ('HHRR', 'Human resources'),
+            ('Janitor', 'Janitors department'),
+            ('Reception', 'Reception department'),
+            ('Security', 'Security department'),
+            ('R&D', 'Research and development'),
+            ('Management', 'Management development'),
+            ('PR', 'Public relations')
+        """;
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            Statement st = conn.createStatement();
+            st.executeUpdate(insertionQuery);
+            st.close();
+        } catch (Exception e){
+            logger.error("While inserting default department.\n\t" + e.getMessage());
+        }
+    }
+
     public static void dropFailedLinesTable(String test) {
         String creationQuery =
                 "DROP TABLE failed_lines CASCADE";
