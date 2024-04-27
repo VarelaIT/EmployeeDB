@@ -27,6 +27,51 @@ public class Reports extends HttpServlet {
         response.getWriter().append(rawPayload);
     }
 
+    public String chartDonutEmployeesPerDepartment() {
+        List<IReportEmployeesPerDepartmentResponse> report = new EmployeeLogic().reportEmployeesPerDepartment();
+
+        if (report == null)
+            return "<p>Empty report.</p>";
+
+        String dataPoints = "";
+        for (int i = 0; i < report.size(); i ++){
+            dataPoints = dataPoints + "{ label: \"" + report.get(i).getDepartment() + "\",  y: " + report.get(i).getTotal() + "  },";
+        }
+
+        String chart = """
+            <script type="text/javascript">
+                function employeesPerDepartmentChart () {
+                                    
+                    const chart = new CanvasJS.Chart("chartContainer", {
+                        theme: "light1", // "light2", "dark1", "dark2"
+                        animationEnabled: true, // change to true
+                        title:{
+                            text: "Employees per Department"
+                        },
+                        data: [
+                        {
+                            // Change type to "bar", "area", "spline", "pie",etc.
+                            type: "doughnut",
+                            startAngle: 60,
+                            indexLabelFontSize: 17,
+                            indexLabel: "{label} - {y}",
+                            toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+                            dataPoints: [
+                                $dataPoints
+                            ]
+                        }
+                        ]
+                    });
+                    chart.render();
+                                
+                }
+                
+                employeesPerDepartmentChart();
+            </script>
+        """;
+        return chart.replace("$dataPoints", dataPoints);
+    }
+
     public String chartEmployeesPerDepartment() {
         List<IReportEmployeesPerDepartmentResponse> report = new EmployeeLogic().reportEmployeesPerDepartment();
 
@@ -71,7 +116,8 @@ public class Reports extends HttpServlet {
     public String getReport(String petition) {
 
         if (petition.equals("c1"))
-            return chartEmployeesPerDepartment();
+            return chartDonutEmployeesPerDepartment();
+            //return chartEmployeesPerDepartment();
 
        return petition;
     }
