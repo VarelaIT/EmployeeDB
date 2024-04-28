@@ -99,21 +99,20 @@ public class UploadRepository implements IUploadRepository{
         }
     }
 
-    private String updateCompletedLineQuery = """
-        UPDATE uploads SET completed = completed + ?, modified = NOW() WHERE id = ?
-    """;
     @Override
-    public void updateCompletedLines(int processId, int lines) {
+    public Integer reportValidLines(String table, String chunk) {
+        Integer affectedRows = null;
+        String reportCompletedLineQuery = "INSERT INTO " + table + " VALUES " + chunk;
 
         try (Connection conn = PersistenceConnectivity.get(test)) {
-            PreparedStatement st = conn.prepareStatement(updateCompletedLineQuery);
-            st.setInt(1, lines);
-            st.setInt(2, processId);
-            st.executeUpdate();
+            Statement st = conn.createStatement();
+            affectedRows = st.executeUpdate(reportCompletedLineQuery);
             st.close();
         } catch (Exception e){
-            logger.error("While updating completed lines on uploaded register\n\t" + e.getMessage());
+            logger.error("While inserting completed lines on temporal table\n\t" + e.getMessage());
         }
+
+        return affectedRows;
     }
 
     private String updateTotalLinesQuery = """
