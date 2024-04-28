@@ -54,16 +54,23 @@ public class ReadFile {
                         Thread saveChunkThread = new Thread(new SaveChunkThread(processId, chunk.toString(), test));
                         saveChunkThread.start();
                     }
+
                     //clear chunk
                     chunk = new StringBuilder();
+                    invalidChunk = new StringBuilder();
                 }
 
             }
             //remaining chunk
-            Thread saveChunkThread = new Thread(new SaveChunkThread(processId, chunk.toString(), test));
-            saveChunkThread.start();
-            Thread failedLineThread = new Thread(new ReportFailedThread(processId, invalidChunk.toString(), test));
-            failedLineThread.start();
+            if (!chunk.isEmpty()) {
+                Thread saveChunkThread = new Thread(new SaveChunkThread(processId, chunk.toString(), test));
+                saveChunkThread.start();
+            }
+
+            if (!invalidChunk.isEmpty()) {
+                Thread failedLineThread = new Thread(new ReportFailedThread(processId, invalidChunk.toString(), test));
+                failedLineThread.start();
+            }
             //saves total lines processed
             new UploadRepository(test).updateTotalLines(processId, counter);
 

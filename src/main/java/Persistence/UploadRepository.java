@@ -49,7 +49,7 @@ public class UploadRepository implements IUploadRepository{
         IUploadStatus status = null;
         String updateQuery = """
             UPDATE uploads SET
-            failed = (SELECT COUNT(*) FROM failed_lines WHERE id = ?),
+            failed = (SELECT COUNT(*) FROM failed_lines WHERE process_id = ?),
             modified = NOW() WHERE id = ?
         """;
 
@@ -88,6 +88,7 @@ public class UploadRepository implements IUploadRepository{
     @Override
     public void insertFailedLines(int id, String invalidChunk) {
         String reportFailedLineQuery = "INSERT INTO failed_lines (process_id, line) VALUES " + invalidChunk;
+        //System.out.println(reportFailedLineQuery);
 
         try (Connection conn = PersistenceConnectivity.get(test)) {
             Statement st = conn.createStatement();
