@@ -9,6 +9,34 @@ import java.sql.Statement;
 public class TableSchemas {
     private static final Logger logger = LogManager.getLogger("regular");
 
+    public static boolean dropTemporaryLinesTable(String test, String tableName){
+        String createTableQuery = "DROP TABLE " + tableName;
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            Statement st = conn.createStatement();
+            st.executeUpdate(createTableQuery);
+            st.close();
+        } catch (Exception e){
+            logger.error("While dropping temporary lines table.\n\t" + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean createTemporaryLinesTable(String test, String tableName){
+        String createTableQuery = "CREATE TABLE " + tableName + " (line INT PRIMARY KEY)";
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            Statement st = conn.createStatement();
+            st.executeUpdate(createTableQuery);
+            st.close();
+        } catch (Exception e){
+            logger.error("While creating temporary lines table.\n\t" + e.getMessage());
+            return  false;
+        }
+        return  true;
+    }
+
     public static void insertDefaultDepartments(String test) {
         String insertionQuery ="""
             INSERT INTO departments (name, description) VALUES

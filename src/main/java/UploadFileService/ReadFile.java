@@ -1,5 +1,7 @@
 package UploadFileService;
 
+import Persistence.ITableNameBuilder;
+import Persistence.TableNameBuilder;
 import Persistence.UploadRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,24 +21,31 @@ public class ReadFile {
     private static final Logger logger = LogManager.getLogger("regular");
 
     public static void manage(int processId, String filePath, String test){
+        ITableNameBuilder tableNames = new TableNameBuilder(processId);
         int counter = 0;
         StringBuilder chunk = new StringBuilder();
+        StringBuilder validChunk = new StringBuilder();
         StringBuilder invalidChunk = new StringBuilder();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line;
             while ((line = br.readLine()) != null) {
-                String validLine = parseLine(line);
+                String validRegister = parseLine(line);
                 counter++;
 
-                if (validLine != null) {
-                    if (chunk.isEmpty())
-                        chunk.append(validLine);
-                    else
-                        chunk.append(", ").append(validLine);
+                if (validRegister != null) {
+                    String validLine = "(" + counter + ")";
+                    if (chunk.isEmpty()){
+                        chunk.append(validRegister);
+                        validChunk.append(validLine);
+                    } else {
+                        chunk.append(", ").append(validRegister);
+                        validChunk.append(", ").append(validLine);
+                    }
+
                 } else {
-                    String invalidLine = "(" + processId + ", " + counter + ")";
+                    String invalidLine = "(" + counter + ")";
                     if (invalidChunk.isEmpty())
                         invalidChunk.append(invalidLine);
                     else

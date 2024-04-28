@@ -1,7 +1,6 @@
 package Logic;
 
-import Persistence.IUploadRepository;
-import Persistence.UploadRepository;
+import Persistence.*;
 import UploadFileService.ManagerThread;
 
 public class UploadLogic implements IUploadLogic{
@@ -21,6 +20,14 @@ public class UploadLogic implements IUploadLogic{
     @Override
     public Integer start(String fileName, String location) {
         Integer processId = uploadRepository.create(fileName);
+
+        if (processId == null)
+            return  null;
+
+        ITableNameBuilder tableNames = new TableNameBuilder(processId);
+        TableSchemas.createTemporaryLinesTable(test, tableNames.succeed());
+        TableSchemas.createTemporaryLinesTable(test, tableNames.failed());
+
         Thread fileProcess = new Thread (new ManagerThread(processId, location, test));
         fileProcess.start();
         return processId;
