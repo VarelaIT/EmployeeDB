@@ -5,5 +5,5 @@ public interface IUploadRepository {
     IUploadStatus getStatus(int id);
     void updateCompletedLines(int processId, int lines);
     void updateTotalLines(int processId, int lines);
-    void updateFailedLine(int id, int line);
+    void insertFailedLines(int id, String invalidChunk);
 }

@@ -30,8 +30,9 @@ public class UploadRepositoryTest {
         int failedLineNumber = 123;
         Integer processId = uploadRepository.create(fileName);
         IUploadStatus oldStatus = uploadRepository.getStatus(processId);
+        String failedChunk = "(" + processId + ", " + failedLineNumber + ")";
 
-        uploadRepository.updateFailedLine(processId, failedLineNumber);
+        uploadRepository.insertFailedLines(processId, failedChunk);
         IUploadStatus status = uploadRepository.getStatus(processId);
 
         assertEquals(oldStatus.getProcessId(), status.getProcessId());

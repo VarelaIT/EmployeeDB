@@ -82,7 +82,10 @@ public class EmployeeRepository implements IEmployeeRepository{
             return null;
 
         String chunkQuery = "INSERT INTO employees (name, last_name, birth_date, department_id) VALUES " + chunk;
-        String updateCompletedLineQuery = "UPDATE uploads SET completed = completed + ?, modified = NOW() WHERE id = ? ";
+        String updateCompletedLineQuery = """
+            UPDATE uploads SET
+            completed = completed + ?, modified = NOW() WHERE id = ?
+        """;
 
         try (Connection conn = PersistenceConnectivity.get(test)){
             Statement st = conn.createStatement();
@@ -93,7 +96,7 @@ public class EmployeeRepository implements IEmployeeRepository{
                 PreparedStatement pst = conn.prepareStatement(updateCompletedLineQuery);
                 pst.setInt(1, affectedRows);
                 pst.setInt(2, processId);
-                Integer afectedRowsB = pst.executeUpdate();
+                pst.executeUpdate();
                 pst.close();
             }
 

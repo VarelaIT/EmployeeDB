@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class UploadRepository implements IUploadRepository{
     private String creationQuery = """
@@ -46,8 +47,19 @@ public class UploadRepository implements IUploadRepository{
     @Override
     public IUploadStatus getStatus(int id) {
         IUploadStatus status = null;
+        String updateQuery = """
+            UPDATE uploads SET
+            failed = (SELECT COUNT(*) FROM failed_lines WHERE id = ?),
+            modified = NOW() WHERE id = ?
+        """;
+
         try (Connection conn = PersistenceConnectivity.get(test)) {
-            PreparedStatement st = conn.prepareStatement(selectionQuery);
+            PreparedStatement st = conn.prepareStatement(updateQuery);
+            st.setInt(1, id);
+            st.setInt(2, id);
+            st.executeUpdate();
+
+            st = conn.prepareStatement(selectionQuery);
             st.setInt(1, id);
             ResultSet result = st.executeQuery();
 
@@ -73,29 +85,16 @@ public class UploadRepository implements IUploadRepository{
         return null;
     }
 
-    private String updateFailedLineQuery = """
-        UPDATE uploads SET failed = failed + 1, modified = NOW() WHERE id = ?
-    """;
-    private String reportFailedLineQuery = """
-        INSERT INTO failed_lines (process_id, line) VALUES (?, ?)
-    """;
     @Override
-    public void updateFailedLine(int id, int line) {
+    public void insertFailedLines(int id, String invalidChunk) {
+        String reportFailedLineQuery = "INSERT INTO failed_lines (process_id, line) VALUES " + invalidChunk;
 
         try (Connection conn = PersistenceConnectivity.get(test)) {
-            PreparedStatement st = conn.prepareStatement(updateFailedLineQuery);
-            st.setInt(1, id);
-            Integer afectedRows = st.executeUpdate();
-
-            if (afectedRows == 1) {
-                st = conn.prepareStatement(reportFailedLineQuery);
-                st.setInt(1, id);
-                st.setInt(2, line);
-                Integer afectedRowsB = st.executeUpdate();
-            }
+            Statement st = conn.createStatement();
+            st.executeUpdate(reportFailedLineQuery);
             st.close();
         } catch (Exception e){
-            logger.error("While updating failed lines on uploaded register\n\t" + e.getMessage());
+            logger.error("While inserting failed lines on uploaded register\n\t" + e.getMessage());
         }
     }
 
@@ -109,7 +108,7 @@ public class UploadRepository implements IUploadRepository{
             PreparedStatement st = conn.prepareStatement(updateCompletedLineQuery);
             st.setInt(1, lines);
             st.setInt(2, processId);
-            Integer afectedRows = st.executeUpdate();
+            st.executeUpdate();
             st.close();
         } catch (Exception e){
             logger.error("While updating completed lines on uploaded register\n\t" + e.getMessage());

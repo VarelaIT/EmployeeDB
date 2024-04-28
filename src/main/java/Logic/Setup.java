@@ -12,9 +12,11 @@ public class Setup implements IStorageSetup {
     }
 
     public boolean formatStorage(){
+        TableSchemas.dropUploadsTable(test);
+        TableSchemas.dropFailedLinesTable(test);
         TableSchemas.dropDepartmentsTable(test);
-        TableSchemas.createDepartmentsTable(test);
         TableSchemas.dropEmployeesTable(test);
+        TableSchemas.createDepartmentsTable(test);
         TableSchemas.createEmployeesTable(test);
         TableSchemas.createEmployeesView(test);
         TableSchemas.createUploadsTable(test);

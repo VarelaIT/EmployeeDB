@@ -21,6 +21,7 @@ public class ReadFile {
     public static void manage(int processId, String filePath, String test){
         int counter = 0;
         StringBuilder chunk = new StringBuilder();
+        StringBuilder invalidChunk = new StringBuilder();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -34,25 +35,35 @@ public class ReadFile {
                         chunk.append(validLine);
                     else
                         chunk.append(", ").append(validLine);
+                } else {
+                    String invalidLine = "(" + processId + ", " + counter + ")";
+                    if (invalidChunk.isEmpty())
+                        invalidChunk.append(invalidLine);
+                    else
+                        invalidChunk.append(", ").append(invalidLine);
+                }
 
-                    if (counter % 1000 == 0){
-                        //save chunk
+                if (counter > 0 && counter % 1000 == 0){
+                    //new thread to report invalid line
+                    if (!invalidChunk.isEmpty()) {
+                        Thread failedLineThread = new Thread(new ReportFailedThread(processId, invalidChunk.toString(), test));
+                        failedLineThread.start();
+                    }
+                    //save chunk
+                    if (!chunk.isEmpty()) {
                         Thread saveChunkThread = new Thread(new SaveChunkThread(processId, chunk.toString(), test));
                         saveChunkThread.start();
-                        //clear chunk
-                        chunk = new StringBuilder();
                     }
-
-                } else {
-                    //new thread to report invalid line
-                    Thread failedLineThread = new Thread(new ReportFailedThread(processId, counter, test));
-                    failedLineThread.start();
+                    //clear chunk
+                    chunk = new StringBuilder();
                 }
-            }
 
+            }
             //remaining chunk
             Thread saveChunkThread = new Thread(new SaveChunkThread(processId, chunk.toString(), test));
             saveChunkThread.start();
+            Thread failedLineThread = new Thread(new ReportFailedThread(processId, invalidChunk.toString(), test));
+            failedLineThread.start();
             //saves total lines processed
             new UploadRepository(test).updateTotalLines(processId, counter);
 
