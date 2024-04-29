@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface IEmployeeRepository {
     List<IReportEmployeesPerDepartment> perDepartment();
-    Integer chunkData(int processId, String chunk);
     IPersistedEmployee save(IEmployee employee);
     IPersistedEmployee get(int id);
     List<IPersistedEmployee> get();

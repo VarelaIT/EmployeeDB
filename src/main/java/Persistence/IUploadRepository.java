@@ -1,6 +1,7 @@
 package Persistence;
 
 public interface IUploadRepository {
+    Integer employeesChunk(String chunk);
     Integer create(String file);
     IUploadStatus getStatus(int id);
     Integer reportLines(String table, String chunk);

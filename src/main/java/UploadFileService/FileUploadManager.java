@@ -93,7 +93,7 @@ public class FileUploadManager implements IFileUploadManager{
     public void saveProcessedLines ( String chunk, String validChunk, String invalidChunk) {
         //save chunk
         if (!chunk.isEmpty()) {
-            Thread saveChunkThread = new Thread(new SaveChunkThread(processId, chunk, test));
+            Thread saveChunkThread = new Thread(new SaveEmployeeChunkThread(chunk, test));
             saveChunkThread.start();
         }
         //new thread to report valid lines

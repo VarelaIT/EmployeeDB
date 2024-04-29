@@ -22,6 +22,28 @@ public class UploadRepository implements IUploadRepository{
     public UploadRepository(String test){
         this.test =  test;
     }
+
+
+    @Override
+    public Integer employeesChunk(String chunk){
+        if (chunk == null)
+            return null;
+
+        String chunkQuery = "INSERT INTO employees (name, last_name, birth_date, department_id) VALUES " + chunk;
+
+        try (Connection conn = PersistenceConnectivity.get(test)){
+            Statement st = conn.createStatement();
+            int affectedRows = st.executeUpdate(chunkQuery);
+            st.close();
+
+            return  affectedRows;
+        } catch (Exception e){
+            logger.error("While chunk insert employees.\n\t" + e.getMessage());
+        }
+
+        return null;
+    }
+
     @Override
     public Integer create(String file) {
         Integer value = null;

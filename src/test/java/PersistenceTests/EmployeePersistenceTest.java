@@ -2,10 +2,7 @@ package PersistenceTests;
 
 import Entities.IEmployee;
 import Entities.Employee;
-import Persistence.IPersistedEmployee;
-import Persistence.EmployeeRepository;
-import Persistence.IEmployeeRepository;
-import Persistence.TableSchemas;
+import Persistence.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EmployeePersistenceTest {
 
     private IEmployeeRepository employeeRepository;
+    private IUploadRepository uploadRepository;
     private final DateFormat bdObj= new SimpleDateFormat("dd-MM-yyyy");
 
     public String test = "test";
@@ -29,6 +27,7 @@ public class EmployeePersistenceTest {
         TableSchemas.createEmployeesTable(test);
         TableSchemas.createEmployeesView(test);
         employeeRepository = new EmployeeRepository(test);
+        uploadRepository = new UploadRepository(test);
     }
 
     @Test
@@ -40,7 +39,7 @@ public class EmployeePersistenceTest {
             ('Noah', 'Miller', '1982-01-05', 5)
         """;
 
-        int afectedRows = employeeRepository.chunkData(1, chunk);
+        int afectedRows = uploadRepository.employeesChunk(chunk);
 
         assertEquals(4, afectedRows);
     }

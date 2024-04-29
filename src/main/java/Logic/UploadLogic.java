@@ -40,4 +40,11 @@ public class UploadLogic implements IUploadLogic{
 
         return new UploadStatusResponse(uploadRepository.getStatus(processId));
     }
+
+    @Override
+    public void clean(Integer processId) {
+        ITableNameBuilder tableNames = new TableNameBuilder(processId);
+        TableSchemas.dropTemporaryLinesTable(test, tableNames.succeed());
+        TableSchemas.dropTemporaryLinesTable(test, tableNames.failed());
+    }
 }

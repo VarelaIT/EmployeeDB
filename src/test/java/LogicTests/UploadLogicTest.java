@@ -41,6 +41,7 @@ public class UploadLogicTest {
         assertEquals(processId, status.getProcessId());
         assertEquals(fileName, status.getFileName());
         assertEquals(status.getTotal(), status.getCompleted() + status.getFailed());
+        uploadLogic.clean(processId);
 
     }
 
@@ -56,6 +57,7 @@ public class UploadLogicTest {
 
         assertNotNull(status);
         assertEquals(status.getTotal(), status.getCompleted() + status.getFailed());
+        uploadLogic.clean(processId);
     }
 
 }

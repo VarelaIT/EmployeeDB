@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UploadManagerTest {
 
+    private IUploadRepository uploadRepository;
     private final String test = "test";
 
     @BeforeEach
@@ -21,14 +22,16 @@ public class UploadManagerTest {
         TableSchemas.createFailedLinesTable(test);
         TableSchemas.dropEmployeesTable(test);
         TableSchemas.createEmployeesTable(test);
+        uploadRepository = new UploadRepository(test);
     }
 
     @Test
     public void processValidFileUpload() throws InterruptedException {
         String filePathA = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesGPT.csv";
-        IUploadRepository uploadRepository = new UploadRepository(test);
-        Integer processId = uploadRepository.create("someFileA");
+        Integer processId = uploadRepository.create("someFile");
         ITableNameBuilder tableName = new TableNameBuilder(processId);
+        TableSchemas.dropTemporaryLinesTable(test, tableName.succeed());
+        TableSchemas.dropTemporaryLinesTable(test, tableName.failed());
         TableSchemas.createTemporaryLinesTable(test, tableName.succeed());
         TableSchemas.createTemporaryLinesTable(test, tableName.failed());
 
@@ -44,62 +47,4 @@ public class UploadManagerTest {
 
     }
 
-    /*
-    @Test
-    public void readManyFiles() throws InterruptedException {
-        String filePathA = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesGPT.csv";
-        String filePathB = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesBadLines.csv";
-        IUploadRepository uploadRepository = new UploadRepository(test);
-        Integer processIdA = uploadRepository.create("someFileA");
-        Integer processIdB = uploadRepository.create("someFileB");
-
-        FileUploadManager.manage(processIdA, filePathA, test);
-        FileUploadManager.manage(processIdB, filePathB, test);
-        Thread.sleep(2000);
-        IUploadStatus statusA = uploadRepository.getStatus(processIdA);
-        IUploadStatus statusB = uploadRepository.getStatus(processIdB);
-        System.out.println("Total lines: " + statusA.getTotal() + "\nSucceed: " + statusA.getCompleted() + "\nFailed: " + statusA.getFailed());
-
-        assertNotNull(statusA);
-        assertNotNull(statusB);
-        assertNotEquals(processIdA, processIdB);
-        assertNotEquals(statusA.getFailed(), statusB.getFailed());
-        assertEquals(statusA.getTotal(), statusA.getCompleted() + statusA.getFailed());
-        assertEquals(statusB.getTotal(), statusB.getCompleted() + statusB.getFailed());
-    }
-
-    @Test
-    public void readValidFile() throws InterruptedException {
-        //String filePath = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesGPT.csv";
-        String filePath = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesBadLines.csv";
-        IUploadRepository uploadRepository = new UploadRepository(test);
-        Integer processId = uploadRepository.create("someFile");
-
-        FileUploadManager.manage(processId, filePath, test);
-        Thread.sleep(2000);
-        IUploadStatus status = uploadRepository.getStatus(processId);
-        System.out.println("Total lines: " + status.getTotal() + "\nSucceed: " + status.getCompleted() + "\nFailed: " + status.getFailed());
-
-        assertNotNull(status);
-        assertEquals(status.getTotal(), status.getCompleted() + status.getFailed());
-    }
-
-    @Test
-    public void readValidFileManagerThread() throws InterruptedException {
-        String filePath = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesGPT.csv";
-        //String filePath = "/home/uriel/www/EmployeeDB/src/main/webapp/uploads/employeesBadLines.csv";
-        IUploadRepository uploadRepository = new UploadRepository(test);
-        Integer processId = uploadRepository.create("someFile");
-
-        Thread fileProcess = new Thread (new ManagerThread(processId, filePath, test));
-        fileProcess.start();
-        Thread.sleep(2000);
-        IUploadStatus status = uploadRepository.getStatus(processId);
-        System.out.println("Total lines: " + status.getTotal() + "\nSucceed: " + status.getCompleted() + "\nFailed: " + status.getFailed());
-
-        assertNotNull(status);
-        assertEquals(status.getTotal(), status.getCompleted() + status.getFailed());
-    }
-
-     */
 }

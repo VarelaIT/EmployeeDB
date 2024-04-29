@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ReportsTest {
     private IDepartmentRepository departmentRepository;
     private IEmployeeRepository employeeRepository;
+    private IUploadRepository uploadRepository;
     private final DateFormat bdObj= new SimpleDateFormat("dd-MM-yyyy");
 
     public String test = "test";
@@ -31,6 +32,7 @@ public class ReportsTest {
         TableSchemas.createEmployeesView(test);
         employeeRepository = new EmployeeRepository(test);
         departmentRepository = new DepartmentRepository(test);
+        uploadRepository = new UploadRepository(test);
     }
 
     @Test
@@ -43,7 +45,7 @@ public class ReportsTest {
             + "('Emily', 'Williams', '1982-04-10', " + persistedB.getId() + "),"
             + "('Liam', 'Davis', '1994-03-15', " + persistedB.getId() + "),"
             + "('Noah', 'Miller', '1982-01-05', " + persistedB.getId() + ")";
-        int afectedRows = employeeRepository.chunkData(1, chunk);
+        int afectedRows = uploadRepository.employeesChunk(chunk);
 
         List<IReportEmployeesPerDepartment> report = employeeRepository.perDepartment();
         Integer totalA = 0;
