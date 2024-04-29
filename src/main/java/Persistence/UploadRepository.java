@@ -49,11 +49,11 @@ public class UploadRepository implements IUploadRepository{
         IUploadStatus status = null;
         ITableNameBuilder tableName = new TableNameBuilder(id);
         String updateQuery =
-            "UPDATE uploads SET "
-            + "completed = (SELECT COUNT(*) FROM " + tableName.succeed() + "), "
-            + "failed = (SELECT COUNT(*) FROM " + tableName.failed() + ") "
-            + "WHERE id = ? "
-            + "RETURNING id, file, completed, failed, total, modified";
+            "SELECT id, file, "
+            + "(SELECT COUNT(*) FROM " + tableName.succeed() + ") AS completed, "
+            + "(SELECT COUNT(*) FROM " + tableName.failed() + ") AS failed, "
+            + "total, modified FROM uploads "
+            + "WHERE id = ? ";
 
         try (Connection conn = PersistenceConnectivity.get(test)) {
             PreparedStatement st = conn.prepareStatement(updateQuery);
