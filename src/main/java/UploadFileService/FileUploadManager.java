@@ -14,14 +14,32 @@ import java.text.SimpleDateFormat;
 
 import static java.lang.Integer.parseInt;
 
-public class ReadFile {
+public class FileUploadManager implements IFileUploadManager{
 
-    public static final java.sql.Date today = new java.sql.Date(new java.util.Date().getTime());
-    public static final DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    private static final Logger logger = LogManager.getLogger("regular");
+    public final java.sql.Date today = new java.sql.Date(new java.util.Date().getTime());
+    public final DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private final Logger logger = LogManager.getLogger("regular");
+    private String test = null;
+    private final String filePath;
+    private final int processId;
+    private ITableNameBuilder tableNames;
 
-    public static void manage(int processId, String filePath, String test){
-        ITableNameBuilder tableNames = new TableNameBuilder(processId);
+    public FileUploadManager(int processId, String filePath){
+        this.processId = processId;
+        this.filePath = filePath;
+        manage();
+    }
+
+    public FileUploadManager(int processId, String filePath, String test){
+        this.processId = processId;
+        this.filePath = filePath;
+        this.test = test;
+        manage();
+    }
+
+    @Override
+    public void manage(){
+        tableNames = new TableNameBuilder(processId);
         int counter = 0;
         StringBuilder chunk = new StringBuilder();
         StringBuilder validChunk = new StringBuilder();
@@ -53,17 +71,7 @@ public class ReadFile {
                 }
 
                 if (counter > 0 && counter % 1000 == 0){
-                    //new thread to report invalid line
-                    if (!invalidChunk.isEmpty()) {
-                        Thread failedLineThread = new Thread(new ReportFailedThread(processId, invalidChunk.toString(), test));
-                        failedLineThread.start();
-                    }
-                    //save chunk
-                    if (!chunk.isEmpty()) {
-                        Thread saveChunkThread = new Thread(new SaveChunkThread(processId, chunk.toString(), test));
-                        saveChunkThread.start();
-                    }
-
+                    saveProcessedLines(chunk.toString(), validChunk.toString(), invalidChunk.toString());
                     //clear chunk
                     chunk = new StringBuilder();
                     invalidChunk = new StringBuilder();
@@ -71,15 +79,7 @@ public class ReadFile {
 
             }
             //remaining chunk
-            if (!chunk.isEmpty()) {
-                Thread saveChunkThread = new Thread(new SaveChunkThread(processId, chunk.toString(), test));
-                saveChunkThread.start();
-            }
-
-            if (!invalidChunk.isEmpty()) {
-                Thread failedLineThread = new Thread(new ReportFailedThread(processId, invalidChunk.toString(), test));
-                failedLineThread.start();
-            }
+            saveProcessedLines(chunk.toString(), validChunk.toString(), invalidChunk.toString());
             //saves total lines processed
             new UploadRepository(test).updateTotalLines(processId, counter);
 
@@ -89,7 +89,26 @@ public class ReadFile {
 
     }
 
-    public static String parseLine(String line){
+
+    public void saveProcessedLines ( String chunk, String validChunk, String invalidChunk) {
+        //save chunk
+        if (!chunk.isEmpty()) {
+            Thread saveChunkThread = new Thread(new SaveChunkThread(processId, chunk, test));
+            saveChunkThread.start();
+        }
+        //new thread to report valid lines
+        if (!validChunk.isEmpty()) {
+            Thread valildLineThread = new Thread(new ReportLinesThread(tableNames.succeed(), validChunk, test));
+            valildLineThread.start();
+        }
+        //new thread to report invalid lines
+        if (!invalidChunk.isEmpty()) {
+            Thread failedLineThread = new Thread(new ReportLinesThread(tableNames.failed(), invalidChunk, test));
+            failedLineThread.start();
+        }
+    }
+
+    public String parseLine(String line){
         if (line != null){
             String[] fields = line.split("<|>|--|,");
 

@@ -1,7 +1,5 @@
 package UploadFileService;
 
-import static UploadFileService.ReadFile.manage;
-
 public class ManagerThread implements Runnable{
     private final String test;
     private final String filePath;
@@ -15,6 +13,6 @@ public class ManagerThread implements Runnable{
 
     @Override
     public void run() {
-        manage(processId, filePath, test);
+        new FileUploadManager(processId, filePath, test).manage();
     }
 }

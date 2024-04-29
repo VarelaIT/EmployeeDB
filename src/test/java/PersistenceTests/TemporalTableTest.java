@@ -27,12 +27,7 @@ public class TemporalTableTest {
     @Test
     public void insertIntoTemporalTable(){
         int processId = 1;
-        String succedChunk = """
-            (1),
-            (2),
-            (3),
-            (4)
-        """;
+        String succedChunk = "(1), (2), (3), (4)";
         ITableNameBuilder tableName = new TableNameBuilder(processId);
         TableSchemas.createTemporaryLinesTable(test, tableName.succeed());
         IUploadRepository uploadRepository = new UploadRepository(test);
@@ -42,6 +37,21 @@ public class TemporalTableTest {
         assertNotNull(inserted);
         assertEquals(4, inserted);
         assertTrue(TableSchemas.dropTemporaryLinesTable(test, tableName.succeed()));
+    }
+
+    @Test
+    public void countTemporalTable(){
+        int processId = 1;
+        String failedChunk = "(1), (2), (3), (4)";
+        ITableNameBuilder tableName = new TableNameBuilder(processId);
+        TableSchemas.createTemporaryLinesTable(test, tableName.failed());
+        IUploadRepository uploadRepository = new UploadRepository(test);
+        Integer inserted = uploadRepository.reportLines(tableName.failed(), failedChunk);
+
+        Integer counted = uploadRepository.countLines(tableName.failed());
+
+        assertEquals(inserted, counted);
+        assertTrue(TableSchemas.dropTemporaryLinesTable(test, tableName.failed()));
     }
 
 }

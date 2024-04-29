@@ -109,10 +109,28 @@ public class UploadRepository implements IUploadRepository{
             affectedRows = st.executeUpdate(reportCompletedLineQuery);
             st.close();
         } catch (Exception e){
-            logger.error("While inserting completed lines on temporal table\n\t" + e.getMessage());
+            logger.error("While inserting lines on temporal table\n\t" + e.getMessage());
         }
 
         return affectedRows;
+    }
+
+    @Override
+    public Integer countLines(String table) {
+        Integer total = null;
+        String countQuery = "SELECT COUNT(*) FROM " + table;
+
+        try (Connection conn = PersistenceConnectivity.get(test)) {
+            Statement st = conn.createStatement();
+            ResultSet result = st.executeQuery(countQuery);
+            if (result.next())
+                total = result.getInt(1);
+            st.close();
+        } catch (Exception e){
+            logger.error("While selecting count of lines on temporal table\n\t" + e.getMessage());
+        }
+
+        return total;
     }
 
     private String updateTotalLinesQuery = """

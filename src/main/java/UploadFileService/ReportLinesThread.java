@@ -3,14 +3,14 @@ package UploadFileService;
 import Persistence.IUploadRepository;
 import Persistence.UploadRepository;
 
-public class ReportFailedThread implements Runnable{
+public class ReportLinesThread implements Runnable{
 
     private final String invalidChunk;
-    private final int processId;
+    private final String table;
     private String test = null;
 
-    ReportFailedThread(int id, String invalidChunk, String test){
-        this.processId = id;
+    ReportLinesThread(String table, String invalidChunk, String test){
+        this.table = table;
         this.invalidChunk = invalidChunk;
         this.test = test;
     }
@@ -18,6 +18,6 @@ public class ReportFailedThread implements Runnable{
     @Override
     public void run() {
         IUploadRepository uploadRepository = new UploadRepository(test);
-        uploadRepository.insertFailedLines(processId, invalidChunk);
+        uploadRepository.reportLines(table, invalidChunk);
     }
 }
