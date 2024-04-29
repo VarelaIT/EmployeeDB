@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Properties>
+        <Property name="logdir">${sys:catalina.base}/logs</Property>
         <Property name="layout">%d [%t] %-5p %c- %m%n</Property>
     </Properties>
     <Appenders>
@@ -9,22 +10,34 @@
             <PatternLayout pattern="${layout}"/>
             <!--<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
         </Console>
-        <File name="File1" fileName="output.log">
+
+        <RollingFile name="EmployeeDB" fileName="${logdir}/EmployeeDB.log" filePattern="${logdir}/employeeDB.%d{yyyy-MM-dd}-%i.log">
             <PatternLayout pattern="${layout}"/>
-            <!--<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
-        </File>
-        <File name="errorFile" fileName="error.log">
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="1 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <RollingFile name="EmployeeDB_error" fileName="${logdir}/EmployeeDB_error.log" filePattern="${logdir}/employeeDB_error.%d{yyyy-MM-dd}-%i.log">
             <levelRangeFilter minLevel="ERROR" maxLevel="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-        </File>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="1 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
     </Appenders>
     <Loggers>
         <Logger name="regular" level="trace" additivity="false">
-            <AppenderRef ref="File1"/>
-            <AppenderRef ref="errorFile"/>
+            <AppenderRef ref="EmployeeDB"/>
+            <AppenderRef ref="EmployeeDB_error"/>
             <AppenderRef ref="Console"/>
         </Logger>
         <Root level="error">
+            <AppenderRef ref="EmployeeDB_error"/>
             <AppenderRef ref="Console"/>
         </Root>
     </Loggers>

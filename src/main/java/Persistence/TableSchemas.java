@@ -98,7 +98,6 @@ public class TableSchemas {
             Statement st = conn.createStatement();
             st.executeUpdate(creationQuery);
             st.close();
-            logger.error("Checking out the new format.");
         } catch (Exception e){
             logger.error("While deleting the uploads schema.\n\t" + e.getMessage());
         }
