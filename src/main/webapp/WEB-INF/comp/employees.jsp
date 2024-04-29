@@ -29,6 +29,7 @@
 
                 <header>
                     <form
+                        class="inline-form"
                         hx-get="/EmployeeDB/api/employee/find"
                         hx-trigger="submit"
                         hx-target="#employeeTableBody"
