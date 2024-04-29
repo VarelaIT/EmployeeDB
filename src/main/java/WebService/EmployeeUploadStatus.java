@@ -28,7 +28,13 @@ public class EmployeeUploadStatus extends HttpServlet {
             IUploadLogic uploadLogic = new UploadLogic();
             IUploadStatusResponse status = uploadLogic.status(processId);
             if (status != null){
-                payload = renderStatus(status);
+                boolean completed = false;
+
+                if (status.getCompleted() + status.getFailed() == status.getTotal()){
+                    completed = true;
+                }
+
+                payload = renderStatus(status, completed);
             }
         }
 
@@ -36,10 +42,10 @@ public class EmployeeUploadStatus extends HttpServlet {
         response.getWriter().append(payload);
     }
 
-    private String renderStatus(IUploadStatusResponse status) {
+    private String renderStatus(IUploadStatusResponse status, boolean completed) {
         String component = "";
 
-        if (status.getCompleted() + status.getFailed() == status.getTotal())
+        if (completed)
             component= component + "<tr>";
         else {
             component = component + "<tr hx-get='/EmployeeDB/api/employee/upload/status?id="

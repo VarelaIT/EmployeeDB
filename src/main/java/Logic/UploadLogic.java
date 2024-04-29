@@ -25,8 +25,16 @@ public class UploadLogic implements IUploadLogic{
             return  null;
 
         ITableNameBuilder tableNames = new TableNameBuilder(processId);
-        TableSchemas.createTemporaryLinesTable(test, tableNames.succeed());
-        TableSchemas.createTemporaryLinesTable(test, tableNames.failed());
+
+        if (!TableSchemas.createTemporaryLinesTable(test, tableNames.succeed())) {
+            TableSchemas.dropTemporaryLinesTable(test, tableNames.succeed());
+            TableSchemas.createTemporaryLinesTable(test, tableNames.succeed());
+        }
+
+        if (!TableSchemas.createTemporaryLinesTable(test, tableNames.failed())) {
+            TableSchemas.dropTemporaryLinesTable(test, tableNames.failed());
+            TableSchemas.createTemporaryLinesTable(test, tableNames.failed());
+        }
 
         Thread fileProcess = new Thread (new ManagerThread(processId, location, test));
         fileProcess.start();

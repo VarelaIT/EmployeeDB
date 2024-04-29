@@ -74,14 +74,15 @@ public class FileUploadManager implements IFileUploadManager{
                     saveProcessedLines(chunk.toString(), validChunk.toString(), invalidChunk.toString());
                     //clear chunk
                     chunk = new StringBuilder();
+                    validChunk = new StringBuilder();
                     invalidChunk = new StringBuilder();
                 }
 
             }
-            //remaining chunk
-            saveProcessedLines(chunk.toString(), validChunk.toString(), invalidChunk.toString());
             //saves total lines processed
             new UploadRepository(test).updateTotalLines(processId, counter);
+            //remaining chunk
+            saveProcessedLines(chunk.toString(), validChunk.toString(), invalidChunk.toString());
 
         } catch (Exception e) {
             logger.error("While reading file:\n\t" + e.getMessage());
