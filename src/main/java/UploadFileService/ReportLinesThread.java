@@ -6,10 +6,10 @@ import Persistence.UploadRepository;
 public class ReportLinesThread implements Runnable{
 
     private final String invalidChunk;
-    private final String table;
+    private String table = null;
     private String test = null;
 
-    ReportLinesThread(String table, String invalidChunk, String test){
+    public ReportLinesThread(String table, String invalidChunk, String test){
         this.table = table;
         this.invalidChunk = invalidChunk;
         this.test = test;

@@ -13,6 +13,6 @@ public class ManagerThread implements Runnable{
 
     @Override
     public void run() {
-        new FileUploadManager(processId, filePath, test).manage();
+        new FileUploadManager(processId, filePath, test);
     }
 }

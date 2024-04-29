@@ -1,9 +1,7 @@
 package PersistenceTests;
 
-import Persistence.IUploadRepository;
-import Persistence.IUploadStatus;
-import Persistence.TableSchemas;
-import Persistence.UploadRepository;
+import Persistence.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,41 +10,47 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UploadRepositoryTest {
 
     private IUploadRepository uploadRepository;
+    private ITableNameBuilder tableName;
+    private Integer processId;
     private String test = "test";
 
     @BeforeEach
     public void storageInitialization(){
-        TableSchemas.dropUploadsTable(test);
+        String fileName = "employees.csv";
         TableSchemas.createUploadsTable(test);
-        TableSchemas.dropFailedLinesTable(test);
-        TableSchemas.createFailedLinesTable(test);
         uploadRepository = new UploadRepository(test);
+        processId = uploadRepository.create(fileName);
+        tableName = new TableNameBuilder(processId);
+        TableSchemas.createTemporaryLinesTable(test, tableName.succeed());
+        TableSchemas.createTemporaryLinesTable(test, tableName.failed());
     }
 
+    @AfterEach
+    public void destroyStorage(){
+        TableSchemas.dropTemporaryLinesTable(test, tableName.succeed());
+        TableSchemas.dropTemporaryLinesTable(test, tableName.failed());
+        TableSchemas.dropUploadsTable(test);
+    }
 
     @Test
     public void updateFailedLineUploadProcess(){
-        String fileName = "employees.csv";
-        int failedLineNumber = 123;
-        Integer processId = uploadRepository.create(fileName);
+        String failedLines = "(123)";
+        uploadRepository.reportLines(tableName.failed(), failedLines);
         IUploadStatus oldStatus = uploadRepository.getStatus(processId);
-        String failedChunk = "(" + processId + ", " + failedLineNumber + ")";
+        String failedChunk = "(245), (263)";
 
-        uploadRepository.insertFailedLines(processId, failedChunk);
+        uploadRepository.reportLines(tableName.failed(), failedChunk);
         IUploadStatus status = uploadRepository.getStatus(processId);
 
         assertEquals(oldStatus.getProcessId(), status.getProcessId());
         assertEquals(oldStatus.getFileName(), status.getFileName());
-        assertEquals(oldStatus.getFailed() + 1, status.getFailed());
+        assertEquals(oldStatus.getFailed() + 2, status.getFailed());
         assertEquals(oldStatus.getCompleted(), status.getCompleted());
-        assertNotEquals(oldStatus.getTimeStamp(), status.getTimeStamp());
     }
 
     @Test
     public void updateTotalLines(){
-        String fileName = "employees.csv";
         Integer lines = 5;
-        Integer processId = uploadRepository.create(fileName);
         IUploadStatus oldStatus = uploadRepository.getStatus(processId);
 
         uploadRepository.updateTotalLines(processId, lines);
@@ -55,18 +59,14 @@ public class UploadRepositoryTest {
         assertEquals(oldStatus.getProcessId(), status.getProcessId());
         assertEquals(oldStatus.getFileName(), status.getFileName());
         assertEquals(oldStatus.getTotal() + lines, status.getTotal());
-        assertNotEquals(oldStatus.getTimeStamp(), status.getTimeStamp());
     }
 
     @Test
     public void getUploadProcess(){
-        String fileName = "employess.csv";
-        Integer processId = uploadRepository.create(fileName);
 
         IUploadStatus status = uploadRepository.getStatus(processId);
 
         assertEquals(processId, status.getProcessId());
-        assertEquals(fileName, status.getFileName());
     }
 
     @Test

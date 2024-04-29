@@ -32,7 +32,7 @@ public class UploadManagerTest {
         TableSchemas.createTemporaryLinesTable(test, tableName.succeed());
         TableSchemas.createTemporaryLinesTable(test, tableName.failed());
 
-        IFileUploadManager fileManager = new FileUploadManager(processId, filePathA, test);
+        new FileUploadManager(processId, filePathA, test);
         Thread.sleep(1000);
         Integer succeed = uploadRepository.countLines(tableName.succeed());
         Integer failed = uploadRepository.countLines(tableName.failed());

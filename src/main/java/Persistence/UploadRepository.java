@@ -47,19 +47,16 @@ public class UploadRepository implements IUploadRepository{
     @Override
     public IUploadStatus getStatus(int id) {
         IUploadStatus status = null;
-        String updateQuery = """
-            UPDATE uploads SET
-            failed = (SELECT COUNT(*) FROM failed_lines WHERE process_id = ?),
-            modified = NOW() WHERE id = ?
-        """;
+        ITableNameBuilder tableName = new TableNameBuilder(id);
+        String updateQuery =
+            "UPDATE uploads SET "
+            + "completed = (SELECT COUNT(*) FROM " + tableName.succeed() + "), "
+            + "failed = (SELECT COUNT(*) FROM " + tableName.failed() + ") "
+            + "WHERE id = ? "
+            + "RETURNING id, file, completed, failed, total, modified";
 
         try (Connection conn = PersistenceConnectivity.get(test)) {
             PreparedStatement st = conn.prepareStatement(updateQuery);
-            st.setInt(1, id);
-            st.setInt(2, id);
-            st.executeUpdate();
-
-            st = conn.prepareStatement(selectionQuery);
             st.setInt(1, id);
             ResultSet result = st.executeQuery();
 
@@ -77,12 +74,12 @@ public class UploadRepository implements IUploadRepository{
             result.close();
             st.close();
 
-            return status;
         } catch (Exception e){
             logger.error("While reading an upload register\n\t" + e.getMessage());
+            return null;
         }
 
-        return null;
+        return status;
     }
 
     @Override
