@@ -20,55 +20,58 @@ public class Reports extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, String> params = getParams(request);
         String rawPayload = "<p>Not found.</p>";
-
-        rawPayload =  getReport(params.getOrDefault("chart", rawPayload));
+        String chartPayload = getReport(params.getOrDefault("chart", null));
+        if (chartPayload != null) {
+            rawPayload = chartPayload;
+        }
 
         response.setContentType("text/html");
         response.getWriter().append(rawPayload);
     }
 
-    public String chartDonutEmployeesPerDepartment() {
+    private String chartDonutEmployeesPerDepartment() {
         List<IReportEmployeesPerDepartmentResponse> report = new EmployeeLogic().reportEmployeesPerDepartment();
 
         if (report == null)
             return "<p>Empty report.</p>";
 
         String dataPoints = "";
-        for (int i = 0; i < report.size(); i ++){
-            dataPoints = dataPoints + "{ label: \"" + report.get(i).getDepartment() + "\",  y: " + report.get(i).getTotal() + "  },";
+        for (int i = 0; i < report.size(); i++) {
+            dataPoints = dataPoints + "{ label: \"" + report.get(i).getDepartment() + "\",  y: "
+                    + report.get(i).getTotal() + "  },";
         }
 
         String chart = """
-            <script type="text/javascript">
-                function employeesPerDepartmentChart () {
-                                    
-                    const chart = new CanvasJS.Chart("chartContainer", {
-                        theme: "light1", // "light2", "dark1", "dark2"
-                        animationEnabled: true, // change to true
-                        title:{
-                            text: "Employees per Department"
-                        },
-                        data: [
-                        {
-                            // Change type to "bar", "area", "spline", "pie",etc.
-                            type: "doughnut",
-                            startAngle: 60,
-                            indexLabelFontSize: 17,
-                            indexLabel: "{label} - {y}",
-                            toolTipContent: "<b>{label}:</b> {y} (#percent%)",
-                            dataPoints: [
-                                $dataPoints
-                            ]
+                    <script type="text/javascript">
+                        function employeesPerDepartmentChart () {
+
+                            const chart = new CanvasJS.Chart("chartContainer", {
+                                theme: "light1", // "light2", "dark1", "dark2"
+                                animationEnabled: true, // change to true
+                                title:{
+                                    text: "Employees per Department"
+                                },
+                                data: [
+                                {
+                                    // Change type to "bar", "area", "spline", "pie",etc.
+                                    type: "doughnut",
+                                    startAngle: 60,
+                                    indexLabelFontSize: 17,
+                                    indexLabel: "{label} - {y}",
+                                    toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+                                    dataPoints: [
+                                        $dataPoints
+                                    ]
+                                }
+                                ]
+                            });
+                            chart.render();
+
                         }
-                        ]
-                    });
-                    chart.render();
-                                
-                }
-                
-                employeesPerDepartmentChart();
-            </script>
-        """;
+
+                        employeesPerDepartmentChart();
+                    </script>
+                """;
         return chart.replace("$dataPoints", dataPoints);
     }
 
@@ -79,47 +82,48 @@ public class Reports extends HttpServlet {
             return "<p>Empty report.</p>";
 
         String dataPoints = "";
-        for (int i = 0; i < report.size(); i ++){
-            dataPoints = dataPoints + "{ label: \"" + report.get(i).getDepartment() + "\",  y: " + report.get(i).getTotal() + "  },";
+        for (int i = 0; i < report.size(); i++) {
+            dataPoints = dataPoints + "{ label: \"" + report.get(i).getDepartment() + "\",  y: "
+                    + report.get(i).getTotal() + "  },";
         }
 
         String chart = """
-            <script type="text/javascript">
-                function employeesPerDepartmentChart () {
-                                    
-                    const chart = new CanvasJS.Chart("chartContainer", {
-                        theme: "light1", // "light2", "dark1", "dark2"
-                        animationEnabled: true, // change to true
-                        title:{
-                            text: "Employees per Department"
-                        },
-                        data: [
-                        {
-                            // Change type to "bar", "area", "spline", "pie",etc.
-                            type: "column",
-                            dataPoints: [
-                                $dataPoints
-                            ]
+                    <script type="text/javascript">
+                        function employeesPerDepartmentChart () {
+
+                            const chart = new CanvasJS.Chart("chartContainer", {
+                                theme: "light1", // "light2", "dark1", "dark2"
+                                animationEnabled: true, // change to true
+                                title:{
+                                    text: "Employees per Department"
+                                },
+                                data: [
+                                {
+                                    // Change type to "bar", "area", "spline", "pie",etc.
+                                    type: "column",
+                                    dataPoints: [
+                                        $dataPoints
+                                    ]
+                                }
+                                ]
+                            });
+                            chart.render();
+
                         }
-                        ]
-                    });
-                    chart.render();
-                                
-                }
-                
-                employeesPerDepartmentChart();
-            </script>
-        """;
+
+                        employeesPerDepartmentChart();
+                    </script>
+                """;
         return chart.replace("$dataPoints", dataPoints);
     }
 
-    public String getReport(String petition) {
+    private String getReport(String petition) {
 
         if (petition.equals("c1"))
             return chartDonutEmployeesPerDepartment();
-            //return chartEmployeesPerDepartment();
+        // return chartEmployeesPerDepartment();
 
-       return petition;
+        return null;
     }
 
 }
