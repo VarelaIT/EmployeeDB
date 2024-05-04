@@ -3,12 +3,9 @@ package Persistence;
 import Entities.IDepartment;
 import Entities.IPersistedDepartment;
 import Entities.PersistedDepartment;
-import Persistence.JDBC.DBConn;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

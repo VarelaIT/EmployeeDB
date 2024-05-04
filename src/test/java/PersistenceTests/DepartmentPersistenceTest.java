@@ -5,12 +5,10 @@ import Entities.IDepartment;
 import Entities.IPersistedDepartment;
 import Persistence.DepartmentRepository;
 import Persistence.IDepartmentRepository;
-import Persistence.JDBC.DBConn;
 import Persistence.TableSchemas;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

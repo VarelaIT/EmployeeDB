@@ -2,12 +2,10 @@ package LogicTests;
 
 
 import Logic.*;
-import Persistence.JDBC.DBConn;
 import Persistence.TableSchemas;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
 import java.text.ParseException;
 import java.util.List;
 

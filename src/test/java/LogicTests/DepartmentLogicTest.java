@@ -6,12 +6,9 @@ import Logic.DepartmentRequest;
 import Logic.IDepartmentLogic;
 import Logic.IDepartmentRequest;
 import Logic.IDepartmentResponse;
-import Persistence.JDBC.DBConn;
 import Persistence.TableSchemas;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.sql.Connection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
