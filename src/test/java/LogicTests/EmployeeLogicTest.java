@@ -25,6 +25,19 @@ public class EmployeeLogicTest {
     }
 
     @Test
+    public void johnDoeUpdateIssue(){
+        IEmployeeRequest employee = new EmployeeRequest("John", "Doe", "1990-05-15", 1);
+        IEmployeeRequest updatedEmployee = new EmployeeRequest("Johnnie", "Doe", "1990-05-15", 1);
+        IEmployeeResponse storedEmployee = employeeLogic.save(employee);
+
+        IEmployeeResponse updatedStoredEmployee = employeeLogic.update(storedEmployee.getId(), updatedEmployee);
+
+        assertNotEquals(storedEmployee.getName(), updatedStoredEmployee.getName());
+        assertEquals(storedEmployee.getLastName(), updatedStoredEmployee.getLastName());
+        assertEquals(storedEmployee.getBirthDate(), updatedStoredEmployee.getBirthDate());
+    }
+
+    @Test
     public void findEmployee(){
         IEmployeeRequest employee = new EmployeeRequest("Ismael", "Varela", "1988-5-15", 1);
         IEmployeeRequest employeeA = new EmployeeRequest("Lary", "Figuereo", "2000-5-15", 1);

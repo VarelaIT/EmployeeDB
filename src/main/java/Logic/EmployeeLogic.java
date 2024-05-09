@@ -64,7 +64,7 @@ public class EmployeeLogic implements IEmployeeLogic {
             return null;
 
         if (!employeeRequest.verifyInput()) {
-            logger.warn(Employee.class + " invalid input while trying to store an employee.");
+            logger.error(Employee.class + " invalid input while trying to store an employee.");
             return null;
         }
 

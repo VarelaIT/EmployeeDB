@@ -53,7 +53,7 @@ public class EmployeeRequest implements IEmployeeRequest{
         if (name == null || lastName == null || birthDate == null || departmentId == null)
             return false;
 
-        if (name.length() < 2 || lastName.length() < 4 || today.getYear() - birthDate.getYear() < 18 )
+        if (name.length() < 2 || lastName.length() < 2 || today.getYear() - birthDate.getYear() < 18 )
             return false;
 
         return true;
